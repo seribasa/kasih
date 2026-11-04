@@ -92,7 +92,7 @@ jobs:
           GATEWAY: ${{ matrix.gateway }}
       - name: Upload simulator APP
         if: inputs.artifact_type != 'ipa'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: e-patient-${{ matrix.gateway }}-simulator-app-${{ github.run_id }}
           path: build/ios/artifacts/*.app.zip
@@ -122,7 +122,7 @@ jobs:
             -exportPath build/ios/ipa
       - name: Upload signed IPA
         if: inputs.artifact_type != 'app'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: e-patient-${{ matrix.gateway }}-signed-ipa-${{ github.run_id }}
           path: build/ios/ipa/*.ipa
