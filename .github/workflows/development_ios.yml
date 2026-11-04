@@ -37,7 +37,7 @@ concurrency:
 jobs:
   ios:
     name: iOS (${{ matrix.gateway }}, ${{ inputs.artifact_type }})
-    runs-on: macos-15
+    runs-on: macos-26
     environment: development
     timeout-minutes: 60
     strategy:
