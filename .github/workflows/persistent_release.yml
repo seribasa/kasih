@@ -36,7 +36,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '26'
       - name: Test release helpers
         run: node --test .github/scripts/release-assets.test.mjs
       - name: Validate source builds and unused tag
