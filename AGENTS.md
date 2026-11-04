@@ -57,7 +57,7 @@ Jangan menimpa `.env` pengguna. Script `.github/scripts/write-app-env.mjs` menul
 
 ## UI dan identitas produk
 
-- Nama produk user-facing: **Kasih**; nama package Dart tetap `e_patient` untuk kompatibilitas.
+- Nama produk user-facing: **Kasih**; nama package Dart adalah `kasih` untuk kompatibilitas.
 - Theme utama: Material 3, hitam-putih/grayscale, **border radius 0** untuk komponen UI. Status tidak boleh disampaikan hanya melalui warna.
 - Dukung font scaling, label screen reader, feedback loading/error, dan konteks pasien yang jelas pada alur sensitif.
 - Gunakan `assets/images/e_patient_logo.png` dan `assets/images/e_patient_care.png` sesuai pemakaiannya. Jangan mengembalikan bayi/imunisasi sebagai representasi default semua pasien.
