@@ -41,7 +41,7 @@ jobs:
         run: node --test .github/scripts/release-assets.test.mjs
       - name: Validate source builds and unused tag
         id: source
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           RELEASE_TAG: ${{ inputs.tag }}
           ANDROID_RUN_ID: ${{ inputs.android_run_id }}
