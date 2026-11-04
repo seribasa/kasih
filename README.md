@@ -28,8 +28,8 @@ Kasih adalah aplikasi Flutter untuk pengelolaan perjalanan kesehatan pasien dan 
 ## Setup lokal
 
 ```sh
-git clone https://github.com/seribasa/e-patient.git
-cd e-patient
+git clone https://github.com/seribasa/kasih.git
+cd kasih
 fvm install
 ```
 
