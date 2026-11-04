@@ -18,7 +18,7 @@ test('generates manual export without automatic upload', () => {
   assert.doesNotMatch(output, /test-device/);
 });
 test('rejects invalid Apple identifiers and teams', () => {
-  assert.throws(() => profileSettings(fixture(), { ...options, bundle: 'digital.seribasa.kasih' }), /bundle identifier/);
+  assert.throws(() => profileSettings(fixture(), { ...options, bundle: 'com.example.e_patient' }), /bundle identifier/);
   assert.throws(() => profileSettings(fixture(), { ...options, team: 'bad\nteam' }), /team identifier/);
 });
 test('rejects expired, missing-expiration and mismatched profiles', () => {
