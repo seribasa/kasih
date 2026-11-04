@@ -81,8 +81,10 @@ export function runSigning(action, env = process.env) {
   const extract = (key, format = 'json', optional = false) => {
     try {
       if (format === 'raw') {
+        log(`Command: plutil -extract ${key} raw -o - -`);
         return execFileSync('plutil', ['-extract', key, 'raw', '-o', '-', '-'], { input: plist, stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
       }
+      log(`Command: plutil -extract ${key} binary1 -o - - | plutil -convert json -o - -`);
       const binary = execFileSync('plutil', ['-extract', key, 'binary1', '-o', '-', '-'], { input: plist, stdio: ['pipe', 'pipe', 'pipe'] });
       const json = execFileSync('plutil', ['-convert', 'json', '-o', '-', '-'], { input: binary, stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
       return JSON.parse(json);
