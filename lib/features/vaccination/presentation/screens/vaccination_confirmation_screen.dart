@@ -1,12 +1,12 @@
 import 'dart:developer';
 
-import 'package:e_patient/core/extension.dart';
-import 'package:e_patient/core/utils/constant.dart';
-import 'package:e_patient/core/widgets/button_custom.dart';
-import 'package:e_patient/core/widgets/error.dart';
-import 'package:e_patient/features/payment/data/models/order_model.dart';
-import 'package:e_patient/injection.dart';
-import 'package:e_patient/routers/route_paths/root_route_paths.dart';
+import 'package:kasih/core/extension.dart';
+import 'package:kasih/core/utils/constant.dart';
+import 'package:kasih/core/widgets/button_custom.dart';
+import 'package:kasih/core/widgets/error.dart';
+import 'package:kasih/features/payment/data/models/order_model.dart';
+import 'package:kasih/injection.dart';
+import 'package:kasih/routers/route_paths/root_route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart' as stripe;

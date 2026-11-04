@@ -1,6 +1,6 @@
-import 'package:e_patient/features/calendar/logic/bloc/calendar_bloc/calendar_bloc.dart';
-import 'package:e_patient/features/calendar/presentation/screens/update_event_calendar_screen.dart';
-import 'package:e_patient/routers/route_paths/calendar_route_paths.dart';
+import 'package:kasih/features/calendar/logic/bloc/calendar_bloc/calendar_bloc.dart';
+import 'package:kasih/features/calendar/presentation/screens/update_event_calendar_screen.dart';
+import 'package:kasih/routers/route_paths/calendar_route_paths.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 

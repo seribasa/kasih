@@ -133,7 +133,7 @@ export function configureSigning({
       relation: ["delegate_permission/common.handle_all_urls"],
       target: {
         namespace: "android_app",
-        package_name: `com.peltops.kasih${buildType === "debug" ? ".debug" : ""}`,
+        package_name: `digital.seribasa.kasih${buildType === "debug" ? ".debug" : ""}`,
         sha256_cert_fingerprints: [certificate.fingerprint256],
       },
     },

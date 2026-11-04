@@ -1,6 +1,6 @@
-import 'package:e_patient/core/models/base_response_model.dart';
-import 'package:e_patient/features/payment/data/models/payment_initiate_request_model.dart';
-import 'package:e_patient/features/payment/data/models/payment_initiate_response_model.dart';
+import 'package:kasih/core/models/base_response_model.dart';
+import 'package:kasih/features/payment/data/models/payment_initiate_request_model.dart';
+import 'package:kasih/features/payment/data/models/payment_initiate_response_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';

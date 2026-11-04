@@ -2,7 +2,7 @@ import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:test/test.dart';
-import 'package:e_patient/features/authentication/data/repositories/auth_repository.dart';
+import 'package:kasih/features/authentication/data/repositories/auth_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 import 'package:flutter_test/flutter_test.dart' as flutter_test;
 import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';

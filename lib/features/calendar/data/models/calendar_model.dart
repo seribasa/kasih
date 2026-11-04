@@ -1,7 +1,7 @@
 import 'dart:collection';
 
-import 'package:e_patient/core/extension.dart';
-import 'package:e_patient/features/calendar/data/models/hive_calendar_activity_model.dart';
+import 'package:kasih/core/extension.dart';
+import 'package:kasih/features/calendar/data/models/hive_calendar_activity_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:table_calendar/table_calendar.dart';
 

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:e_patient/core/utils/bloc_observer.dart';
-import 'package:e_patient/services/notifications.dart';
+import 'package:kasih/core/utils/bloc_observer.dart';
+import 'package:kasih/services/notifications.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';

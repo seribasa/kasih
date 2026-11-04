@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:e_patient/features/authentication/data/repositories/auth_repository.dart';
-import 'package:e_patient/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:e_patient/features/splash/data/repositories/splash_repository.dart';
-import 'package:e_patient/features/authentication/data/models/user_profile.dart';
+import 'package:kasih/features/authentication/data/repositories/auth_repository.dart';
+import 'package:kasih/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
+import 'package:kasih/features/splash/data/repositories/splash_repository.dart';
+import 'package:kasih/features/authentication/data/models/user_profile.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';

@@ -1,5 +1,5 @@
-import 'package:e_patient/features/profile/data/models/child_model.dart';
-import 'package:e_patient/features/profile/data/repositories/child_repository.dart';
+import 'package:kasih/features/profile/data/models/child_model.dart';
+import 'package:kasih/features/profile/data/repositories/child_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/annotations.dart';

@@ -1,8 +1,8 @@
-import 'package:e_patient/features/authentication/data/models/user_profile.dart';
-import 'package:e_patient/features/health_worker/data/models/health_worker_model.dart';
-import 'package:e_patient/features/profile/data/models/child_model.dart';
+import 'package:kasih/features/authentication/data/models/user_profile.dart';
+import 'package:kasih/features/health_worker/data/models/health_worker_model.dart';
+import 'package:kasih/features/profile/data/models/child_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:e_patient/features/vaccination/data/models/appointment_model.dart';
+import 'package:kasih/features/vaccination/data/models/appointment_model.dart';
 
 void main() {
   group('AppointmentModel', () {

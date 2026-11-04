@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:e_patient/features/profile/data/models/child_model.dart';
+import 'package:kasih/features/profile/data/models/child_model.dart';
 
 void main() {
   group('ChildModel', () {

@@ -1,4 +1,4 @@
-import 'package:e_patient/features/healthy_book/data/models/checkup_model.dart';
+import 'package:kasih/features/healthy_book/data/models/checkup_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

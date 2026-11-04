@@ -2,10 +2,10 @@
 
 ## Konfigurasi yang dipakai
 
-- Package development: `com.peltops.kasih.debug`.
+- Package development: `digital.seribasa.kasih.debug`.
 - Keystore development menggunakan key yang sudah ada pada baseline e-Imunisasi; tidak membuat signing identity baru.
 - Public SHA-256: `24:1B:E5:AE:94:DE:90:63:87:48:63:36:CC:C2:B4:49:5E:4C:0D:C9:42:AF:A1:64:75:D1:1F:BA:45:87:D2:8B`.
-- Package release: `com.peltops.kasih`, dengan key release lama yang terpisah. SHA-256: `D4:76:0F:61:B3:8A:33:CD:F9:85:06:D7:47:9B:4D:E4:90:C9:68:BF:46:B5:F7:C9:8B:9F:AB:13:6E:9C:58:C1`.
+- Package release: `digital.seribasa.kasih`, dengan key release lama yang terpisah. SHA-256: `D4:76:0F:61:B3:8A:33:CD:F9:85:06:D7:47:9B:4D:E4:90:C9:68:BF:46:B5:F7:C9:8B:9F:AB:13:6E:9C:58:C1`.
 - Callback native default: `https://kasih-app.peltops.com/`. Root dipilih karena sudah dilayani auth router; bukan route baru `/auth/callback`.
 - Gateway/API staging: `https://kasih-base-staging.peltops.com/`. Nilai ini dipakai melalui `SUPABASE_URL` dan/atau `PAYMENT_URL`, bukan sebagai callback OAuth aplikasi.
 - Flutter handler default dinonaktifkan pada Android agar Supabase/app_links menangani callback. MainActivity tetap exported untuk launcher/App Link, dengan launch mode singleTop; plugin menangani link saat cold start maupun warm intent. Tidak ada pemrosesan nested Intent baru.
@@ -51,7 +51,7 @@ Konfigurasi release memakai `storeFile=keystore/release.jks`, `keyAlias`, `keyPa
 
 `https://kasih-app.peltops.com/.well-known/assetlinks.json`
 
-**Jangan mengganti seluruh file dengan entry tunggal ini bila aplikasi e-Imunisasi masih perlu didukung.** Statement untuk package e-Imunisasi release/debug dapat tetap ada. Fingerprint yang sama tidak membuat package baru terdaftar otomatis; `com.peltops.kasih.debug` tetap memerlukan statement sendiri.
+**Jangan mengganti seluruh file dengan entry tunggal ini bila aplikasi e-Imunisasi masih perlu didukung.** Statement untuk package e-Imunisasi release/debug dapat tetap ada. Fingerprint yang sama tidak membuat package baru terdaftar otomatis; `digital.seribasa.kasih.debug` tetap memerlukan statement sendiri.
 
 Server harus menyajikan HTTPS valid, status 200, Content-Type application/json, dan tanpa redirect. Artifact publik dari build development juga menyediakan statement sesuai key aktual runner; cocokkan fingerprint sebelum publish.
 
@@ -85,11 +85,11 @@ Jangan memasukkan authorization code atau token asli ke command, log, screenshot
 Setelah domain dan allowlist selesai, build/install APK development yang memakai key tetap, lalu periksa perangkat:
 
 ```sh
-adb shell pm verify-app-links --re-verify com.peltops.kasih.debug
-adb shell pm get-app-links com.peltops.kasih.debug
+adb shell pm verify-app-links --re-verify digital.seribasa.kasih.debug
+adb shell pm get-app-links digital.seribasa.kasih.debug
 ```
 
-Ulangi pemeriksaan dengan package `com.peltops.kasih` untuk release. Saat keduanya terinstall dan sama-sama terverifikasi pada host yang sama, periksa aplikasi mana yang menerima callback.
+Ulangi pemeriksaan dengan package `digital.seribasa.kasih` untuk release. Saat keduanya terinstall dan sama-sama terverifikasi pada host yang sama, periksa aplikasi mana yang menerima callback.
 
 Tunggu proses verifikasi OS selesai; domain yang dipakai harus berstatus verified. Tes link tanpa memaksa package agar benar-benar menguji resolusi Android:
 

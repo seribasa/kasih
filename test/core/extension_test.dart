@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:e_patient/core/extension.dart';
+import 'package:kasih/core/extension.dart';
 
 void main() {
   group('StringExtension', () {

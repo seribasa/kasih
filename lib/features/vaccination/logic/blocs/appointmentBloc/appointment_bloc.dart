@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:e_patient/features/vaccination/data/models/appointment_model.dart';
-import 'package:e_patient/features/vaccination/data/models/appointment_payment_entity.dart';
-import 'package:e_patient/features/vaccination/data/repositories/appointment_repository.dart';
+import 'package:kasih/features/vaccination/data/models/appointment_model.dart';
+import 'package:kasih/features/vaccination/data/models/appointment_payment_entity.dart';
+import 'package:kasih/features/vaccination/data/repositories/appointment_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:injectable/injectable.dart';

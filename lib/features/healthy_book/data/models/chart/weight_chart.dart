@@ -1,6 +1,6 @@
-import 'package:e_patient/features/healthy_book/data/models/chart/weight_chart_data_boy.dart';
-import 'package:e_patient/features/healthy_book/data/models/chart/weight_chart_data_girl.dart.dart';
-import 'package:e_patient/features/healthy_book/data/models/checkup_model.dart';
+import 'package:kasih/features/healthy_book/data/models/chart/weight_chart_data_boy.dart';
+import 'package:kasih/features/healthy_book/data/models/chart/weight_chart_data_girl.dart.dart';
+import 'package:kasih/features/healthy_book/data/models/checkup_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:e_patient/features/health_worker/data/models/clinic_model.dart';
+import 'package:kasih/features/health_worker/data/models/clinic_model.dart';
 
 void main() {
   group('ClinicModel', () {

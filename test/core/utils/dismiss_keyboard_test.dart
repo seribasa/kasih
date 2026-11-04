@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:e_patient/core/utils/dismiss_keyboard.dart';
+import 'package:kasih/core/utils/dismiss_keyboard.dart';
 
 void main() {
   group('dismissKeyboard', () {

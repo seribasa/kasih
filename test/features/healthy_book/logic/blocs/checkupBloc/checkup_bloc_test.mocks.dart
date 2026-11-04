@@ -5,9 +5,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
 
-import 'package:e_patient/features/healthy_book/data/models/checkup_model.dart'
+import 'package:kasih/features/healthy_book/data/models/checkup_model.dart'
     as _i5;
-import 'package:e_patient/features/healthy_book/data/repositories/checkup_repository.dart'
+import 'package:kasih/features/healthy_book/data/repositories/checkup_repository.dart'
     as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i2;

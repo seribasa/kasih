@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:e_patient/features/healthy_book/data/models/checkup_model.dart';
+import 'package:kasih/features/healthy_book/data/models/checkup_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:injectable/injectable.dart';

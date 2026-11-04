@@ -6,7 +6,7 @@
 import 'dart:async' as _i5;
 import 'dart:typed_data' as _i8;
 
-import 'package:e_patient/features/calendar/data/models/hive_calendar_activity_model.dart'
+import 'package:kasih/features/calendar/data/models/hive_calendar_activity_model.dart'
     as _i10;
 import 'package:gotrue/gotrue.dart' as _i3;
 import 'package:hive/hive.dart' as _i2;

@@ -6,13 +6,13 @@
 import 'dart:async' as _i6;
 import 'dart:ui' as _i9;
 
-import 'package:e_patient/features/calendar/data/models/calendar_model.dart'
+import 'package:kasih/features/calendar/data/models/calendar_model.dart'
     as _i4;
-import 'package:e_patient/features/calendar/data/models/hive_calendar_activity_model.dart'
+import 'package:kasih/features/calendar/data/models/hive_calendar_activity_model.dart'
     as _i7;
-import 'package:e_patient/features/calendar/data/repositories/calendar_repository.dart'
+import 'package:kasih/features/calendar/data/repositories/calendar_repository.dart'
     as _i5;
-import 'package:e_patient/services/notifications.dart' as _i8;
+import 'package:kasih/services/notifications.dart' as _i8;
 import 'package:hive/hive.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i2;

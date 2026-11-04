@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:e_patient/features/authentication/data/models/country_code.dart';
-import 'package:e_patient/features/authentication/data/models/otp.dart';
-import 'package:e_patient/features/authentication/data/models/phone.dart';
-import 'package:e_patient/features/authentication/logic/cubit/login_phone_cubit/login_phone_cubit.dart';
+import 'package:kasih/features/authentication/data/models/country_code.dart';
+import 'package:kasih/features/authentication/data/models/otp.dart';
+import 'package:kasih/features/authentication/data/models/phone.dart';
+import 'package:kasih/features/authentication/logic/cubit/login_phone_cubit/login_phone_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
 

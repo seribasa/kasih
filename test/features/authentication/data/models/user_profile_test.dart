@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:e_patient/features/authentication/data/models/user_profile.dart';
+import 'package:kasih/features/authentication/data/models/user_profile.dart';
 
 void main() {
   group('UserProfile', () {

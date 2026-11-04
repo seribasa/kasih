@@ -1,4 +1,4 @@
-name: e_patient
+name: kasih
 description: Aplikasi Kasih untuk manajemen kesehatan pasien dan keluarga.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev

@@ -1,4 +1,4 @@
-import 'package:e_patient/core/models/base_response_model.dart';
+import 'package:kasih/core/models/base_response_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

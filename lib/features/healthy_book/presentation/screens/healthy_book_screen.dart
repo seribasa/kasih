@@ -1,5 +1,5 @@
-import 'package:e_patient/core/utils/constant.dart';
-import 'package:e_patient/routers/route_paths/healthy_book_route_paths.dart';
+import 'package:kasih/core/utils/constant.dart';
+import 'package:kasih/routers/route_paths/healthy_book_route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';

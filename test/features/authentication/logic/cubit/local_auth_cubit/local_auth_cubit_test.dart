@@ -1,11 +1,11 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:e_patient/features/authentication/data/models/passcode.dart';
+import 'package:kasih/features/authentication/data/models/passcode.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
-import 'package:e_patient/features/authentication/logic/cubit/local_auth_cubit/local_auth_cubit.dart';
+import 'package:kasih/features/authentication/logic/cubit/local_auth_cubit/local_auth_cubit.dart';
 
 @GenerateMocks([SharedPreferences])
 import 'local_auth_cubit_test.mocks.dart';

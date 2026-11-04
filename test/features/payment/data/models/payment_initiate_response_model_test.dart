@@ -1,4 +1,4 @@
-import 'package:e_patient/features/payment/data/models/payment_initiate_response_model.dart';
+import 'package:kasih/features/payment/data/models/payment_initiate_response_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

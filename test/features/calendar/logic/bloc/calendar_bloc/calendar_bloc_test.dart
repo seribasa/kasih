@@ -1,10 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:e_patient/core/extension.dart';
-import 'package:e_patient/features/calendar/data/models/calendar_model.dart';
-import 'package:e_patient/features/calendar/data/repositories/calendar_repository.dart';
-import 'package:e_patient/features/calendar/logic/bloc/calendar_bloc/calendar_bloc.dart';
-import 'package:e_patient/services/notifications.dart';
-import 'package:e_patient/core/utils/string_extension.dart';
+import 'package:kasih/core/extension.dart';
+import 'package:kasih/features/calendar/data/models/calendar_model.dart';
+import 'package:kasih/features/calendar/data/repositories/calendar_repository.dart';
+import 'package:kasih/features/calendar/logic/bloc/calendar_bloc/calendar_bloc.dart';
+import 'package:kasih/services/notifications.dart';
+import 'package:kasih/core/utils/string_extension.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';

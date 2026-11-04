@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:e_patient/core/utils/constant.dart';
-import 'package:e_patient/core/widgets/button_custom.dart';
-import 'package:e_patient/core/widgets/snackbar_custom.dart';
-import 'package:e_patient/routers/route_paths/route_paths.dart';
+import 'package:kasih/core/utils/constant.dart';
+import 'package:kasih/core/widgets/button_custom.dart';
+import 'package:kasih/core/widgets/snackbar_custom.dart';
+import 'package:kasih/routers/route_paths/route_paths.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../logic/bloc/authentication_bloc/authentication_bloc.dart';

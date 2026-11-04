@@ -6,8 +6,8 @@
 import 'dart:async' as _i5;
 import 'dart:io' as _i6;
 
-import 'package:e_patient/features/profile/data/models/child_model.dart' as _i3;
-import 'package:e_patient/features/profile/data/repositories/child_repository.dart'
+import 'package:kasih/features/profile/data/models/child_model.dart' as _i3;
+import 'package:kasih/features/profile/data/repositories/child_repository.dart'
     as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i7;

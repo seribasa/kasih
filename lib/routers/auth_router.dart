@@ -1,10 +1,10 @@
-import 'package:e_patient/features/authentication/presentation/screens/auth/login_email_screen.dart';
-import 'package:e_patient/features/authentication/presentation/screens/auth/login_phone_screen.dart';
-import 'package:e_patient/features/authentication/presentation/screens/auth/otp_screen.dart';
-import 'package:e_patient/features/authentication/presentation/screens/auth/register_phone_screen.dart';
-import 'package:e_patient/features/authentication/presentation/screens/auth/register_screen.dart';
-import 'package:e_patient/features/authentication/presentation/screens/auth/reset_email_password.dart';
-import 'package:e_patient/routers/route_paths/auth_route_paths.dart';
+import 'package:kasih/features/authentication/presentation/screens/auth/login_email_screen.dart';
+import 'package:kasih/features/authentication/presentation/screens/auth/login_phone_screen.dart';
+import 'package:kasih/features/authentication/presentation/screens/auth/otp_screen.dart';
+import 'package:kasih/features/authentication/presentation/screens/auth/register_phone_screen.dart';
+import 'package:kasih/features/authentication/presentation/screens/auth/register_screen.dart';
+import 'package:kasih/features/authentication/presentation/screens/auth/reset_email_password.dart';
+import 'package:kasih/routers/route_paths/auth_route_paths.dart';
 import 'package:go_router/go_router.dart';
 
 class AuthRouter {

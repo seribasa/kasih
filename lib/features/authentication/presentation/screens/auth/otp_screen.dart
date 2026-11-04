@@ -1,5 +1,5 @@
-import 'package:e_patient/features/authentication/logic/cubit/login_phone_cubit/login_phone_cubit.dart';
-import 'package:e_patient/injection.dart';
+import 'package:kasih/features/authentication/logic/cubit/login_phone_cubit/login_phone_cubit.dart';
+import 'package:kasih/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';

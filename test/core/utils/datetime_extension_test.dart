@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:e_patient/core/utils/datetime_extension.dart';
+import 'package:kasih/core/utils/datetime_extension.dart';
 
 void main() {
   group('DateTimeExtension', () {

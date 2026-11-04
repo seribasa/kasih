@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:e_patient/core/models/pagination_model.dart';
-import 'package:e_patient/features/health_worker/data/models/clinic_model.dart';
+import 'package:kasih/core/models/pagination_model.dart';
+import 'package:kasih/features/health_worker/data/models/clinic_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:injectable/injectable.dart';

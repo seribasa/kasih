@@ -1,16 +1,16 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:e_patient/features/authentication/data/models/country_code.dart';
-import 'package:e_patient/features/authentication/data/models/email.dart';
-import 'package:e_patient/features/authentication/data/models/password.dart';
-import 'package:e_patient/features/authentication/data/models/phone.dart';
-import 'package:e_patient/features/authentication/data/repositories/auth_repository.dart';
-import 'package:e_patient/features/authentication/data/models/user_profile.dart';
+import 'package:kasih/features/authentication/data/models/country_code.dart';
+import 'package:kasih/features/authentication/data/models/email.dart';
+import 'package:kasih/features/authentication/data/models/password.dart';
+import 'package:kasih/features/authentication/data/models/phone.dart';
+import 'package:kasih/features/authentication/data/repositories/auth_repository.dart';
+import 'package:kasih/features/authentication/data/models/user_profile.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:test/test.dart';
-import 'package:e_patient/features/authentication/logic/cubit/signup_cubit/signup_cubit.dart';
+import 'package:kasih/features/authentication/logic/cubit/signup_cubit/signup_cubit.dart';
 
 @GenerateMocks([AuthRepository])
 @GenerateNiceMocks([

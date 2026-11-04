@@ -1,4 +1,4 @@
-import 'package:e_patient/injection.dart';
+import 'package:kasih/injection.dart';
 
 import '../../../logic/cubit/login_phone_cubit/login_phone_cubit.dart';
 import '../../widgets/login_phone_form.dart';

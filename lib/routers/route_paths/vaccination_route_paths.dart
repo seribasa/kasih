@@ -1,5 +1,5 @@
-import 'package:e_patient/routers/models/route_model.dart';
-import 'package:e_patient/routers/route_paths/root_route_paths.dart';
+import 'package:kasih/routers/models/route_model.dart';
+import 'package:kasih/routers/route_paths/root_route_paths.dart';
 
 class VaccinationRoutePaths {
   static const RouteModel chooseChildVaccination = RouteModel(

@@ -1,5 +1,5 @@
-import 'package:e_patient/features/profile/data/models/child_model.dart';
-import 'package:e_patient/routers/route_paths/profile_route_paths.dart';
+import 'package:kasih/features/profile/data/models/child_model.dart';
+import 'package:kasih/routers/route_paths/profile_route_paths.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 

@@ -1,4 +1,4 @@
-import 'package:e_patient/routers/models/route_model.dart';
+import 'package:kasih/routers/models/route_model.dart';
 
 class RootRoutePaths {
   static const RouteModel root = RouteModel(path: '/');

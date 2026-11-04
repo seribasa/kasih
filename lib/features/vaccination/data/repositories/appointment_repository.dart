@@ -1,6 +1,6 @@
-import 'package:e_patient/features/payment/data/models/order_model.dart';
-import 'package:e_patient/features/vaccination/data/models/appointment_model.dart';
-import 'package:e_patient/features/vaccination/data/models/appointment_payment_entity.dart';
+import 'package:kasih/features/payment/data/models/order_model.dart';
+import 'package:kasih/features/vaccination/data/models/appointment_model.dart';
+import 'package:kasih/features/vaccination/data/models/appointment_payment_entity.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

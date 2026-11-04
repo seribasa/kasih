@@ -1,6 +1,6 @@
-import 'package:e_patient/core/extension.dart';
-import 'package:e_patient/core/widgets/top_app_bar.dart';
-import 'package:e_patient/core/widgets/snackbar_custom.dart';
+import 'package:kasih/core/extension.dart';
+import 'package:kasih/core/widgets/top_app_bar.dart';
+import 'package:kasih/core/widgets/snackbar_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';

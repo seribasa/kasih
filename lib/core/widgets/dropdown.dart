@@ -1,6 +1,6 @@
-import 'package:e_patient/core/pair.dart';
-import 'package:e_patient/core/widgets/spacer.dart';
-import 'package:e_patient/core/widgets/text.dart';
+import 'package:kasih/core/pair.dart';
+import 'package:kasih/core/widgets/spacer.dart';
+import 'package:kasih/core/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 

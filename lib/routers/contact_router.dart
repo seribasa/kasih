@@ -1,4 +1,4 @@
-import 'package:e_patient/routers/route_paths/contact_route_paths.dart';
+import 'package:kasih/routers/route_paths/contact_route_paths.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/contact/presentation/clinic/clinic_list_screen.dart';

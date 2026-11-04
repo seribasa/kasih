@@ -1,5 +1,5 @@
-import 'package:e_patient/routers/route_paths/profile_route_paths.dart';
-import 'package:e_patient/routers/route_paths/root_route_paths.dart';
+import 'package:kasih/routers/route_paths/profile_route_paths.dart';
+import 'package:kasih/routers/route_paths/root_route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

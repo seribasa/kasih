@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:e_patient/core/models/pagination_model.dart';
+import 'package:kasih/core/models/pagination_model.dart';
 
 void main() {
   group('BasePagination', () {
