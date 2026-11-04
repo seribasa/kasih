@@ -78,11 +78,14 @@ export function runSigning(action, env = process.env) {
   decode('IOS_PROVISION_PROFILE_BASE64', provision);
   log('Decoding and validating the provisioning profile.');
   const plist = security(['cms', '-D', '-i', provision], 'profile decoding');
-  // Whole profiles contain Date/Data objects that plutil cannot convert to JSON.
   const extract = (key, format = 'json', optional = false) => {
     try {
-      const value = execFileSync('plutil', ['-extract', key, format, '-o', '-', '-'], { input: plist, stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
-      return format === 'json' ? JSON.parse(value) : value;
+      if (format === 'raw') {
+        return execFileSync('plutil', ['-extract', key, 'raw', '-o', '-', '-'], { input: plist, stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
+      }
+      const binary = execFileSync('plutil', ['-extract', key, 'binary1', '-o', '-', '-'], { input: plist, stdio: ['pipe', 'pipe', 'pipe'] });
+      const json = execFileSync('plutil', ['-convert', 'json', '-o', '-', '-'], { input: binary, stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
+      return JSON.parse(json);
     } catch {
       if (!optional) throw new Error(`Could not read required provisioning profile field: ${key}`);
     }
