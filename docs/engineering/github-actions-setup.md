@@ -63,7 +63,7 @@ File `.env` masuk ke APK sebagai aset Flutter. GitHub Secrets menghindari penyim
 
 PR fork tidak memperoleh secrets; CI tetap bekerja dengan placeholder. Workflow tidak menggunakan pull_request_target. Atur proteksi environment/branch development sesuai proses tim.
 
-Pilihan gateway belum berupa Android product flavors: dua gateway pada build type yang sama memakai application ID yang sama dan tidak dapat diinstall berdampingan. Debug (`com.peltops.kasih.debug`) dan release (`com.peltops.kasih`) memiliki ID berbeda. Fingerprint setiap tipe tetap antarrun selama key tidak diganti. Update dari APK lama yang memakai key lain tetap perlu penanganan transisi.
+Pilihan gateway belum berupa Android product flavors: dua gateway pada build type yang sama memakai application ID yang sama dan tidak dapat diinstall berdampingan. Debug (`digital.seribasa.kasih.debug`) dan release (`digital.seribasa.kasih`) memiliki ID berbeda. Fingerprint setiap tipe tetap antarrun selama key tidak diganti. Update dari APK lama yang memakai key lain tetap perlu penanganan transisi.
 
 ## Play Store nanti
 

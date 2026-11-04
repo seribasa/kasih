@@ -80,7 +80,7 @@ test("same key produces stable fingerprint and public App Link association", () 
       );
       assert.equal(
         association[0].target.package_name,
-        "com.peltops.kasih.debug",
+        "digital.seribasa.kasih.debug",
       );
       assert.deepEqual(association[0].target.sha256_cert_fingerprints, [
         fingerprints.at(-1),
@@ -155,7 +155,7 @@ test("release uses release credentials and package without the debug suffix", ()
     const association = JSON.parse(
       readFileSync(join(root, "build/app-links/assetlinks-release.json")),
     );
-    assert.equal(association[0].target.package_name, "com.peltops.kasih");
+    assert.equal(association[0].target.package_name, "digital.seribasa.kasih");
   });
 });
 
