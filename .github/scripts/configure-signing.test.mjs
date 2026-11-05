@@ -9,6 +9,7 @@ import {
   mkdirSync,
   statSync,
 } from "node:fs";
+  writeFileSync,
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { configureSigning } from "./configure-signing.mjs";
@@ -16,7 +17,7 @@ import { configureSigning } from "./configure-signing.mjs";
 let fixture;
 let secrets;
 before(() => {
-  fixture = mkdtempSync(join(tmpdir(), "e-patient-signing-fixture-"));
+  fixture = mkdtempSync(join(tmpdir(), "kasih-signing-fixture-"));
   const keystore = join(fixture, "test.jks");
   const env = {
     ...process.env,
@@ -60,8 +61,10 @@ after(() => {
 });
 
 function withProject(action) {
-  const root = mkdtempSync(join(tmpdir(), "e-patient-signing-test-"));
-  mkdirSync(join(root, "android"));
+  const root = mkdtempSync(join(tmpdir(), "kasih-signing-test-"));
+  mkdirSync(join(root, "android", "app"), { recursive: true });
+  writeFileSync(join(root, "android", "app", "build.gradle"),
+    'android {
   try {
     action(root);
   } finally {

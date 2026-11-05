@@ -128,12 +128,17 @@ export function configureSigning({
     { flag: existsSync(properties) ? "w" : "wx", mode: 0o600 },
   );
   chmodSync(properties, 0o600);
+  const buildGradlePath = join(root, "android", "app", "build.gradle");
+  const buildGradleContent = readFileSync(buildGradlePath, "utf8");
+  const appIdMatch = buildGradleContent.match(/applicationId\s+"([^"]+)"/);
+  if (!appIdMatch) throw new Error("Cannot determine applicationId from android/app/build.gradle");
+  const applicationId = appIdMatch[1];
   const assetlinks = [
     {
       relation: ["delegate_permission/common.handle_all_urls"],
       target: {
         namespace: "android_app",
-        package_name: `digital.seribasa.kasih${buildType === "debug" ? ".debug" : ""}`,
+        package_name: `${applicationId}${buildType === "debug" ? ".debug" : ""}`,
         sha256_cert_fingerprints: [certificate.fingerprint256],
       },
     },

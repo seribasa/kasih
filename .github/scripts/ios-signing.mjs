@@ -36,7 +36,7 @@ export function profileSettings(profile, { team, bundle, method }, now = new Dat
 
 export function runSigning(action, env = process.env) {
   if (env.GITHUB_ACTIONS !== 'true' || !env.RUNNER_TEMP || !env.GITHUB_ENV) throw new Error('Signing helper is restricted to GitHub-hosted CI');
-  const directory = join(env.RUNNER_TEMP, 'e-patient-ios-signing');
+  const directory = join(env.RUNNER_TEMP, 'kasih-ios-signing');
   const keychain = join(directory, 'build.keychain-db');
   const profileRecord = join(directory, 'profile-path');
   const log = message => console.info(`[ios-signing] ${message}`);
