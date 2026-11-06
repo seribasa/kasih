@@ -16,7 +16,7 @@ class Phone extends FormzInput<String, PhoneValidationError> {
   /// {@macro phone}
   const Phone.dirty([String value = '']) : super.dirty(value);
 
-  static final RegExp _phoneRegExp = RegExp(r'^[1-9]{1,3}[0-9]{10,13}$');
+  static final RegExp _phoneRegExp = RegExp(r'^[1-9][0-9]{7,13}$');
 
   @override
   PhoneValidationError? validator(String? value) {

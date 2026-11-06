@@ -164,6 +164,7 @@ class _LoginButton extends StatelessWidget {
               state.phone.isValid && state.countryCode.isValid
                   ? () {
                     dismissKeyboard(context);
+                    context.read<LoginPhoneCubit>().sendOtp();
                   }
                   : null,
         );

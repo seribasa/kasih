@@ -68,7 +68,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i979.HiveInterface>(() => appModule.hiveInterface);
     gh.factory<_i454.SupabaseClient>(() => appModule.supabaseClient);
-    gh.factory<_i53.LoginPhoneCubit>(() => _i53.LoginPhoneCubit());
     gh.singleton<_i403.NotificationService>(() => _i403.NotificationService());
     gh.factory<_i30.ClinicRepository>(
       () => _i30.ClinicRepository(gh<_i454.SupabaseClient>()),
@@ -140,6 +139,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i64.SignUpCubit>(
       () => _i64.SignUpCubit(gh<_i594.AuthRepository>()),
+    );
+    gh.factory<_i53.LoginPhoneCubit>(
+      () => _i53.LoginPhoneCubit(gh<_i594.AuthRepository>()),
     );
     gh.factory<_i246.CalendarBloc>(
       () => _i246.CalendarBloc(

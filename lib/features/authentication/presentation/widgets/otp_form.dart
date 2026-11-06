@@ -56,10 +56,10 @@ class _OTPFormState extends State<OTPForm> {
   @override
   Widget build(BuildContext context) {
     void reloadCodeSent(String phone) {
-      // context.read<LoginPhoneCubit>().sendOTPCode();
+      context.read<LoginPhoneCubit>().resendOtp();
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text('Code sent to $phone')));
+        ..showSnackBar(SnackBar(content: Text('Kode OTP dikirim ulang ke $phone')));
     }
 
     return BlocListener<LoginPhoneCubit, LoginPhoneState>(
@@ -175,9 +175,10 @@ class _LoginButton extends StatelessWidget {
           ),
           onPressed: () {
             if (state.otpCode.isValid) {
-              // context.read<LoginPhoneCubit>().logInWithOTP();
-            } else
+              context.read<LoginPhoneCubit>().verifyOtp();
+            } else {
               snackbarCustom(AppConstant.OTP_NOT_VALID).show(context);
+            }
           },
         );
       },

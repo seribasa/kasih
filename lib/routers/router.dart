@@ -2,7 +2,7 @@ import 'package:e_patient/core/loading.dart';
 import 'package:e_patient/core/widgets/error.dart';
 import 'package:e_patient/core/widgets/snackbar_custom.dart';
 import 'package:e_patient/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:e_patient/features/authentication/presentation/screens/auth/login_seribase_oauth_screen.dart';
+import 'package:e_patient/features/authentication/presentation/screens/auth/login_screen.dart';
 import 'package:e_patient/features/authentication/presentation/screens/local_auth/passcode_screen.dart';
 import 'package:e_patient/features/authentication/presentation/screens/splash/splash_screen.dart';
 import 'package:e_patient/features/bottom_navbar/presentation/screens/bottom_navbar.dart';
@@ -59,11 +59,11 @@ final router = GoRouter(
               return const PasscodeScreen();
             } else if (state is Unauthenticated) {
               if (state.isSeenOnboarding) {
-                return const LoginSeribaseOauthScreen();
+                return const LoginScreen();
               }
               return OnboardScreen();
             } else if (state is AuthenticationError) {
-              return const LoginSeribaseOauthScreen();
+              return const LoginScreen();
             }
             return Container();
           },

@@ -1,5 +1,6 @@
 import 'package:e_patient/features/authentication/presentation/screens/auth/login_email_screen.dart';
 import 'package:e_patient/features/authentication/presentation/screens/auth/login_phone_screen.dart';
+import 'package:e_patient/features/authentication/presentation/screens/auth/login_screen.dart';
 import 'package:e_patient/features/authentication/presentation/screens/auth/otp_screen.dart';
 import 'package:e_patient/features/authentication/presentation/screens/auth/register_phone_screen.dart';
 import 'package:e_patient/features/authentication/presentation/screens/auth/register_screen.dart';
@@ -12,6 +13,10 @@ class AuthRouter {
     GoRoute(
       path: AuthRoutePaths.login.path,
       builder: (_, __) => const LoginEmailScreen(),
+    ),
+    GoRoute(
+      path: AuthRoutePaths.loginWithSeribaseOauth.path,
+      builder: (_, __) => const LoginScreen(),
     ),
     GoRoute(
       path: AuthRoutePaths.loginPhone.path,
