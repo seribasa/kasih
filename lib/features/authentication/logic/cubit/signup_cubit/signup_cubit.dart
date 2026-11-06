@@ -27,6 +27,10 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(password: password));
   }
 
+  void showHidePassword() {
+    emit(state.copyWith(isShowPassword: !state.isShowPassword));
+  }
+
   void countryCodeChanged(String value) {
     final countryCode = CountryCode.dirty(value);
     emit(state.copyWith(countryCode: countryCode));
@@ -35,10 +39,6 @@ class SignUpCubit extends Cubit<SignUpState> {
   void phoneChanged(String value) {
     final phone = Phone.dirty(value);
     emit(state.copyWith(phone: phone));
-  }
-
-  void showHidePassword() {
-    emit(state.copyWith(isShowPassword: !state.isShowPassword));
   }
 
   Future<void> signUpFormSubmitted() async {

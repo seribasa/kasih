@@ -36,6 +36,30 @@ class AuthRepository {
     return supabaseClient.auth.resetPasswordForEmail(email);
   }
 
+  Future<void> signInWithPhone({required String phone}) async {
+    await supabaseClient.auth.signInWithOtp(
+      phone: phone,
+    );
+  }
+
+  Future<AuthResponse> verifyPhoneOtp({
+    required String phone,
+    required String token,
+  }) async {
+    return await supabaseClient.auth.verifyOTP(
+      phone: phone,
+      token: token,
+      type: OtpType.sms,
+    );
+  }
+
+  Future<void> resendPhoneOtp({required String phone}) async {
+    await supabaseClient.auth.resend(
+      phone: phone,
+      type: OtpType.sms,
+    );
+  }
+
   Future<AuthResponse> signUpWithEmailAndPassword({
     required String email,
     required String password,

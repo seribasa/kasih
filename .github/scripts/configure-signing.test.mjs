@@ -8,8 +8,8 @@ import {
   existsSync,
   mkdirSync,
   statSync,
-} from "node:fs";
   writeFileSync,
+} from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { configureSigning } from "./configure-signing.mjs";
@@ -63,8 +63,10 @@ after(() => {
 function withProject(action) {
   const root = mkdtempSync(join(tmpdir(), "kasih-signing-test-"));
   mkdirSync(join(root, "android", "app"), { recursive: true });
-  writeFileSync(join(root, "android", "app", "build.gradle"),
-    'android {
+  writeFileSync(
+    join(root, "android", "app", "build.gradle"),
+    'android { defaultConfig { applicationId "digital.seribasa.kasih" } }',
+  );
   try {
     action(root);
   } finally {

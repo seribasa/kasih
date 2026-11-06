@@ -17,11 +17,6 @@ class AuthRoutePaths {
     parent: RootRoutePaths.auth,
   );
 
-  static const RouteModel registerPhone = RouteModel(
-    path: 'register-phone',
-    parent: RootRoutePaths.auth,
-  );
-
   static const RouteModel otp = RouteModel(
     path: 'otp',
     parent: RootRoutePaths.auth,

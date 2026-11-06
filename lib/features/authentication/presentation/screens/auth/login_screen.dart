@@ -1,6 +1,7 @@
 import '../../../../../core/widgets/button_custom.dart';
 import '../../../../../core/widgets/snackbar_custom.dart';
 import '../../../../../injection.dart';
+import '../../../../../routers/route_paths/auth_route_paths.dart';
 import '../../../logic/bloc/authentication_bloc/authentication_bloc.dart';
 import '../../../logic/cubit/login_cubit/login_cubit.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,8 @@ import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginSeribaseOauthScreen extends StatelessWidget {
-  const LoginSeribaseOauthScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +37,14 @@ class LoginSeribaseOauthScreen extends StatelessWidget {
             },
           ),
         ],
-        child: const _LoginSeribaseOauthScaffold(),
+        child: const _LoginScaffold(),
       ),
     );
   }
 }
 
-class _LoginSeribaseOauthScaffold extends StatelessWidget {
-  const _LoginSeribaseOauthScaffold();
+class _LoginScaffold extends StatelessWidget {
+  const _LoginScaffold();
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +81,18 @@ class _LoginSeribaseOauthScaffold extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: const _LoginButton(),
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                _LoginButton(),
+                SizedBox(height: 12.0),
+                _LoginPhoneButton(),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -110,3 +120,26 @@ class _LoginButton extends StatelessWidget {
     );
   }
 }
+
+class _LoginPhoneButton extends StatelessWidget {
+  const _LoginPhoneButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginCubit, LoginState>(
+      builder:
+          (context, state) => ButtonCustom(
+            onPressed:
+                state.status.isInProgress
+                    ? null
+                    : () => context.push(AuthRoutePaths.loginPhone.fullPath),
+            child: const Text(
+              'Masuk dengan No Handphone',
+              style: TextStyle(fontSize: 15.0, color: Colors.white),
+            ),
+          ),
+    );
+  }
+}
+
+typedef LoginSeribaseOauthScreen = LoginScreen;
