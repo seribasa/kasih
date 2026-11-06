@@ -1,12 +1,12 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:e_patient/features/authentication/data/models/email.dart';
-import 'package:e_patient/features/authentication/data/models/password.dart';
-import 'package:e_patient/features/authentication/data/repositories/auth_repository.dart';
+import 'package:kasih/features/authentication/data/models/email.dart';
+import 'package:kasih/features/authentication/data/models/password.dart';
+import 'package:kasih/features/authentication/data/repositories/auth_repository.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-import 'package:e_patient/features/authentication/logic/cubit/login_cubit/login_cubit.dart';
+import 'package:kasih/features/authentication/logic/cubit/login_cubit/login_cubit.dart';
 
 @GenerateMocks([AuthRepository])
 import 'login_cubit_test.mocks.dart';

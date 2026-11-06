@@ -1,6 +1,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:e_patient/injection.dart';
-import 'package:e_patient/routers/router.dart';
+import 'package:kasih/injection.dart';
+import 'package:kasih/routers/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

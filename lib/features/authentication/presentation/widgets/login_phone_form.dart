@@ -1,9 +1,9 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:e_patient/core/utils/constant.dart';
-import 'package:e_patient/features/authentication/presentation/screens/auth/otp_screen.dart';
-import 'package:e_patient/core/widgets/snackbar_custom.dart';
-import 'package:e_patient/routers/route_paths/auth_route_paths.dart';
-import 'package:e_patient/core/utils/string_extension.dart';
+import 'package:kasih/core/utils/constant.dart';
+import 'package:kasih/features/authentication/presentation/screens/auth/otp_screen.dart';
+import 'package:kasih/core/widgets/snackbar_custom.dart';
+import 'package:kasih/routers/route_paths/auth_route_paths.dart';
+import 'package:kasih/core/utils/string_extension.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/widgets/button_custom.dart';
 import '../../../../core/widgets/text_form_custom.dart';
@@ -58,10 +58,7 @@ class LoginPhoneForm extends StatelessWidget {
               Text(
                 'Masukkan nomor handphone untuk menerima kode verifikasi (OTP)',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                ),
+                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
               ),
               const SizedBox(height: 24),
               _PhoneInput(),
@@ -147,26 +144,6 @@ class _LoginButton extends StatelessWidget {
                     context.read<LoginPhoneCubit>().sendOtp();
                   }
                   : null,
-        );
-      },
-    );
-  }
-}
-
-class _LoginWithEmailButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<LoginPhoneCubit, LoginPhoneState>(
-      builder: (context, state) {
-        return ButtonCustom(
-          child: Text(
-            AppConstant.LOGIN_WITH_EMAIL,
-            style: TextStyle(fontSize: 15.0, color: Colors.white),
-          ),
-          onPressed:
-              state.status.isInProgress
-                  ? null
-                  : () => context.push(AuthRoutePaths.login.fullPath),
         );
       },
     );

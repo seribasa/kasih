@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:e_patient/features/healthy_book/data/models/checkup_model.dart';
-import 'package:e_patient/features/healthy_book/data/repositories/checkup_repository.dart';
-import 'package:e_patient/features/healthy_book/logic/blocs/checkupBloc/checkup_bloc.dart';
+import 'package:kasih/features/healthy_book/data/models/checkup_model.dart';
+import 'package:kasih/features/healthy_book/data/repositories/checkup_repository.dart';
+import 'package:kasih/features/healthy_book/logic/blocs/checkupBloc/checkup_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';

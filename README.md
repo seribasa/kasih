@@ -28,8 +28,8 @@ Kasih adalah aplikasi Flutter untuk pengelolaan perjalanan kesehatan pasien dan 
 ## Setup lokal
 
 ```sh
-git clone https://github.com/seribasa/e-patient.git
-cd e-patient
+git clone https://github.com/seribasa/kasih.git
+cd kasih
 fvm install
 ```
 
@@ -88,7 +88,7 @@ fvm flutter test --coverage --reporter expanded
 fvm flutter build apk --debug
 ```
 
-APK berada di `build/app/outputs/flutter-apk/app-debug.apk`; coverage di `coverage/lcov.info`. Android memakai application ID `com.peltops.kasih`, dengan suffix `.debug` untuk build debug. Untuk release, lengkapi konfigurasi key release yang terpisah lalu jalankan `fvm flutter build apk --release`; hasilnya `app-release.apk`. Build release bukan deployment otomatis ke Play Store.
+APK berada di `build/app/outputs/flutter-apk/app-debug.apk`; coverage di `coverage/lcov.info`. Android memakai application ID `digital.seribasa.kasih`, dengan suffix `.debug` untuk build debug. Untuk release, lengkapi konfigurasi key release yang terpisah lalu jalankan `fvm flutter build apk --release`; hasilnya `app-release.apk`. Build release bukan deployment otomatis ke Play Store.
 
 Untuk kompilasi iOS lokal (minimum iOS 15.0):
 
@@ -108,7 +108,7 @@ xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner \
   BUILD_DIR="$PWD/build/ios" build
 ```
 
-Verifikasi lokal 16 Oktober 2026: release device tanpa signing dan debug simulator ARM64 berhasil dikompilasi dengan Xcode 27. Simulator Intel/multi-arsitektur belum lolos jalur generik di atas. Compiler masih menampilkan warning dari plugin lama. Bundle identifier iOS saat ini `com.peltops.kasih` mengandung underscore dan perlu disepakati ulang menjadi identifier Apple yang valid sebelum menyiapkan signing/App Store; identitas Android/backend tidak diubah oleh penyesuaian build ini.
+Verifikasi lokal 16 Oktober 2026: release device tanpa signing dan debug simulator ARM64 berhasil dikompilasi dengan Xcode 27. Simulator Intel/multi-arsitektur belum lolos jalur generik di atas. Compiler masih menampilkan warning dari plugin lama. Bundle identifier iOS saat ini `digital.seribasa.kasih` mengandung underscore dan perlu disepakati ulang menjadi identifier Apple yang valid sebelum menyiapkan signing/App Store; identitas Android/backend tidak diubah oleh penyesuaian build ini.
 
 Pembaruan dependency native dibatasi ke versi yang kompatibel dengan Flutter 3.29.3: `shared_preferences` 2.5.3, `url_launcher` 6.3.2, `flutter_local_notifications` 17.2.4, `image_picker` 1.2.1, `permission_handler` 11.4.0, dan `webview_flutter` 4.13.0. Versi implementasi platform dikunci di `pubspec.lock` dan `ios/Podfile.lock`. API Dart yang dipakai aplikasi tetap kompatibel; upgrade mayor Stripe, notification, atau Flutter SDK tidak termasuk pembaruan ini. Masalah simulator multi-arsitektur adalah [issue tooling Flutter/Xcode](https://github.com/flutter/flutter/issues/188461), bukan sesuatu yang diselesaikan oleh upgrade plugin aplikasi.
 

@@ -1,7 +1,7 @@
-import 'package:e_patient/features/authentication/logic/cubit/local_auth_cubit/local_auth_cubit.dart';
-import 'package:e_patient/features/authentication/presentation/screens/local_auth/confirm_passcode_screen.dart';
-import 'package:e_patient/features/authentication/presentation/screens/local_auth/passcode_screen.dart';
-import 'package:e_patient/routers/route_paths/auth_route_paths.dart';
+import 'package:kasih/features/authentication/logic/cubit/local_auth_cubit/local_auth_cubit.dart';
+import 'package:kasih/features/authentication/presentation/screens/local_auth/confirm_passcode_screen.dart';
+import 'package:kasih/features/authentication/presentation/screens/local_auth/passcode_screen.dart';
+import 'package:kasih/routers/route_paths/auth_route_paths.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 

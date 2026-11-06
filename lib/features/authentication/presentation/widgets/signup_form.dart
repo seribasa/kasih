@@ -1,5 +1,5 @@
-import 'package:e_patient/core/utils/constant.dart';
-import 'package:e_patient/core/widgets/snackbar_custom.dart';
+import 'package:kasih/core/utils/constant.dart';
+import 'package:kasih/core/widgets/snackbar_custom.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/widgets/button_custom.dart';

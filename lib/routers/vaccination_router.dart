@@ -1,4 +1,4 @@
-import 'package:e_patient/routers/route_paths/vaccination_route_paths.dart';
+import 'package:kasih/routers/route_paths/vaccination_route_paths.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/health_worker/presentation/screens/choose_nakes_screen.dart';

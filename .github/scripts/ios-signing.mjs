@@ -36,13 +36,21 @@ export function profileSettings(profile, { team, bundle, method }, now = new Dat
 
 export function runSigning(action, env = process.env) {
   if (env.GITHUB_ACTIONS !== 'true' || !env.RUNNER_TEMP || !env.GITHUB_ENV) throw new Error('Signing helper is restricted to GitHub-hosted CI');
-  const directory = join(env.RUNNER_TEMP, 'e-patient-ios-signing');
+  const directory = join(env.RUNNER_TEMP, 'kasih-ios-signing');
   const keychain = join(directory, 'build.keychain-db');
   const profileRecord = join(directory, 'profile-path');
-  const security = args => execFileSync('security', args, { stdio: ['ignore', 'pipe', 'pipe'] });
+  const log = message => console.info(`[ios-signing] ${message}`);
+  const security = (args, operation) => {
+    try {
+      return execFileSync('security', args, { stdio: ['ignore', 'pipe', 'pipe'] });
+    } catch {
+      throw new Error(`Apple signing operation failed: ${operation}`);
+    }
+  };
   if (action === 'cleanup') {
     if (!existsSync(directory)) return;
-    if (existsSync(keychain)) security(['delete-keychain', keychain]);
+    log('Removing temporary signing material.');
+    if (existsSync(keychain)) security(['delete-keychain', keychain], 'keychain cleanup');
     if (existsSync(profileRecord)) {
       const path = readFileSync(profileRecord, 'utf8');
       const profiles = join(env.HOME, 'Library/MobileDevice/Provisioning Profiles');
@@ -50,9 +58,11 @@ export function runSigning(action, env = process.env) {
       rmSync(path, { force: true });
     }
     rmSync(directory, { recursive: true });
+    log('Temporary signing material removed.');
     return;
   }
   if (action !== 'install') throw new Error('Use install or cleanup');
+  log('Checking required signing configuration.');
   for (const name of ['IOS_CERTIFICATE_BASE64', 'IOS_CERTIFICATE_PASSWORD', 'IOS_PROVISION_PROFILE_BASE64', 'IOS_TEAM_ID', 'IOS_BUNDLE_ID']) {
     if (!env[name]) throw new Error(`Missing signing configuration: ${name}`);
   }
@@ -66,13 +76,21 @@ export function runSigning(action, env = process.env) {
   const provision = join(directory, 'profile.mobileprovision');
   decode('IOS_CERTIFICATE_BASE64', certificate);
   decode('IOS_PROVISION_PROFILE_BASE64', provision);
-  const plist = security(['cms', '-D', '-i', provision]);
-  // Whole profiles contain Date/Data objects that plutil cannot convert to JSON.
+  log('Decoding and validating the provisioning profile.');
+  const plist = security(['cms', '-D', '-i', provision], 'profile decoding');
   const extract = (key, format = 'json', optional = false) => {
     try {
-      const value = execFileSync('plutil', ['-extract', key, format, '-o', '-', '-'], { input: plist, stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
-      return format === 'json' ? JSON.parse(value) : value;
-    } catch (error) { if (!optional) throw error; }
+      if (format === 'raw') {
+        log(`Command: plutil -extract ${key} raw -o - -`);
+        return execFileSync('plutil', ['-extract', key, 'raw', '-o', '-', '-'], { input: plist, stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
+      }
+      log(`Command: plutil -extract ${key} binary1 -o - - | plutil -convert json -o - -`);
+      const binary = execFileSync('plutil', ['-extract', key, 'binary1', '-o', '-', '-'], { input: plist, stdio: ['pipe', 'pipe', 'pipe'] });
+      const json = execFileSync('plutil', ['-convert', 'json', '-o', '-', '-'], { input: binary, stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
+      return JSON.parse(json);
+    } catch {
+      if (!optional) throw new Error(`Could not read required provisioning profile field: ${key}`);
+    }
   };
   const profile = {
     UUID: extract('UUID', 'raw'),
@@ -83,30 +101,33 @@ export function runSigning(action, env = process.env) {
     ProvisionsAllDevices: extract('ProvisionsAllDevices', 'json', true),
   };
   const options = profileSettings(profile, { team: env.IOS_TEAM_ID, bundle: env.IOS_BUNDLE_ID, method: env.IOS_EXPORT_METHOD });
+  log('Provisioning profile matches the configured signing requirements.');
   writeFileSync(join(directory, 'ExportOptions.plist'), options, { mode: 0o600 });
   const profiles = join(env.HOME, 'Library/MobileDevice/Provisioning Profiles');
   mkdirSync(profiles, { recursive: true });
   const installed = join(profiles, `${profile.UUID}.mobileprovision`);
   writeFileSync(installed, readFileSync(provision), { mode: 0o600, flag: 'wx' });
   writeFileSync(profileRecord, installed, { mode: 0o600 });
+  log('Importing the signing certificate into a temporary keychain.');
   const password = randomBytes(24).toString('hex');
-  security(['create-keychain', '-p', password, keychain]);
-  security(['set-keychain-settings', '-lut', '21600', keychain]);
-  security(['unlock-keychain', '-p', password, keychain]);
-  security(['import', certificate, '-P', env.IOS_CERTIFICATE_PASSWORD, '-k', keychain, '-T', '/usr/bin/codesign', '-T', '/usr/bin/security']);
-  security(['set-key-partition-list', '-S', 'apple-tool:,apple:,codesign:', '-k', password, keychain]);
-  security(['list-keychains', '-d', 'user', '-s', keychain]);
-  const identities = security(['find-identity', '-v', '-p', 'codesigning', keychain]).toString();
+  security(['create-keychain', '-p', password, keychain], 'temporary keychain creation');
+  security(['set-keychain-settings', '-lut', '21600', keychain], 'temporary keychain configuration');
+  security(['unlock-keychain', '-p', password, keychain], 'temporary keychain unlock');
+  security(['import', certificate, '-P', env.IOS_CERTIFICATE_PASSWORD, '-k', keychain, '-T', '/usr/bin/codesign', '-T', '/usr/bin/security'], 'certificate import');
+  security(['set-key-partition-list', '-S', 'apple-tool:,apple:,codesign:', '-k', password, keychain], 'keychain access configuration');
+  security(['list-keychains', '-d', 'user', '-s', keychain], 'keychain selection');
+  const identities = security(['find-identity', '-v', '-p', 'codesigning', keychain], 'signing identity validation').toString();
   const hashes = [...identities.matchAll(/\b([A-F0-9]{40})\b/g)].map(match => match[1]);
   if (hashes.length !== 1) throw new Error('Certificate must contain exactly one valid code signing identity');
   appendFileSync(env.GITHUB_ENV, `IOS_SIGNING_IDENTITY=${hashes[0]}\nIOS_PROFILE_UUID=${profile.UUID}\nIOS_TEAM_ID=${env.IOS_TEAM_ID}\nIOS_BUNDLE_ID=${env.IOS_BUNDLE_ID}\n`);
+  log('iOS signing setup completed successfully.');
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try { runSigning(process.argv[2]); }
   catch (error) {
     // Never print child-process output: security may include credential arguments.
-    console.error(error.status !== undefined ? 'Apple signing command failed; check certificate/profile configuration.' : error.message);
+    console.error(error.message);
     process.exitCode = 1;
   }
 }

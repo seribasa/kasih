@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:e_patient/core/utils/list_constant.dart';
-import 'package:e_patient/features/authentication/data/models/user_profile.dart';
-import 'package:e_patient/features/authentication/data/repositories/auth_repository.dart';
-import 'package:e_patient/features/profile/logic/blocs/parentBloc/profile_bloc.dart';
+import 'package:kasih/core/utils/list_constant.dart';
+import 'package:kasih/features/authentication/data/models/user_profile.dart';
+import 'package:kasih/features/authentication/data/repositories/auth_repository.dart';
+import 'package:kasih/features/profile/logic/blocs/parentBloc/profile_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

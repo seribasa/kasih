@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:e_patient/core/extension.dart';
+import 'package:kasih/core/extension.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePictureFromUrl extends StatelessWidget {

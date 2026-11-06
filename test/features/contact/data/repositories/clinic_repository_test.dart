@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:e_patient/features/contact/data/repositories/clinic_repository.dart';
-import 'package:e_patient/features/health_worker/data/models/clinic_model.dart';
-import 'package:e_patient/core/models/pagination_model.dart';
+import 'package:kasih/features/contact/data/repositories/clinic_repository.dart';
+import 'package:kasih/features/health_worker/data/models/clinic_model.dart';
+import 'package:kasih/core/models/pagination_model.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

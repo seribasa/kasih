@@ -1,4 +1,4 @@
-import 'package:e_patient/injection.dart';
+import 'package:kasih/injection.dart';
 
 import '../../../logic/cubit/reset_password_cubit/reset_password_cubit.dart';
 import '../../widgets/reset_email_password_form.dart';

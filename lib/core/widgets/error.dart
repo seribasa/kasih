@@ -1,6 +1,6 @@
-import 'package:e_patient/core/utils/constant.dart';
-import 'package:e_patient/core/widgets/spacer.dart';
-import 'package:e_patient/core/widgets/text.dart';
+import 'package:kasih/core/utils/constant.dart';
+import 'package:kasih/core/widgets/spacer.dart';
+import 'package:kasih/core/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 class ErrorContainer extends StatelessWidget {

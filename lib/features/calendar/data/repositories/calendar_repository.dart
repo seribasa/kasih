@@ -1,5 +1,5 @@
-import 'package:e_patient/features/calendar/data/models/calendar_model.dart';
-import 'package:e_patient/features/calendar/data/models/hive_calendar_activity_model.dart';
+import 'package:kasih/features/calendar/data/models/calendar_model.dart';
+import 'package:kasih/features/calendar/data/models/hive_calendar_activity_model.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

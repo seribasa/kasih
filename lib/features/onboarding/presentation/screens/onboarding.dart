@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'package:e_patient/core/utils/constant.dart';
-import 'package:e_patient/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:e_patient/injection.dart';
-import 'package:e_patient/features/onboarding/data/models/onboarding.dart';
+import 'package:kasih/core/utils/constant.dart';
+import 'package:kasih/features/authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
+import 'package:kasih/injection.dart';
+import 'package:kasih/features/onboarding/data/models/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';

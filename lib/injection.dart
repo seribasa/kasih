@@ -1,4 +1,4 @@
-import 'package:e_patient/injection.config.dart';
+import 'package:kasih/injection.config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 

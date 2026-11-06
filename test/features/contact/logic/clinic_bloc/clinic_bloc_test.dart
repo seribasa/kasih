@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:e_patient/features/contact/logic/clinic_bloc/clinic_bloc.dart';
-import 'package:e_patient/features/contact/data/repositories/clinic_repository.dart';
-import 'package:e_patient/core/models/pagination_model.dart';
-import 'package:e_patient/features/health_worker/data/models/clinic_model.dart';
+import 'package:kasih/features/contact/logic/clinic_bloc/clinic_bloc.dart';
+import 'package:kasih/features/contact/data/repositories/clinic_repository.dart';
+import 'package:kasih/core/models/pagination_model.dart';
+import 'package:kasih/features/health_worker/data/models/clinic_model.dart';
 import 'package:formz/formz.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';

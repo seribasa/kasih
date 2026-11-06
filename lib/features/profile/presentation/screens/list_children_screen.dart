@@ -1,7 +1,7 @@
-import 'package:e_patient/core/extension.dart';
-import 'package:e_patient/core/widgets/error.dart';
-import 'package:e_patient/features/profile/presentation/screens/child_profile_screen.dart';
-import 'package:e_patient/routers/route_paths/profile_route_paths.dart';
+import 'package:kasih/core/extension.dart';
+import 'package:kasih/core/widgets/error.dart';
+import 'package:kasih/features/profile/presentation/screens/child_profile_screen.dart';
+import 'package:kasih/routers/route_paths/profile_route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';

@@ -3,7 +3,7 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.peltops.kasih.debug",
+      "package_name": "digital.seribasa.kasih.debug",
       "sha256_cert_fingerprints": [
         "24:1B:E5:AE:94:DE:90:63:87:48:63:36:CC:C2:B4:49:5E:4C:0D:C9:42:AF:A1:64:75:D1:1F:BA:45:87:D2:8B"
       ]

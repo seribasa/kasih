@@ -34,7 +34,7 @@ Tambahan untuk IPA:
 
 Sediakan tepat satu identity valid pada `.p12`, belum kedaluwarsa, serta profile belum kedaluwarsa. Helper memvalidasi team, UUID, explicit application identifier, masa berlaku profile, dan kecocokan jenis export. Xcode memvalidasi kecocokan certificate/profile dan entitlement saat archive/export. Wildcard profile, enterprise profile, app extension/multiple-profile archive belum didukung. Jika metode export berubah, profile dan certificate environment mungkin perlu diganti agar sesuai.
 
-Source iOS lama masih menggunakan `com.peltops.kasih` (underscore tidak valid untuk Apple signing). Workflow IPA mengoverride identifier **hanya saat archive** memakai `IOS_BUNDLE_ID` yang Anda tentukan; tidak menetapkan identitas Apple baru atau mengubah application ID Android/backend. Pastikan layanan OAuth/entitlement menggunakan identifier Apple yang benar sebelum uji perangkat.
+Source iOS lama masih menggunakan `digital.seribasa.kasih` (underscore tidak valid untuk Apple signing). Workflow IPA mengoverride identifier **hanya saat archive** memakai `IOS_BUNDLE_ID` yang Anda tentukan; tidak menetapkan identitas Apple baru atau mengubah application ID Android/backend. Pastikan layanan OAuth/entitlement menggunakan identifier Apple yang benar sebelum uji perangkat.
 
 Jangan commit `.p12`, private key, profile, password, atau base64 credential. Buat base64 lokal lalu masukkan langsung ke GitHub Secrets; jangan tempel nilainya ke chat/log. Keychain sementara dan profile hasil install dibersihkan dengan langkah `always()`, termasuk ketika archive gagal. Helper dibatasi untuk konteks GitHub Actions dan tidak boleh dipakai untuk mengubah keychain workstation lokal.
 

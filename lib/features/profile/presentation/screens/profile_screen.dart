@@ -1,10 +1,10 @@
-import 'package:e_patient/core/utils/assets_constant.dart';
-import 'package:e_patient/core/utils/constant.dart';
-import 'package:e_patient/core/utils/themes/padding_constant.dart';
-import 'package:e_patient/core/widgets/spacer.dart';
-import 'package:e_patient/core/widgets/text.dart';
-import 'package:e_patient/core/widgets/top_app_bar.dart';
-import 'package:e_patient/routers/route_paths/root_route_paths.dart';
+import 'package:kasih/core/utils/assets_constant.dart';
+import 'package:kasih/core/utils/constant.dart';
+import 'package:kasih/core/utils/themes/padding_constant.dart';
+import 'package:kasih/core/widgets/spacer.dart';
+import 'package:kasih/core/widgets/text.dart';
+import 'package:kasih/core/widgets/top_app_bar.dart';
+import 'package:kasih/routers/route_paths/root_route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';

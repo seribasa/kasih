@@ -1,6 +1,6 @@
-import 'package:e_patient/features/health_worker/data/models/health_worker_model.dart';
-import 'package:e_patient/features/profile/data/models/child_model.dart';
-import 'package:e_patient/features/authentication/data/models/user_profile.dart';
+import 'package:kasih/features/health_worker/data/models/health_worker_model.dart';
+import 'package:kasih/features/profile/data/models/child_model.dart';
+import 'package:kasih/features/authentication/data/models/user_profile.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../core/extension.dart';

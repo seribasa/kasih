@@ -1,5 +1,5 @@
-import 'package:e_patient/features/profile/data/models/child_model.dart';
-import 'package:e_patient/routers/route_paths/healthy_book_route_paths.dart';
+import 'package:kasih/features/profile/data/models/child_model.dart';
+import 'package:kasih/routers/route_paths/healthy_book_route_paths.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/healthy_book/presentation/screens/patient_medical_history_screen.dart';

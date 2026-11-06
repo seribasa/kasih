@@ -2,9 +2,9 @@ import 'dart:collection';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:e_patient/features/calendar/data/models/calendar_model.dart';
-import 'package:e_patient/core/utils/datetime_extension.dart';
-import 'package:e_patient/core/utils/string_extension.dart';
+import 'package:kasih/features/calendar/data/models/calendar_model.dart';
+import 'package:kasih/core/utils/datetime_extension.dart';
+import 'package:kasih/core/utils/string_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:injectable/injectable.dart';

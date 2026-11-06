@@ -1,10 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:e_patient/core/models/base_response_model.dart';
-import 'package:e_patient/features/payment/data/models/order_model.dart';
-import 'package:e_patient/features/payment/data/models/payment_initiate_request_model.dart';
-import 'package:e_patient/features/payment/data/models/payment_initiate_response_model.dart';
-import 'package:e_patient/features/payment/data/repositories/payment_repository.dart';
-import 'package:e_patient/features/payment/logic/blocs/payment_bloc/payment_bloc.dart';
+import 'package:kasih/core/models/base_response_model.dart';
+import 'package:kasih/features/payment/data/models/order_model.dart';
+import 'package:kasih/features/payment/data/models/payment_initiate_request_model.dart';
+import 'package:kasih/features/payment/data/models/payment_initiate_response_model.dart';
+import 'package:kasih/features/payment/data/repositories/payment_repository.dart';
+import 'package:kasih/features/payment/logic/blocs/payment_bloc/payment_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

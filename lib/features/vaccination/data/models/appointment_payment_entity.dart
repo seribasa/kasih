@@ -1,5 +1,5 @@
-import 'package:e_patient/features/payment/data/models/order_model.dart';
-import 'package:e_patient/features/vaccination/data/models/appointment_model.dart';
+import 'package:kasih/features/payment/data/models/order_model.dart';
+import 'package:kasih/features/vaccination/data/models/appointment_model.dart';
 import 'package:equatable/equatable.dart';
 
 class AppointmentOrderEntity extends Equatable {

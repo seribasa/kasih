@@ -1,4 +1,4 @@
-import 'package:e_patient/core/utils/oauth_redirect.dart';
+import 'package:kasih/core/utils/oauth_redirect.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

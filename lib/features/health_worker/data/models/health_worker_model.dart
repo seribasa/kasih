@@ -1,5 +1,5 @@
-import 'package:e_patient/core/extension.dart';
-import 'package:e_patient/features/health_worker/data/models/clinic_model.dart';
+import 'package:kasih/core/extension.dart';
+import 'package:kasih/features/health_worker/data/models/clinic_model.dart';
 import 'package:equatable/equatable.dart';
 
 class HealthWorkerModel extends Equatable {

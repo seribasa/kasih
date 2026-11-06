@@ -1,7 +1,7 @@
 import 'dart:collection';
 
-import 'package:e_patient/features/calendar/data/models/calendar_model.dart';
-import 'package:e_patient/features/calendar/data/models/hive_calendar_activity_model.dart';
+import 'package:kasih/features/calendar/data/models/calendar_model.dart';
+import 'package:kasih/features/calendar/data/models/hive_calendar_activity_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
