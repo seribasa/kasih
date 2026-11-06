@@ -44,10 +44,10 @@ class LoginPhoneForm extends StatelessWidget {
                 width: 80,
                 semanticLabel: 'Logo Kasih',
               ),
-              SizedBox(height: 30.0),
-              Text(
-                AppConstant.PLEASE_LOGIN,
-                textAlign: TextAlign.start,
+              const SizedBox(height: 30.0),
+              const Text(
+                'Masuk atau Daftar',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
@@ -55,38 +55,18 @@ class LoginPhoneForm extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    AppConstant.NEW_USER_QUESTION,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
-                  InkWell(
-                    child: Text(
-                      ' Buat akun',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                    onTap: () {
-                      context.push(AuthRoutePaths.registerPhone.fullPath);
-                    },
-                  ),
-                ],
+              Text(
+                'Masukkan nomor handphone untuk menerima kode verifikasi (OTP)',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               _PhoneInput(),
               const SizedBox(height: 16),
               _LoginButton(),
-              const SizedBox(height: 16),
-              _LoginWithEmailButton(),
             ],
           ),
         ),
@@ -155,8 +135,8 @@ class _LoginButton extends StatelessWidget {
     return BlocBuilder<LoginPhoneCubit, LoginPhoneState>(
       builder: (context, state) {
         return ButtonCustom(
-          child: Text(
-            AppConstant.LOGIN,
+          child: const Text(
+            'Kirim Kode OTP',
             style: TextStyle(fontSize: 15.0, color: Colors.white),
           ),
           loading: state.status.isInProgress,

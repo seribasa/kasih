@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../data/models/country_code.dart';
 import '../../../data/models/email.dart';
 import '../../../data/models/otp.dart';
@@ -28,6 +27,10 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(password: password));
   }
 
+  void showHidePassword() {
+    emit(state.copyWith(isShowPassword: !state.isShowPassword));
+  }
+
   void countryCodeChanged(String value) {
     final countryCode = CountryCode.dirty(value);
     emit(state.copyWith(countryCode: countryCode));
@@ -36,48 +39,6 @@ class SignUpCubit extends Cubit<SignUpState> {
   void phoneChanged(String value) {
     final phone = Phone.dirty(value);
     emit(state.copyWith(phone: phone));
-  }
-
-  void showHidePassword() {
-    emit(state.copyWith(isShowPassword: !state.isShowPassword));
-  }
-
-  String get _formattedPhoneNumber {
-    final phoneVal = state.phone.value.trim();
-    final cleanPhone =
-        phoneVal.startsWith('0') ? phoneVal.substring(1) : phoneVal;
-    final country =
-        state.countryCode.value.isEmpty ? '+62' : state.countryCode.value;
-    return '$country$cleanPhone';
-  }
-
-  Future<void> sendOTPCode() async {
-    if (state.phone.isNotValid) {
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.failure,
-        errorMessage: 'Nomor telepon tidak valid',
-      ));
-      return;
-    }
-    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
-    try {
-      final phone = _formattedPhoneNumber;
-      await _authRepository.signInWithPhone(phone: phone);
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.initial,
-        verId: phone,
-      ));
-    } on AuthException catch (e) {
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.failure,
-        errorMessage: e.message,
-      ));
-    } catch (e) {
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.failure,
-        errorMessage: e.toString(),
-      ));
-    }
   }
 
   Future<void> signUpFormSubmitted() async {

@@ -2,7 +2,6 @@ import 'package:e_patient/features/authentication/presentation/screens/auth/logi
 import 'package:e_patient/features/authentication/presentation/screens/auth/login_phone_screen.dart';
 import 'package:e_patient/features/authentication/presentation/screens/auth/login_screen.dart';
 import 'package:e_patient/features/authentication/presentation/screens/auth/otp_screen.dart';
-import 'package:e_patient/features/authentication/presentation/screens/auth/register_phone_screen.dart';
 import 'package:e_patient/features/authentication/presentation/screens/auth/register_screen.dart';
 import 'package:e_patient/features/authentication/presentation/screens/auth/reset_email_password.dart';
 import 'package:e_patient/routers/route_paths/auth_route_paths.dart';
@@ -25,10 +24,6 @@ class AuthRouter {
     GoRoute(
       path: AuthRoutePaths.register.path,
       builder: (_, __) => const RegisterScreen(),
-    ),
-    GoRoute(
-      path: AuthRoutePaths.registerPhone.path,
-      builder: (_, __) => const RegisterPhoneScreen(),
     ),
     GoRoute(
       path: AuthRoutePaths.otp.path,
