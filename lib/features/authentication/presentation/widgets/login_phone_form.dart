@@ -18,6 +18,10 @@ class LoginPhoneForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginPhoneCubit, LoginPhoneState>(
+      listenWhen:
+          (previous, current) =>
+              previous.status != current.status ||
+              previous.verId != current.verId,
       listener: (context, state) {
         if (state.status.isFailure) {
           snackbarCustom(

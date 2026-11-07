@@ -26,6 +26,7 @@ class LoginPhoneState extends Equatable {
     CountryCode? countryCode,
     String? verId,
     String? errorMessage,
+    bool resetError = false,
   }) {
     return LoginPhoneState(
       phone: phone ?? this.phone,
@@ -33,7 +34,7 @@ class LoginPhoneState extends Equatable {
       status: status ?? this.status,
       countryCode: countryCode ?? this.countryCode,
       verId: verId ?? this.verId,
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage: resetError ? null : (errorMessage ?? this.errorMessage),
     );
   }
 }

@@ -63,6 +63,7 @@ class _OTPFormState extends State<OTPForm> {
     }
 
     return BlocListener<LoginPhoneCubit, LoginPhoneState>(
+      listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
         if (state.status.isFailure) {
           snackbarCustom(
