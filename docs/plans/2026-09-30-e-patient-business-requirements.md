@@ -202,10 +202,12 @@ Produk memakai satu fondasi profil pasien, tetapi home, reminder, dan layanan ya
 
 ## 8. Pemetaan e-Imunisasi ke Kasih
 
+Detail kebutuhan, alur, aturan bisnis, batas MVP/P1, kriteria penerimaan, dan urutan adaptasi tiap kapabilitas tersedia dalam [dokumen pemetaan kapabilitas tersendiri](../product/2026-10-11-e-imunisasi-to-e-patient-capability-mapping.md).
+
 | Kapabilitas e-Imunisasi | Keputusan | Generalisasi untuk Kasih | Prioritas |
 |---|---|---|---|
 | Email/password, phone OTP, OAuth | Pertahankan | Login multi-metode, recovery, device/session management | MVP |
-| PIN lokal 6 digit | Perluas | Biometrik/PIN, step-up auth untuk aksi sensitif | MVP |
+| PIN lokal 6 digit | Perluas | Biometrik/PIN, step-up auth untuk aksi sensitif(pakai HSM) | MVP |
 | Profil orang tua | Perluas | Profil pasien/self, emergency contact, preference | MVP |
 | Multi-anak | Redesain | Household multi-generasi, dependent, invitation, delegation, consent | MVP |
 | Pilih anak saat booking | Pertahankan pola | Pilih “pasien yang dilayani” dari profil berizin | MVP |
