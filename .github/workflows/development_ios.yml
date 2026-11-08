@@ -21,6 +21,16 @@ on:
         description: Stripe currency supported by backend
         type: string
         default: IDR
+      version_name:
+        description: Version name override (leave blank for CalVer YYYY.MM.DD)
+        required: false
+        type: string
+        default: ''
+      build_number:
+        description: Build number override (leave blank for Unix timestamp)
+        required: false
+        type: string
+        default: ''
       export_method:
         description: IPA profile type (must match supplied profile)
         type: choice
@@ -82,10 +92,16 @@ jobs:
           PAYMENT_GATEWAY: ${{ matrix.gateway }}
           PAYMENT_CURRENCY: ${{ matrix.gateway == 'midtrans' && inputs.midtrans_currency || inputs.stripe_currency }}
           AUTH_REDIRECT_URL: ${{ vars.AUTH_REDIRECT_URL || 'https://kasih-app.peltops.com/' }}
+      - name: Configure build version
+        id: version
+        run: node .github/scripts/version-manager.mjs --bump --ci
+        env:
+          CUSTOM_VERSION_NAME: ${{ inputs.version_name }}
+          CUSTOM_BUILD_NUMBER: ${{ inputs.build_number }}
       - name: Build and package simulator APP
         if: inputs.artifact_type != 'ipa'
         run: |
-          flutter build ios --simulator --debug
+          flutter build ios --simulator --debug --build-name="${{ steps.version.outputs.version_name }}" --build-number="${{ steps.version.outputs.build_number }}"
           mkdir -p build/ios/artifacts
           ditto -c -k --sequesterRsrc --keepParent build/ios/iphonesimulator/Runner.app "build/ios/artifacts/e-patient-${GATEWAY}-simulator.app.zip"
         env:
@@ -111,7 +127,7 @@ jobs:
       - name: Archive and export signed IPA
         if: inputs.artifact_type != 'app'
         run: |
-          flutter build ios --release --config-only
+          flutter build ios --release --config-only --build-name="${{ steps.version.outputs.version_name }}" --build-number="${{ steps.version.outputs.build_number }}"
           ruby .github/scripts/configure-ios-project.rb
           xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner \
             -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \

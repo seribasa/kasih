@@ -2,7 +2,7 @@ name: kasih
 description: Aplikasi Kasih untuk manajemen kesehatan pasien dan keluarga.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
-version: 2.1.1+10
+version: 2026.11.08+1794099490
 
 environment:
   sdk: ">=3.7.0 <4.0.0"

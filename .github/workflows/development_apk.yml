@@ -31,6 +31,16 @@ on:
         required: true
         default: IDR
         type: string
+      version_name:
+        description: Version name override (leave blank for CalVer YYYY.MM.DD)
+        required: false
+        type: string
+        default: ''
+      build_number:
+        description: Build number override (leave blank for Unix timestamp)
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -97,8 +107,14 @@ jobs:
           RELEASE_KEY_ALIAS: ${{ matrix.build_type == 'release' && secrets.RELEASE_KEY_ALIAS || '' }}
           RELEASE_KEY_PASSWORD: ${{ matrix.build_type == 'release' && secrets.RELEASE_KEY_PASSWORD || '' }}
           RELEASE_KEYSTORE_PASSWORD: ${{ matrix.build_type == 'release' && secrets.RELEASE_KEYSTORE_PASSWORD || '' }}
+      - name: Configure build version
+        id: version
+        run: node .github/scripts/version-manager.mjs --bump --ci
+        env:
+          CUSTOM_VERSION_NAME: ${{ inputs.version_name }}
+          CUSTOM_BUILD_NUMBER: ${{ inputs.build_number }}
       - name: Build development APK
-        run: flutter build apk "--${BUILD_TYPE}"
+        run: flutter build apk "--${BUILD_TYPE}" --build-name="${{ steps.version.outputs.version_name }}" --build-number="${{ steps.version.outputs.build_number }}"
         env:
           BUILD_TYPE: ${{ matrix.build_type }}
       - name: Name gateway APK

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: New unique release tag (example v2.1.1-dev.1)
+        description: New unique release tag (example v2026.11.08 or v2026.11.08-dev.1)
         required: true
         type: string
       android_run_id:
