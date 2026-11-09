@@ -7,7 +7,6 @@ import '../../../logic/cubit/login_cubit/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
-import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
