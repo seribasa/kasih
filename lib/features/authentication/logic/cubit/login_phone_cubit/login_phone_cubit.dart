@@ -18,29 +18,35 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
 
   void phoneChanged(String value) {
     final phone = Phone.dirty(value);
-    emit(state.copyWith(
-      phone: phone,
-      status: FormzSubmissionStatus.initial,
-      resetError: true,
-    ));
+    emit(
+      state.copyWith(
+        phone: phone,
+        status: FormzSubmissionStatus.initial,
+        resetError: true,
+      ),
+    );
   }
 
   void otpCodeChanged(String value) {
     final otpCode = OTP.dirty(value);
-    emit(state.copyWith(
-      otpCode: otpCode,
-      status: FormzSubmissionStatus.initial,
-      resetError: true,
-    ));
+    emit(
+      state.copyWith(
+        otpCode: otpCode,
+        status: FormzSubmissionStatus.initial,
+        resetError: true,
+      ),
+    );
   }
 
   void countryCodeChanged(String value) {
     final countryCode = CountryCode.dirty(value);
-    emit(state.copyWith(
-      countryCode: countryCode,
-      status: FormzSubmissionStatus.initial,
-      resetError: true,
-    ));
+    emit(
+      state.copyWith(
+        countryCode: countryCode,
+        status: FormzSubmissionStatus.initial,
+        resetError: true,
+      ),
+    );
   }
 
   void verIdChanged(String value) {
@@ -48,7 +54,8 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
   }
 
   String get _formattedPhoneNumber {
-    final phoneVal = state.phone.value.trim();
+    final phoneVal =
+        state.phone.value.replaceAll(RegExp(r'[\s\-\.]'), '').trim();
     final cleanPhone =
         phoneVal.startsWith('0') ? phoneVal.substring(1) : phoneVal;
     final country =
@@ -58,39 +65,44 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
 
   Future<void> sendOtp() async {
     if (state.phone.isNotValid) {
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.failure,
-        errorMessage: 'Nomor telepon tidak valid',
-      ));
+      emit(
+        state.copyWith(
+          status: FormzSubmissionStatus.failure,
+          errorMessage: 'Nomor telepon tidak valid',
+        ),
+      );
       return;
     }
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       final phone = _formattedPhoneNumber;
       await _authRepository.signInWithPhone(phone: phone);
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.initial,
-        verId: phone,
-      ));
+      emit(state.copyWith(status: FormzSubmissionStatus.initial, verId: phone));
     } on AuthException catch (e) {
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.failure,
-        errorMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          status: FormzSubmissionStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.failure,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: FormzSubmissionStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 
   Future<void> verifyOtp() async {
     if (state.otpCode.isNotValid) {
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.failure,
-        errorMessage: 'Kode OTP tidak valid',
-      ));
+      emit(
+        state.copyWith(
+          status: FormzSubmissionStatus.failure,
+          errorMessage: 'Kode OTP tidak valid',
+        ),
+      );
       return;
     }
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
@@ -102,15 +114,19 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
       );
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } on AuthException catch (e) {
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.failure,
-        errorMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          status: FormzSubmissionStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.failure,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: FormzSubmissionStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 
@@ -119,10 +135,12 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
       final phone = _formattedPhoneNumber;
       await _authRepository.resendPhoneOtp(phone: phone);
     } catch (e) {
-      emit(state.copyWith(
-        status: FormzSubmissionStatus.failure,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: FormzSubmissionStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 }
