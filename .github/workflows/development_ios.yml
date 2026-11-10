@@ -134,7 +134,7 @@ jobs:
             -archivePath "$RUNNER_TEMP/e-patient.xcarchive" \
             archive
           xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/e-patient.xcarchive" \
-            -exportOptionsPlist "$RUNNER_TEMP/e-patient-ios-signing/ExportOptions.plist" \
+            -exportOptionsPlist "$RUNNER_TEMP/kasih-ios-signing/ExportOptions.plist" \
             -exportPath build/ios/ipa
       - name: Upload signed IPA
         if: inputs.artifact_type != 'app'

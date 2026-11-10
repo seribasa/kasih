@@ -7,7 +7,7 @@ settings = {
   'CODE_SIGN_STYLE' => 'Manual',
   'CODE_SIGN_IDENTITY' => ENV.fetch('IOS_SIGNING_IDENTITY'),
   'PROVISIONING_PROFILE_SPECIFIER' => ENV.fetch('IOS_PROFILE_UUID'),
-  'OTHER_CODE_SIGN_FLAGS' => "$(inherited) --keychain #{ENV.fetch('RUNNER_TEMP')}/e-patient-ios-signing/build.keychain-db"
+  'OTHER_CODE_SIGN_FLAGS' => "$(inherited) --keychain #{ENV.fetch('RUNNER_TEMP')}/kasih-ios-signing/build.keychain-db"
 }
 project = Xcodeproj::Project.open('ios/Runner.xcodeproj')
 runner = project.targets.find { |target| target.name == 'Runner' }
