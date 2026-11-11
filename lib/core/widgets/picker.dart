@@ -9,17 +9,29 @@ class Picker {
     DateTime? currentTime,
     Locale? locale = const Locale('id', 'ID'),
     bool Function(DateTime)? selectableDayPredicate,
+    DatePickerMode initialDatePickerMode = DatePickerMode.day,
   }) async {
     final currentTimeDefault = DateTime.now();
-    final minTimeDefault = DateTime(currentTimeDefault.year - 5);
+    final minTimeDefault = DateTime(1900);
     final maxTimeDefault = currentTimeDefault;
+    final firstDate = minTime ?? minTimeDefault;
+    final lastDate = maxTime ?? maxTimeDefault;
+
+    DateTime initialDate = currentTime ?? currentTimeDefault;
+    if (initialDate.isBefore(firstDate)) {
+      initialDate = firstDate;
+    } else if (initialDate.isAfter(lastDate)) {
+      initialDate = lastDate;
+    }
+
     return await showDatePicker(
       context: context,
-      initialDate: currentTime ?? currentTimeDefault,
-      firstDate: minTime ?? minTimeDefault,
-      lastDate: maxTime ?? maxTimeDefault,
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
       locale: locale,
       selectableDayPredicate: selectableDayPredicate,
+      initialDatePickerMode: initialDatePickerMode,
     );
   }
 

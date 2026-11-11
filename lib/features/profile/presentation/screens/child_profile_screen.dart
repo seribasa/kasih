@@ -36,8 +36,8 @@ class ChildProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: context.read<ChildProfileBloc>()
-        ..add(OnInitialEvent(child: child)),
+      value:
+          context.read<ChildProfileBloc>()..add(OnInitialEvent(child: child)),
       child: _ChildProfileScaffold(mode: mode, child: child),
     );
   }
@@ -52,10 +52,11 @@ class _ChildProfileScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<ChildProfileBloc, ChildProfileState>(
-      listenWhen: (previous, current) =>
-          previous.statusUpdate != current.statusUpdate ||
-          previous.statusUpdateAvatar != current.statusUpdateAvatar ||
-          previous.statusCreate != current.statusCreate,
+      listenWhen:
+          (previous, current) =>
+              previous.statusUpdate != current.statusUpdate ||
+              previous.statusUpdateAvatar != current.statusUpdateAvatar ||
+              previous.statusCreate != current.statusCreate,
       listener: (context, state) {
         if (state.statusUpdate.isFailure) {
           snackbarCustom(
@@ -138,6 +139,10 @@ class _ChildProfileScaffold extends StatelessWidget {
                                     final date = await Picker.pickDate(
                                       context,
                                       currentTime: state.child?.tanggalLahir,
+                                      minTime: DateTime(1900),
+                                      maxTime: DateTime.now(),
+                                      initialDatePickerMode:
+                                          DatePickerMode.year,
                                     );
                                     if (date != null) {
                                       bloc.add(OnChangeDateOfBirthEvent(date));
@@ -161,9 +166,10 @@ class _ChildProfileScaffold extends StatelessWidget {
                           DropdownPeltops(
                             label: AppConstant.LABEL_GENDER,
                             initialValue: child?.jenisKelamin ?? emptyString,
-                            listItem: Gender.values
-                                .map((e) => Pair(e.name, e.value))
-                                .toList(),
+                            listItem:
+                                Gender.values
+                                    .map((e) => Pair(e.name, e.value))
+                                    .toList(),
                             onChanged: (val) {
                               bloc.add(OnChangeGenderEvent(val ?? emptyString));
                             },
@@ -172,9 +178,10 @@ class _ChildProfileScaffold extends StatelessWidget {
                           DropdownPeltops(
                             label: AppConstant.LABEL_BLOOD_TYPE,
                             initialValue: child?.golDarah ?? emptyString,
-                            listItem: BloodType.values
-                                .map((e) => Pair(e.name, e.name))
-                                .toList(),
+                            listItem:
+                                BloodType.values
+                                    .map((e) => Pair(e.name, e.name))
+                                    .toList(),
                             onChanged: (val) {
                               bloc.add(
                                 OnChangeBloodTypeEvent(val ?? emptyString),
@@ -232,7 +239,8 @@ class _SaveButton extends StatelessWidget {
     return BlocBuilder<ChildProfileBloc, ChildProfileState>(
       builder: (context, state) {
         return ButtonCustom(
-          loading: state.statusUpdate.isInProgress ||
+          loading:
+              state.statusUpdate.isInProgress ||
               state.statusUpdateAvatar.isInProgress ||
               state.statusCreate.isInProgress,
           child: ButtonText(text: AppConstant.SAVE),
@@ -255,7 +263,7 @@ class _PhotoProfile extends StatelessWidget {
   final String? url;
 
   const _PhotoProfile({Key? key, required this.url, required this.id})
-      : super(key: key);
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {

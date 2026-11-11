@@ -39,7 +39,11 @@ class UserProfile extends Equatable {
     this.noKTP,
   });
 
-  get isNameEmpty => (momName?.isEmpty ?? false) || (dadName?.isEmpty ?? false);
+  bool get isNameEmpty {
+    final hasMomName = momName != null && momName!.trim().isNotEmpty;
+    final hasDadName = dadName != null && dadName!.trim().isNotEmpty;
+    return !hasMomName && !hasDadName;
+  }
 
   factory UserProfile.fromSeribase(Map<String, dynamic> data) {
     return UserProfile(
@@ -133,22 +137,22 @@ class UserProfile extends Equatable {
 
   @override
   List<Object?> get props => [
-        uid,
-        email,
-        momName,
-        dadName,
-        dadPhoneNumber,
-        momPhoneNumber,
-        dadBloodType,
-        momBloodType,
-        dadJob,
-        momJob,
-        address,
-        avatarURL,
-        verified,
-        placeOfBirth,
-        dateOfBirth,
-        noKK,
-        noKTP,
-      ];
+    uid,
+    email,
+    momName,
+    dadName,
+    dadPhoneNumber,
+    momPhoneNumber,
+    dadBloodType,
+    momBloodType,
+    dadJob,
+    momJob,
+    address,
+    avatarURL,
+    verified,
+    placeOfBirth,
+    dateOfBirth,
+    noKK,
+    noKTP,
+  ];
 }

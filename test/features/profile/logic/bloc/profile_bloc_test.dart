@@ -47,75 +47,84 @@ void main() {
       'OnChangeNameEvent Success',
       build: () => ProfileBloc(mockAuthRepository),
       act: (bloc) => bloc.add(OnChangeNameEvent(momName)),
-      expect: () => [
-        initialState.copyWith(
-          user: initialState.user?.copyWith(momName: momName),
-        ),
-      ],
+      expect:
+          () => [
+            initialState.copyWith(
+              user: initialState.user?.copyWith(momName: momName),
+            ),
+          ],
     );
 
     blocTest<ProfileBloc, ProfileState>(
       'OnChangePlaceOfBirthEvent Success',
       build: () => ProfileBloc(mockAuthRepository),
       act: (bloc) => bloc.add(OnChangePlaceOfBirthEvent(placeOfBirth)),
-      expect: () => [
-        initialState.copyWith(
-          user: initialState.user?.copyWith(placeOfBirth: placeOfBirth),
-        ),
-      ],
+      expect:
+          () => [
+            initialState.copyWith(
+              user: initialState.user?.copyWith(placeOfBirth: placeOfBirth),
+            ),
+          ],
     );
 
     blocTest<ProfileBloc, ProfileState>(
       'OnChangeDateOfBirthEvent Success',
       build: () => ProfileBloc(mockAuthRepository),
       act: (bloc) => bloc.add(OnChangeDateOfBirthEvent(dateOfBirth)),
-      expect: () => [
-        initialState.copyWith(
-          user: initialState.user?.copyWith(dateOfBirth: dateOfBirth),
-        ),
-      ],
+      expect:
+          () => [
+            initialState.copyWith(
+              user: initialState.user?.copyWith(dateOfBirth: dateOfBirth),
+            ),
+          ],
     );
 
     blocTest<ProfileBloc, ProfileState>(
       'OnChangeIdentityNumberEvent Success',
       build: () => ProfileBloc(mockAuthRepository),
       act: (bloc) => bloc.add(OnChangeIdentityNumberEvent(identityNumber)),
-      expect: () => [
-        initialState.copyWith(
-          user: initialState.user?.copyWith(noKTP: identityNumber),
-        ),
-      ],
+      expect:
+          () => [
+            initialState.copyWith(
+              user: initialState.user?.copyWith(noKTP: identityNumber),
+            ),
+          ],
     );
 
     blocTest<ProfileBloc, ProfileState>(
       'OnChangeFamilyCardNumberEvent Success',
       build: () => ProfileBloc(mockAuthRepository),
       act: (bloc) => bloc.add(OnChangeFamilyCardNumberEvent(familyCardNumber)),
-      expect: () => [
-        initialState.copyWith(
-          user: initialState.user?.copyWith(noKK: familyCardNumber),
-        ),
-      ],
+      expect:
+          () => [
+            initialState.copyWith(
+              user: initialState.user?.copyWith(noKK: familyCardNumber),
+            ),
+          ],
     );
 
     blocTest<ProfileBloc, ProfileState>(
       'OnChangeJobEvent Success',
       build: () => ProfileBloc(mockAuthRepository),
       act: (bloc) => bloc.add(OnChangeJobEvent(job)),
-      expect: () => [
-        initialState.copyWith(user: initialState.user?.copyWith(momJob: job)),
-      ],
+      expect:
+          () => [
+            initialState.copyWith(
+              user: initialState.user?.copyWith(momJob: job),
+            ),
+          ],
     );
 
     blocTest<ProfileBloc, ProfileState>(
       'OnChangeBloodTypeEvent Success',
       build: () => ProfileBloc(mockAuthRepository),
       act: (bloc) => bloc.add(OnChangeBloodTypeEvent(bloodType)),
-      expect: () => [
-        initialState.copyWith(
-          user: initialState.user?.copyWith(momBloodType: bloodType),
-        ),
-      ],
+      expect:
+          () => [
+            initialState.copyWith(
+              user: initialState.user?.copyWith(momBloodType: bloodType),
+            ),
+          ],
     );
   });
 
@@ -132,10 +141,11 @@ void main() {
         return ProfileBloc(mockAuthRepository);
       },
       act: (bloc) => bloc.add(ProfileGetEvent()),
-      expect: () => [
-        ProfileState(statusGet: FormzSubmissionStatus.inProgress),
-        ProfileState(user: user, statusGet: FormzSubmissionStatus.success),
-      ],
+      expect:
+          () => [
+            ProfileState(statusGet: FormzSubmissionStatus.inProgress),
+            ProfileState(user: user, statusGet: FormzSubmissionStatus.success),
+          ],
     );
 
     blocTest<ProfileBloc, ProfileState>(
@@ -145,10 +155,11 @@ void main() {
         return ProfileBloc(mockAuthRepository);
       },
       act: (bloc) => bloc.add(ProfileGetEvent()),
-      expect: () => [
-        ProfileState(statusGet: FormzSubmissionStatus.inProgress),
-        ProfileState(statusGet: FormzSubmissionStatus.failure),
-      ],
+      expect:
+          () => [
+            ProfileState(statusGet: FormzSubmissionStatus.inProgress),
+            ProfileState(statusGet: FormzSubmissionStatus.failure),
+          ],
     );
   });
 
@@ -168,13 +179,17 @@ void main() {
       },
       seed: () => ProfileState(user: user),
       act: (bloc) => bloc.add(ProfileUpdateEvent()),
-      expect: () => [
-        ProfileState(
-          user: user,
-          statusUpdate: FormzSubmissionStatus.inProgress,
-        ),
-        ProfileState(user: user, statusUpdate: FormzSubmissionStatus.success),
-      ],
+      expect:
+          () => [
+            ProfileState(
+              user: user,
+              statusUpdate: FormzSubmissionStatus.inProgress,
+            ),
+            ProfileState(
+              user: user,
+              statusUpdate: FormzSubmissionStatus.success,
+            ),
+          ],
     );
 
     blocTest<ProfileBloc, ProfileState>(
@@ -187,13 +202,17 @@ void main() {
       },
       seed: () => ProfileState(user: user),
       act: (bloc) => bloc.add(ProfileUpdateEvent()),
-      expect: () => [
-        ProfileState(
-          user: user,
-          statusUpdate: FormzSubmissionStatus.inProgress,
-        ),
-        ProfileState(user: user, statusUpdate: FormzSubmissionStatus.failure),
-      ],
+      expect:
+          () => [
+            ProfileState(
+              user: user,
+              statusUpdate: FormzSubmissionStatus.inProgress,
+            ),
+            ProfileState(
+              user: user,
+              statusUpdate: FormzSubmissionStatus.failure,
+            ),
+          ],
     );
 
     blocTest<ProfileBloc, ProfileState>(
@@ -203,37 +222,64 @@ void main() {
       },
       seed: () => ProfileState(user: user.copyWith(momName: '')),
       act: (bloc) => bloc.add(ProfileUpdateEvent()),
-      expect: () => [
-        ProfileState(
-          user: user.copyWith(momName: ''),
-          statusUpdate: FormzSubmissionStatus.inProgress,
-        ),
-        ProfileState(
-          user: user.copyWith(momName: ''),
-          errorMessage: 'Nama tidak boleh kosong',
-          statusUpdate: FormzSubmissionStatus.failure,
-        ),
-      ],
+      expect:
+          () => [
+            ProfileState(
+              user: user.copyWith(momName: ''),
+              statusUpdate: FormzSubmissionStatus.inProgress,
+            ),
+            ProfileState(
+              user: user.copyWith(momName: ''),
+              errorMessage: 'Nama tidak boleh kosong',
+              statusUpdate: FormzSubmissionStatus.failure,
+            ),
+          ],
     );
 
     blocTest<ProfileBloc, ProfileState>(
-      "failed if user - dad name is empty",
+      "failed if user - mom name and dad name are empty",
       build: () {
+        return ProfileBloc(mockAuthRepository);
+      },
+      seed: () => ProfileState(user: user.copyWith(momName: '', dadName: '')),
+      act: (bloc) => bloc.add(ProfileUpdateEvent()),
+      expect:
+          () => [
+            ProfileState(
+              user: user.copyWith(momName: '', dadName: ''),
+              statusUpdate: FormzSubmissionStatus.inProgress,
+            ),
+            ProfileState(
+              user: user.copyWith(momName: '', dadName: ''),
+              errorMessage: 'Nama tidak boleh kosong',
+              statusUpdate: FormzSubmissionStatus.failure,
+            ),
+          ],
+    );
+
+    blocTest<ProfileBloc, ProfileState>(
+      "success if user has momName even when dadName is empty",
+      build: () {
+        when(
+          mockAuthRepository.insertUserToDatabase(
+            user: user.copyWith(dadName: ''),
+          ),
+        ).thenAnswer((_) async => true);
         return ProfileBloc(mockAuthRepository);
       },
       seed: () => ProfileState(user: user.copyWith(dadName: '')),
       act: (bloc) => bloc.add(ProfileUpdateEvent()),
-      expect: () => [
-        ProfileState(
-          user: user.copyWith(dadName: ''),
-          statusUpdate: FormzSubmissionStatus.inProgress,
-        ),
-        ProfileState(
-          user: user.copyWith(dadName: ''),
-          errorMessage: 'Nama tidak boleh kosong',
-          statusUpdate: FormzSubmissionStatus.failure,
-        ),
-      ],
+      expect:
+          () => [
+            ProfileState(
+              user: user.copyWith(dadName: ''),
+              statusUpdate: FormzSubmissionStatus.inProgress,
+            ),
+            ProfileState(
+              user: user.copyWith(dadName: ''),
+              statusUpdate: FormzSubmissionStatus.success,
+            ),
+          ],
     );
   });
 
@@ -258,19 +304,20 @@ void main() {
         return ProfileBloc(mockAuthRepository);
       },
       act: (bloc) => bloc.add(ProfileUpdateAvatarEvent(file)),
-      expect: () => [
-        ProfileState(statusUpdateAvatar: FormzSubmissionStatus.inProgress),
-        ProfileState(statusUpdateAvatar: FormzSubmissionStatus.success),
-        ProfileState(
-          statusGet: FormzSubmissionStatus.inProgress,
-          statusUpdateAvatar: FormzSubmissionStatus.success,
-        ),
-        ProfileState(
-          user: user,
-          statusGet: FormzSubmissionStatus.success,
-          statusUpdateAvatar: FormzSubmissionStatus.success,
-        ),
-      ],
+      expect:
+          () => [
+            ProfileState(statusUpdateAvatar: FormzSubmissionStatus.inProgress),
+            ProfileState(statusUpdateAvatar: FormzSubmissionStatus.success),
+            ProfileState(
+              statusGet: FormzSubmissionStatus.inProgress,
+              statusUpdateAvatar: FormzSubmissionStatus.success,
+            ),
+            ProfileState(
+              user: user,
+              statusGet: FormzSubmissionStatus.success,
+              statusUpdateAvatar: FormzSubmissionStatus.success,
+            ),
+          ],
     );
 
     blocTest<ProfileBloc, ProfileState>(
@@ -280,10 +327,11 @@ void main() {
         return ProfileBloc(mockAuthRepository);
       },
       act: (bloc) => bloc.add(ProfileUpdateAvatarEvent(file)),
-      expect: () => [
-        ProfileState(statusUpdateAvatar: FormzSubmissionStatus.inProgress),
-        ProfileState(statusUpdateAvatar: FormzSubmissionStatus.failure),
-      ],
+      expect:
+          () => [
+            ProfileState(statusUpdateAvatar: FormzSubmissionStatus.inProgress),
+            ProfileState(statusUpdateAvatar: FormzSubmissionStatus.failure),
+          ],
     );
 
     blocTest<ProfileBloc, ProfileState>(
@@ -294,10 +342,11 @@ void main() {
         return ProfileBloc(mockAuthRepository);
       },
       act: (bloc) => bloc.add(ProfileUpdateAvatarEvent(file)),
-      expect: () => [
-        ProfileState(statusUpdateAvatar: FormzSubmissionStatus.inProgress),
-        ProfileState(statusUpdateAvatar: FormzSubmissionStatus.failure),
-      ],
+      expect:
+          () => [
+            ProfileState(statusUpdateAvatar: FormzSubmissionStatus.inProgress),
+            ProfileState(statusUpdateAvatar: FormzSubmissionStatus.failure),
+          ],
     );
   });
 
@@ -314,10 +363,11 @@ void main() {
         return ProfileBloc(mockAuthRepository);
       },
       act: (bloc) => bloc.add(VerifyEmailEvent()),
-      expect: () => [
-        ProfileState(statusUpdate: FormzSubmissionStatus.inProgress),
-        ProfileState(statusUpdate: FormzSubmissionStatus.success),
-      ],
+      expect:
+          () => [
+            ProfileState(statusUpdate: FormzSubmissionStatus.inProgress),
+            ProfileState(statusUpdate: FormzSubmissionStatus.success),
+          ],
     );
 
     blocTest<ProfileBloc, ProfileState>(
@@ -327,10 +377,11 @@ void main() {
         return ProfileBloc(mockAuthRepository);
       },
       act: (bloc) => bloc.add(VerifyEmailEvent()),
-      expect: () => [
-        ProfileState(statusUpdate: FormzSubmissionStatus.inProgress),
-        ProfileState(statusUpdate: FormzSubmissionStatus.failure),
-      ],
+      expect:
+          () => [
+            ProfileState(statusUpdate: FormzSubmissionStatus.inProgress),
+            ProfileState(statusUpdate: FormzSubmissionStatus.failure),
+          ],
     );
   });
 }

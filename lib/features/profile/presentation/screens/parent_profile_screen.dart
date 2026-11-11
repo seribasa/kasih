@@ -95,16 +95,32 @@ class ParentProfileScreen extends StatelessWidget {
                             Expanded(
                               child: TextFormCustom(
                                 onTap: () async {
-                                  final date = await Picker.pickDate(context);
+                                  final now = DateTime.now();
+                                  final date = await Picker.pickDate(
+                                    context,
+                                    currentTime:
+                                        state.user?.dateOfBirth ??
+                                        DateTime(
+                                          now.year - 30,
+                                          now.month,
+                                          now.day,
+                                        ),
+                                    minTime: DateTime(1900),
+                                    maxTime: now,
+                                    initialDatePickerMode: DatePickerMode.year,
+                                  );
                                   if (date != null) {
                                     bloc.add(OnChangeDateOfBirthEvent(date));
                                   }
                                 },
                                 readOnly: true,
                                 label: AppConstant.LABEL_DATE_OF_BIRTH,
-                                hintText: state.user?.dateOfBirth != null
-                                    ? (state.user?.dateOfBirth).formattedDate()
-                                    : AppConstant.LABEL_CHOICE_DATE_OF_BIRTH,
+                                hintText:
+                                    state.user?.dateOfBirth != null
+                                        ? (state.user?.dateOfBirth)
+                                            .formattedDate()
+                                        : AppConstant
+                                            .LABEL_CHOICE_DATE_OF_BIRTH,
                               ),
                             ),
                           ],
@@ -141,9 +157,10 @@ class ParentProfileScreen extends StatelessWidget {
                         DropdownPeltops(
                           label: AppConstant.LABEL_BLOOD_TYPE,
                           initialValue: state.user?.momBloodType ?? emptyString,
-                          listItem: ListConstant.TYPE_BLOOD
-                              .map((e) => Pair(e, e))
-                              .toList(),
+                          listItem:
+                              ListConstant.TYPE_BLOOD
+                                  .map((e) => Pair(e, e))
+                                  .toList(),
                           onChanged: (val) {
                             bloc.add(
                               OnChangeBloodTypeEvent(val ?? emptyString),

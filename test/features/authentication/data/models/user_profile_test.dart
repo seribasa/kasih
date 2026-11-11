@@ -193,5 +193,32 @@ void main() {
         },
       );
     });
+
+    group('isNameEmpty', () {
+      test('returns false when momName is filled even if dadName is empty', () {
+        final profile = UserProfile(momName: 'Jane', dadName: '');
+        expect(profile.isNameEmpty, false);
+      });
+
+      test('returns false when dadName is filled even if momName is empty', () {
+        final profile = UserProfile(momName: '', dadName: 'John');
+        expect(profile.isNameEmpty, false);
+      });
+
+      test('returns true when both momName and dadName are empty strings', () {
+        final profile = UserProfile(momName: '', dadName: '');
+        expect(profile.isNameEmpty, true);
+      });
+
+      test('returns true when both momName and dadName are null', () {
+        final profile = UserProfile(momName: null, dadName: null);
+        expect(profile.isNameEmpty, true);
+      });
+
+      test('returns true when names contain only whitespace', () {
+        final profile = UserProfile(momName: '   ', dadName: '  ');
+        expect(profile.isNameEmpty, true);
+      });
+    });
   });
 }
