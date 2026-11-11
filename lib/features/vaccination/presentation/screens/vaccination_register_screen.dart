@@ -101,7 +101,9 @@ class _VaccinationRegisterScaffoldState
             extra: state.appointmentWithOrder?.appointment?.id,
           );
         } else if (state.statusSubmit == FormzSubmissionStatus.failure) {
-          snackbarCustom(AppConstant.MAKE_APPOINTMENT_FAILED).show(context);
+          snackbarCustom(
+            state.errorMessage ?? AppConstant.MAKE_APPOINTMENT_FAILED,
+          ).show(context);
         }
       },
       child: Scaffold(
@@ -153,11 +155,12 @@ class _VaccinationRegisterScaffoldState
                           TextField(
                             readOnly: true,
                             controller: TextEditingController(
-                              text: _selectedDate == null
-                                  ? null
-                                  : DateFormat(
-                                      'dd MMMM yyyy',
-                                    ).format(_selectedDate!),
+                              text:
+                                  _selectedDate == null
+                                      ? null
+                                      : DateFormat(
+                                        'dd MMMM yyyy',
+                                      ).format(_selectedDate!),
                             ),
                             decoration: InputDecoration(
                               suffixIcon: Icon(Icons.date_range),
@@ -180,11 +183,11 @@ class _VaccinationRegisterScaffoldState
                               final date = await Picker.pickDate(
                                 context,
                                 currentTime: () {
-                                  final days = widget
-                                      .healthWorker.practiceSchedules
-                                      ?.map((e) => e.day?.id)
-                                      .whereType<int>()
-                                      .toList();
+                                  final days =
+                                      widget.healthWorker.practiceSchedules
+                                          ?.map((e) => e.day?.id)
+                                          .whereType<int>()
+                                          .toList();
 
                                   if (days == null || days.isEmpty) {
                                     return null;
@@ -210,10 +213,11 @@ class _VaccinationRegisterScaffoldState
                                 minTime: kFirstDay,
                                 selectableDayPredicate: (DateTime day) {
                                   final daySchedule = widget
-                                      .healthWorker.practiceSchedules
+                                      .healthWorker
+                                      .practiceSchedules
                                       ?.where((element) {
-                                    return element.day?.id == day.weekday;
-                                  });
+                                        return element.day?.id == day.weekday;
+                                      });
                                   return daySchedule?.isNotEmpty ?? false;
                                 },
                               );
@@ -231,37 +235,43 @@ class _VaccinationRegisterScaffoldState
                             ),
                           ),
                           Column(
-                            children: () {
-                              if (_selectedDate == null) {
-                                return [
-                                  Text('Pilih tanggal terlebih dahulu'),
-                                ];
-                              }
-                              final schedules =
-                                  widget.healthWorker.practiceSchedules;
-                              if (schedules == null || schedules.isEmpty) {
-                                return Text(
-                                  'Belum ada jadwal imunisasi',
-                                );
-                              }
-                              return schedules.where((element) {
-                                return element.day?.id ==
-                                    _selectedDate?.weekday;
-                              }).map((e) {
-                                final day = e.day?.name;
-                                return RadioListTile<Schedule>(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.all(0),
-                                  value: e,
-                                  groupValue: selectedRadioTile,
-                                  title: Text(
-                                    '$day, ${e.time}',
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                  onChanged: setSelectedRadioTile,
-                                );
-                              }).toList();
-                            }() as List<Widget>,
+                            children:
+                                () {
+                                      if (_selectedDate == null) {
+                                        return [
+                                          Text('Pilih tanggal terlebih dahulu'),
+                                        ];
+                                      }
+                                      final schedules =
+                                          widget.healthWorker.practiceSchedules;
+                                      if (schedules == null ||
+                                          schedules.isEmpty) {
+                                        return Text(
+                                          'Belum ada jadwal imunisasi',
+                                        );
+                                      }
+                                      return schedules
+                                          .where((element) {
+                                            return element.day?.id ==
+                                                _selectedDate?.weekday;
+                                          })
+                                          .map((e) {
+                                            final day = e.day?.name;
+                                            return RadioListTile<Schedule>(
+                                              dense: true,
+                                              contentPadding: EdgeInsets.all(0),
+                                              value: e,
+                                              groupValue: selectedRadioTile,
+                                              title: Text(
+                                                '$day, ${e.time}',
+                                                style: TextStyle(fontSize: 12),
+                                              ),
+                                              onChanged: setSelectedRadioTile,
+                                            );
+                                          })
+                                          .toList();
+                                    }()
+                                    as List<Widget>,
                           ),
                           SizedBox(height: 20),
                           TextFormField(
@@ -301,7 +311,8 @@ class _VaccinationRegisterScaffoldState
                           ),
                           ButtonCustom(
                             onPressed: onSubmit,
-                            loading: state.statusSubmit ==
+                            loading:
+                                state.statusSubmit ==
                                 FormzSubmissionStatus.inProgress,
                             child: Text(
                               'Buat Janji',

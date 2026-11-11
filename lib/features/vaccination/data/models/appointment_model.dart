@@ -17,13 +17,13 @@ class AppointmentModel extends Equatable {
   final String? endTime;
 
   String get time => () {
-        if (startTime != null && endTime != null) {
-          final startTime = this.startTime?.split(":").getRange(0, 2).join(":");
-          final endTime = this.endTime?.split(":").getRange(0, 2).join(":");
-          return "$startTime - $endTime";
-        }
-        return emptyString;
-      }();
+    if (startTime != null && endTime != null) {
+      final startTime = this.startTime?.split(":").getRange(0, 2).join(":");
+      final endTime = this.endTime?.split(":").getRange(0, 2).join(":");
+      return "$startTime - $endTime";
+    }
+    return emptyString;
+  }();
 
   const AppointmentModel({
     this.id,
@@ -68,17 +68,17 @@ class AppointmentModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        orderId,
-        date,
-        child,
-        parent,
-        healthWorker,
-        note,
-        purpose,
-        startTime,
-        endTime,
-      ];
+    id,
+    orderId,
+    date,
+    child,
+    parent,
+    healthWorker,
+    note,
+    purpose,
+    startTime,
+    endTime,
+  ];
 
   factory AppointmentModel.fromSeribase(Map<String, dynamic> map) {
     return AppointmentModel(
@@ -92,29 +92,35 @@ class AppointmentModel extends Equatable {
           return null;
         }
       }(),
-      child: map['children'] != null
-          ? ChildModel.fromSeribase(map['children'])
-          : null,
-      parent: map['profiles'] != null
-          ? UserProfile.fromSeribase(map['profiles'])
-          : null,
+      child:
+          map['children'] != null
+              ? ChildModel.fromSeribase(map['children'])
+              : null,
+      parent:
+          map['profiles'] != null
+              ? UserProfile.fromSeribase(map['profiles'])
+              : null,
       note: map['note'],
       purpose: map['purpose'],
-      healthWorker: map['health_worker'] != null
-          ? HealthWorkerModel.fromSeribase(map['health_worker'])
-          : null,
+      healthWorker:
+          map['health_worker'] != null
+              ? HealthWorkerModel.fromSeribase(map['health_worker'])
+              : null,
       startTime: map['start_time'],
       endTime: map['end_time'],
     );
   }
 
   Map<String, dynamic> toSeribase() {
+    final parentId = parent?.uid;
+    final childId = child?.id;
+    final inspectorId = healthWorker?.id;
     return {
       if (id != null) 'id': id,
       if (orderId != null) 'order_id': orderId,
-      if (parent != null) 'parent_id': parent?.uid,
-      if (child != null) 'child_id': child?.id,
-      if (healthWorker != null) 'inspector_id': healthWorker?.id,
+      if (parentId != null) 'parent_id': parentId,
+      if (childId != null) 'child_id': childId,
+      if (inspectorId != null) 'inspector_id': inspectorId,
       if (date != null) 'date': date?.toIso8601String().split("T").first,
       if (note != null) 'note': note,
       if (purpose != null) 'purpose': purpose,

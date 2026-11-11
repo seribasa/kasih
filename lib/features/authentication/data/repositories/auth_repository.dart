@@ -36,9 +36,7 @@ class AuthRepository {
   }
 
   Future<void> signInWithPhone({required String phone}) async {
-    await supabaseClient.auth.signInWithOtp(
-      phone: phone,
-    );
+    await supabaseClient.auth.signInWithOtp(phone: phone);
   }
 
   Future<AuthResponse> verifyPhoneOtp({
@@ -53,10 +51,7 @@ class AuthRepository {
   }
 
   Future<void> resendPhoneOtp({required String phone}) async {
-    await supabaseClient.auth.resend(
-      phone: phone,
-      type: OtpType.sms,
-    );
+    await supabaseClient.auth.resend(phone: phone, type: OtpType.sms);
   }
 
   Future<AuthResponse> signUpWithEmailAndPassword({
@@ -92,11 +87,14 @@ class AuthRepository {
 
   Future<UserProfile?> getUser() async {
     final user = await supabaseClient.auth.currentUser;
-    final userExpand =
-        await supabaseClient.from(_tableName).select().eq('user_id', user!.id);
+    final userExpand = await supabaseClient
+        .from(_tableName)
+        .select()
+        .eq('user_id', user!.id);
     if (userExpand.isNotEmpty) {
       final userResult = UserProfile.fromSeribase(userExpand.first);
       return userResult.copyWith(
+        uid: userResult.uid ?? user.id,
         email: user.email,
         verified: user.emailConfirmedAt != null,
       );
@@ -108,14 +106,17 @@ class AuthRepository {
   Future<String> uploadImage(File file) async {
     try {
       final id = await supabaseClient.auth.currentUser?.id;
-      await supabaseClient.storage.from('avatars').upload(
+      await supabaseClient.storage
+          .from('avatars')
+          .upload(
             '$id',
             file,
             fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
             retryAttempts: 3,
           );
-      final fullPath =
-          await supabaseClient.storage.from('avatars').getPublicUrl('$id');
+      final fullPath = await supabaseClient.storage
+          .from('avatars')
+          .getPublicUrl('$id');
       await CachedNetworkImage.evictFromCache(fullPath);
       return fullPath;
     } catch (e) {
@@ -128,8 +129,10 @@ class AuthRepository {
       if (supabaseClient.auth.currentUser == null) {
         throw Exception('User not found');
       }
-      await supabaseClient.from(_tableName).update({'avatar_url': url}).eq(
-          'user_id', supabaseClient.auth.currentUser!.id);
+      await supabaseClient
+          .from(_tableName)
+          .update({'avatar_url': url})
+          .eq('user_id', supabaseClient.auth.currentUser!.id);
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -156,11 +159,12 @@ class AuthRepository {
     return await supabaseClient.auth.signInWithOAuth(
       supabase.OAuthProvider.keycloak,
       scopes: 'openid',
-      redirectTo: kIsWeb
-          ? null
-          : oauthRedirectUrl(
-              dotenv.isInitialized ? dotenv.env['AUTH_REDIRECT_URL'] : null,
-            ),
+      redirectTo:
+          kIsWeb
+              ? null
+              : oauthRedirectUrl(
+                dotenv.isInitialized ? dotenv.env['AUTH_REDIRECT_URL'] : null,
+              ),
       authScreenLaunchMode:
           kIsWeb ? LaunchMode.platformDefault : LaunchMode.externalApplication,
     );

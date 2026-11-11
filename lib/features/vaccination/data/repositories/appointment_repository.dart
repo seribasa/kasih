@@ -74,22 +74,32 @@ class AppointmentRepository {
 
   Future<AppointmentOrderEntity> setAppointment(AppointmentModel model) async {
     try {
+      final gateway = _cleanGateway(dotenv.env['PAYMENT_GATEWAY']);
+      final currency = _cleanCurrency(dotenv.env['PAYMENT_CURRENCY']);
+      final token = supabaseClient.auth.currentSession?.accessToken;
       final result = await supabaseClient.functions.invoke(
         'api/appointments',
         method: HttpMethod.post,
-        body: model.toSeribase()
-          ..addAll({
-            'gateway': dotenv.env['PAYMENT_GATEWAY'] ?? 'midtrans',
-            'currency': dotenv.env['PAYMENT_CURRENCY'] ?? 'IDR',
-          }),
+        body:
+            model.toSeribase()
+              ..addAll({'gateway': gateway, 'currency': currency}),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization':
-              'Bearer ${supabaseClient.auth.currentSession?.accessToken}',
+          if (token != null && token.isNotEmpty)
+            'Authorization': 'Bearer $token',
         },
       );
       if (result.status != 200 && result.status != 201) {
-        throw Exception('Failed to set appointment');
+        final message =
+            (result.data is Map && result.data['message'] != null)
+                ? result.data['message'].toString()
+                : (result.data is Map && result.data['error'] != null)
+                ? (result.data['error'] is Map &&
+                        result.data['error']['message'] != null)
+                    ? result.data['error']['message'].toString()
+                    : result.data['error'].toString()
+                : 'Failed to set appointment';
+        throw Exception(message);
       }
       final data = result.data['data'];
       if (data == null) {
@@ -102,6 +112,18 @@ class AppointmentRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  static String _cleanGateway(String? raw) {
+    if (raw == null) return 'midtrans';
+    final cleaned = raw.split('#').first.trim().toLowerCase();
+    return cleaned == 'stripe' ? 'stripe' : 'midtrans';
+  }
+
+  static String _cleanCurrency(String? raw) {
+    if (raw == null) return 'IDR';
+    final cleaned = raw.split('#').first.trim().toUpperCase();
+    return cleaned.isEmpty ? 'IDR' : cleaned;
   }
 
   Future<AppointmentModel> updateAppointment(AppointmentModel model) async {

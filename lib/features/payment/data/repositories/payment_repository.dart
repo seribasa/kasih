@@ -12,19 +12,32 @@ class PaymentRepository {
   final SupabaseClient supabaseClient;
 
   PaymentRepository({@factoryParam SupabaseClient? supabaseClient})
-      : supabaseClient = supabaseClient ??
-            SupabaseClient(dotenv.env['PAYMENT_URL'] ?? '', '');
+    : supabaseClient =
+          supabaseClient ?? SupabaseClient(dotenv.env['PAYMENT_URL'] ?? '', '');
 
   Future<BaseResponse<PaymentInitiateResponseModel>> initiate(
     PaymentInitiateRequestModel request,
   ) async {
     try {
-      final requestBody = request
-          .copyWith(
-            gateway: dotenv.env['PAYMENT_GATEWAY'] ?? 'midtrans',
-            currency: dotenv.env['PAYMENT_CURRENCY'] ?? 'IDR',
-          )
-          .toSeribase();
+      final rawGateway =
+          (dotenv.env['PAYMENT_GATEWAY'] ?? 'midtrans')
+              .split('#')
+              .first
+              .trim()
+              .toLowerCase();
+      final rawCurrency =
+          (dotenv.env['PAYMENT_CURRENCY'] ?? 'IDR')
+              .split('#')
+              .first
+              .trim()
+              .toUpperCase();
+      final requestBody =
+          request
+              .copyWith(
+                gateway: rawGateway == 'stripe' ? 'stripe' : 'midtrans',
+                currency: rawCurrency.isEmpty ? 'IDR' : rawCurrency,
+              )
+              .toSeribase();
       final fetch = await supabaseClient.functions.invoke(
         'payments/initiate',
         method: HttpMethod.post,

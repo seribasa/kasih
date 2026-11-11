@@ -267,6 +267,47 @@ void main() {
         expect(result.appointment?.note, 'Note Set');
         expect(result.appointment?.purpose, 'Purpose Set');
       });
+
+      test(
+        'sanitizes gateway and currency with comments and lowercase',
+        () async {
+          dotenv.testLoad(
+            fileInput: '''
+            PAYMENT_GATEWAY=midtrans # midtrans, stripe
+            PAYMENT_CURRENCY=idr # see docs
+          ''',
+          );
+
+          Map<String, dynamic>? capturedBody;
+
+          when(
+            () => functionsClient.invoke(
+              any(),
+              method: HttpMethod.post,
+              body: any(named: 'body'),
+              headers: any(named: 'headers'),
+            ),
+          ).thenAnswer((invocation) async {
+            capturedBody =
+                invocation.namedArguments[#body] as Map<String, dynamic>?;
+            return FunctionResponse(
+              status: 200,
+              data: {
+                "data": {
+                  "id": "test-id",
+                  "inspector_id": "health-worker-id",
+                  "order": {"order_id": "order-id"},
+                },
+              },
+            );
+          });
+
+          await repository.setAppointment(data1);
+
+          expect(capturedBody?['gateway'], 'midtrans');
+          expect(capturedBody?['currency'], 'IDR');
+        },
+      );
     });
 
     group('updateAppointment', () {
