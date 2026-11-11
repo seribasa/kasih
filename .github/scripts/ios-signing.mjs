@@ -19,8 +19,17 @@ export function profileSettings(profile, { team, bundle, method }, now = new Dat
   }
   const debug = entitlements['get-task-allow'] === true;
   const devices = Array.isArray(profile.ProvisionedDevices) && profile.ProvisionedDevices.length > 0;
-  if (profile.ProvisionsAllDevices || (method === 'debugging' ? !debug || !devices : debug || (method === 'release-testing' ? !devices : devices))) {
-    throw new Error('Provisioning profile does not match export method');
+  if (profile.ProvisionsAllDevices) {
+    throw new Error('Provisioning profile does not match export method: enterprise profiles are not supported');
+  }
+  if (method === 'debugging' && (!debug || !devices)) {
+    throw new Error('Provisioning profile does not match export method "debugging": expected development profile with get-task-allow=true and provisioned devices');
+  }
+  if (method === 'release-testing' && (debug || !devices)) {
+    throw new Error('Provisioning profile does not match export method "release-testing": expected ad hoc profile with get-task-allow=false and provisioned devices');
+  }
+  if (method === 'app-store-connect' && (debug || devices)) {
+    throw new Error('Provisioning profile does not match export method "app-store-connect": expected App Store distribution profile (get-task-allow=false and no provisioned devices; current profile contains provisioned devices or get-task-allow=true)');
   }
   return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">

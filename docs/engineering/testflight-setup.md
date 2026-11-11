@@ -33,7 +33,7 @@ Buka repository GitHub → **Settings → Environments → New environment → `
 | ------------------------------- | -------- | --------------- |
 | `IOS_CERTIFICATE_BASE64`        | Secret   | Sertifikat *Apple Distribution* `.p12` yang di-encode base64: `base64 -i cert.p12 \| pbcopy` |
 | `IOS_CERTIFICATE_PASSWORD`      | Secret   | Password file `.p12` |
-| `IOS_PROVISION_PROFILE_BASE64`  | Secret   | File `.mobileprovision` distribusi App Store dalam base64: `base64 -i profile.mobileprovision \| pbcopy` |
+| `IOS_PROVISION_PROFILE_APP_STORE_BASE64` (atau `IOS_PROVISION_PROFILE_BASE64`) | Secret | File `.mobileprovision` distribusi **App Store** (bukan Ad-Hoc/Development) dalam base64: `base64 -i profile.mobileprovision \| pbcopy`. Jika `IOS_PROVISION_PROFILE_APP_STORE_BASE64` diisi, workflow TestFlight akan mengutamakannya tanpa perlu menimpa profile ad hoc lama. |
 | `IOS_TEAM_ID`                   | Variable | Apple Developer Team ID 10 karakter (misal: `ABCDE12345`) |
 | `IOS_BUNDLE_ID`                 | Variable | Explicit Apple Bundle ID terdaftar (misal: `digital.seribasa.kasih`) |
 

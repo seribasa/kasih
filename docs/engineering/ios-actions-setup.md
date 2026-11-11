@@ -31,7 +31,8 @@ Tambahan untuk IPA:
 | -------- | ------------------------------ | ------------------------------------------------------------------------------------------------ |
 | Secret   | `IOS_CERTIFICATE_BASE64`       | Base64 export certificate **beserta private key** dalam `.p12`                                   |
 | Secret   | `IOS_CERTIFICATE_PASSWORD`     | Password file `.p12`                                                                             |
-| Secret   | `IOS_PROVISION_PROFILE_BASE64` | Base64 file `.mobileprovision` eksplisit untuk aplikasi dan metode export yang dipilih           |
+| Secret   | `IOS_PROVISION_PROFILE_BASE64`           | Base64 file `.mobileprovision` eksplisit untuk aplikasi dan metode export yang dipilih           |
+| Secret   | `IOS_PROVISION_PROFILE_APP_STORE_BASE64` | Opsional: Base64 file `.mobileprovision` App Store (diprioritaskan otomatis untuk TestFlight)    |
 | Variable | `IOS_TEAM_ID`                  | Apple Developer team ID 10 karakter                                                              |
 | Variable | `IOS_BUNDLE_ID`                | Bundle ID Apple yang terdaftar, sama persis dengan profile; contoh format `com.company.epatient` |
 

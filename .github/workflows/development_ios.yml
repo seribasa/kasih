@@ -152,7 +152,7 @@ jobs:
         env:
           IOS_CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
           IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
-          IOS_PROVISION_PROFILE_BASE64: ${{ secrets.IOS_PROVISION_PROFILE_BASE64 }}
+          IOS_PROVISION_PROFILE_BASE64: ${{ (inputs.artifact_type == 'testflight' || inputs.upload_to_testflight) && (secrets.IOS_PROVISION_PROFILE_APP_STORE_BASE64 || secrets.IOS_PROVISION_PROFILE_BASE64) || secrets.IOS_PROVISION_PROFILE_BASE64 }}
           IOS_TEAM_ID: ${{ vars.IOS_TEAM_ID }}
           IOS_BUNDLE_ID: ${{ vars.IOS_BUNDLE_ID }}
           IOS_EXPORT_METHOD: ${{ (inputs.artifact_type == 'testflight' || inputs.upload_to_testflight) && 'app-store-connect' || inputs.export_method }}
