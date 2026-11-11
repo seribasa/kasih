@@ -1,7 +1,7 @@
 # Panduan Setup Deployment TestFlight iOS — Kasih
 
-Workflow: `.github/workflows/deploy_testflight.yml`, nama **Kasih Deploy TestFlight iOS**.
-Workflow ini dijalankan secara manual (`workflow_dispatch`), mengompilasi rilis iOS dengan profile App Store, menandatangani IPA, dan mengunggahnya secara otomatis ke **Apple TestFlight** via App Store Connect API.
+Workflow: `.github/workflows/development_ios.yml`, nama **Kasih Development iOS**.
+Workflow ini dijalankan secara manual (`workflow_dispatch`), mendukung pilihan `artifact_type: testflight` atau `upload_to_testflight: true`. Workflow mengompilasi rilis iOS dengan profile App Store, menandatangani IPA, dan mengunggahnya secara otomatis ke **Apple TestFlight** via App Store Connect API.
 
 ---
 

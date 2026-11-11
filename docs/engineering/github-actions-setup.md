@@ -4,16 +4,14 @@
 
 - **Kasih Persistent Release:** manual, mengambil APK/IPA dari run Development yang sukses dan menerbitkan GitHub Release (default prerelease), tanpa rebuild atau deployment store. [Panduan input, retensi, dan akses](persistent-releases.md).
 
-- **Kasih Deploy TestFlight iOS:** manual, mengompilasi release signed IPA dengan App Store profile dan mengunggahnya langsung ke Apple TestFlight via App Store Connect API. [Panduan setup TestFlight](testflight-setup.md).
+## Workflow iOS (APP, IPA, dan TestFlight)
 
-- **Kasih CI:** push seluruh branch, pull request, atau manual. Memakai konfigurasi dummy; code generation → analysis → seluruh test → APK debug. Tidak membutuhkan secret. APK CI hanya untuk verifikasi build, bukan uji login/payment dengan backend nyata.
-- **Kasih Development APK:** manual, dengan GitHub Environment `development`. Pilih gateway `midtrans`, `stripe`, atau `both`, dan build type `debug`, `release`, atau `both`. Default build type adalah `both`. Quality gates memakai dummy; konfigurasi development ditulis sebelum build. Setiap kombinasi menghasilkan APK/artifact terpisah. Build release tetap memakai backend development; tidak mengaktifkan payment production atau deployment store.
-- Flutter mengikuti `.fvmrc` (3.29.3 saat setup) dan Java 17. CI memakai signing debug bawaan; Development APK memakai keystore development tetap. Coverage disimpan sebagai artifact. Tidak publish release atau deploy ke Play Store.
-- Workflow release e-Imunisasi lama serta konfigurasi Dependabot yang belum lengkap diarsipkan dalam `.github/legacy-workflows/` dan tidak aktif.
+**Kasih Development iOS** adalah workflow manual terpadu untuk:
+1. `.app` simulator tanpa signing,
+2. `.ipa` device dengan Apple signing lokal/ad-hoc, atau
+3. Upload otomatis ke **Apple TestFlight** via App Store Connect API.
 
-## Workflow iOS APP dan IPA
-
-**Kasih Development iOS** adalah workflow manual untuk `.app` simulator tanpa signing atau `.ipa` device dengan Apple signing. Mendukung gateway Midtrans/Stripe/both, quality gates sebelum build, artifact 7 hari, dan tidak upload ke TestFlight/App Store. [Panduan lengkap, secrets Apple, dan batas verifikasi](ios-actions-setup.md).
+Mendukung gateway Midtrans/Stripe/both, quality gates sebelum build, artifact 7-14 hari. [Panduan lengkap, secrets Apple & TestFlight, dan batas verifikasi](ios-actions-setup.md). Panduan khusus TestFlight tersedia di [testflight-setup.md](testflight-setup.md).
 
 ## Secrets dan variables
 

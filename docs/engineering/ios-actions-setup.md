@@ -6,11 +6,14 @@ Workflow: `.github/workflows/development_ios.yml`, nama **Kasih Development iOS*
 
 | Input               | Pilihan/default                                               | Output/perilaku                                                        |
 | ------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `artifact_type`     | `app` (default), `ipa`, `both`                                | APP adalah debug simulator, IPA adalah release device signed           |
-| `payment_gateway`   | `midtrans` (default), `stripe`, `both`                        | Job/artifact terpisah per gateway                                      |
-| `midtrans_currency` | `IDR`                                                         | Currency backend Midtrans                                              |
-| `stripe_currency`   | `IDR`                                                         | Currency backend Stripe                                                |
-| `export_method`     | `debugging` (default), `release-testing`, `app-store-connect` | Harus sesuai certificate dan provisioning profile; diabaikan untuk APP |
+| `artifact_type`        | `app` (default), `ipa`, `both`, `testflight`                  | APP adalah simulator debug, IPA adalah release signed, `testflight` ekspor & upload TestFlight |
+| `upload_to_testflight` | `false` (default), `true`                                     | Upload IPA bertanda tangan ke TestFlight (otomatis menggunakan export `app-store-connect`)     |
+| `payment_gateway`      | `midtrans` (default), `stripe`, `both`                        | Job/artifact terpisah per gateway                                                              |
+| `midtrans_currency`    | `IDR`                                                         | Currency backend Midtrans                                                                      |
+| `stripe_currency`      | `IDR`                                                         | Currency backend Stripe                                                                        |
+| `export_method`        | `debugging` (default), `release-testing`, `app-store-connect` | Harus sesuai certificate dan profile; otomatis `app-store-connect` jika TestFlight dipilih     |
+| `release_notes`        | `Internal test build` (default)                               | Catatan rilis untuk penguji TestFlight                                                         |
+| `wait_for_processing`  | `false` (default), `true`                                     | Menunggu validasi pemrosesan build oleh Apple hingga selesai                                   |
 
 Quality gate: test helper Node → konfigurasi dummy → pub get → code generation → analysis → seluruh test Flutter. Konfigurasi backend development baru ditulis setelah test. Artifact disimpan 7 hari dan tidak memuat file signing mentah/keychain/`.env` terpisah. Konfigurasi client tetap bisa dibaca dari app yang dibundel, jadi jangan memasukkan server secret ke `.env`.
 
@@ -31,6 +34,14 @@ Tambahan untuk IPA:
 | Secret   | `IOS_PROVISION_PROFILE_BASE64` | Base64 file `.mobileprovision` eksplisit untuk aplikasi dan metode export yang dipilih           |
 | Variable | `IOS_TEAM_ID`                  | Apple Developer team ID 10 karakter                                                              |
 | Variable | `IOS_BUNDLE_ID`                | Bundle ID Apple yang terdaftar, sama persis dengan profile; contoh format `com.company.epatient` |
+
+Tambahan untuk TestFlight (opsional jika hanya build APP/IPA lokal):
+
+| Jenis  | Nama                            | Isi                                                                                     |
+| ------ | ------------------------------- | --------------------------------------------------------------------------------------- |
+| Secret | `APP_STORE_CONNECT_KEY_ID`      | Key ID 10 karakter alfanumerik dari App Store Connect API (misal: `2X9R4HXF34`)         |
+| Secret | `APP_STORE_CONNECT_ISSUER_ID`   | Issuer ID UUID dari App Store Connect API (misal: `57246542-96fe-1a63-e053-0824d0110072`)|
+| Secret | `APP_STORE_CONNECT_PRIVATE_KEY` | Isi file `AuthKey_<KEY_ID>.p8` (mendukung teks raw PEM maupun Base64)                   |
 
 Sediakan tepat satu identity valid pada `.p12`, belum kedaluwarsa, serta profile belum kedaluwarsa. Helper memvalidasi team, UUID, explicit application identifier, masa berlaku profile, dan kecocokan jenis export. Xcode memvalidasi kecocokan certificate/profile dan entitlement saat archive/export. Wildcard profile, enterprise profile, app extension/multiple-profile archive belum didukung. Jika metode export berubah, profile dan certificate environment mungkin perlu diganti agar sesuai.
 
