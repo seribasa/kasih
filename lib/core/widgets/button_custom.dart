@@ -16,35 +16,33 @@ class ButtonCustom extends StatelessWidget {
     final isEnable = onPressed != null || loading;
     return Container(
       width: double.infinity,
-      decoration: isEnable
-          ? BoxDecoration(
-              borderRadius: BorderRadius.zero,
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: Colors.grey.shade200,
-                  offset: Offset(4, 2),
-                  blurRadius: 5,
-                  spreadRadius: 2,
-                ),
-              ],
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [Colors.black, Colors.black],
-              ),
-            )
-          : BoxDecoration(color: Colors.grey[300]),
+      decoration:
+          isEnable
+              ? BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.zero,
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.grey.shade200,
+                    offset: const Offset(4, 2),
+                    blurRadius: 5,
+                    spreadRadius: 2,
+                  ),
+                ],
+              )
+              : BoxDecoration(color: Colors.grey[300]),
       child: TextButton(
         onPressed: !loading ? onPressed as void Function()? : null,
-        child: loading
-            ? SizedBox(
-                height: 18,
-                width: 18,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
-            : child,
+        child:
+            loading
+                ? SizedBox(
+                  height: 18,
+                  width: 18,
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                )
+                : child,
       ),
     );
   }
