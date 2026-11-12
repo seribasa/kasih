@@ -94,10 +94,14 @@ class _ChildProfileScaffold extends StatelessWidget {
                 Expanded(
                   child: Card(
                     elevation: 0,
-                    margin: EdgeInsets.all(AppPadding.paddingM),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: AppPadding.paddingM,
+                        horizontal: 16,
+                        vertical: 8,
                       ),
                       child: ListView(
                         children: [

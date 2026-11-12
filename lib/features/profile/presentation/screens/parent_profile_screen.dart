@@ -19,7 +19,6 @@ import 'package:formz/formz.dart';
 
 import '../../../../core/pair.dart';
 import '../../../../core/utils/constant.dart';
-import '../../../../core/utils/themes/padding_constant.dart';
 import '../../../../core/widgets/dropdown.dart';
 import '../../../../core/widgets/profile_picture.dart';
 import '../../logic/blocs/parentBloc/profile_bloc.dart';
@@ -58,10 +57,14 @@ class ParentProfileScreen extends StatelessWidget {
               }
               if (state.statusGet.isSuccess) {
                 return Card(
-                  margin: EdgeInsets.all(AppPadding.paddingM),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: AppPadding.paddingM,
+                      horizontal: 16,
+                      vertical: 8,
                     ),
                     child: ListView(
                       physics: const BouncingScrollPhysics(),

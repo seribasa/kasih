@@ -25,18 +25,19 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Container(
         color: Colors.black,
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Column(
             children: [
               isLandscape
-                  ? SizedBox()
-                  : Container(
+                  ? const SizedBox()
+                  : SizedBox(
                     width: double.infinity,
                     height: MediaQuery.of(context).size.height / 4,
                     child: Card(
                       elevation: 0,
+                      margin: const EdgeInsets.only(bottom: 12),
                       child: Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Image.asset(
                           'assets/images/e_patient_care.png',
                           fit: BoxFit.contain,
@@ -49,10 +50,11 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: Card(
                   elevation: 0,
+                  margin: EdgeInsets.zero,
                   child: GridView.count(
-                    mainAxisSpacing: 20,
-                    crossAxisSpacing: 20,
-                    padding: EdgeInsets.all(20),
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    padding: const EdgeInsets.all(12),
                     crossAxisCount: isLandscape ? 4 : 2,
                     children: [
                       TombolMenu(
@@ -114,7 +116,7 @@ class TombolMenu extends StatelessWidget {
     return GestureDetector(
       onTap: onTap as void Function()?,
       child: Padding(
-        padding: const EdgeInsets.all(5.0),
+        padding: const EdgeInsets.all(2.0),
         child: Column(
           children: [
             Flexible(

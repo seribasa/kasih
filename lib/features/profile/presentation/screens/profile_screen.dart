@@ -24,7 +24,7 @@ class ProfilePage extends StatelessWidget {
       body: Container(
         color: Colors.black,
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Column(
             children: [
               Container(
@@ -34,13 +34,14 @@ class ProfilePage extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: Shape.roundedM,
                 ),
-                padding: const EdgeInsets.all(AppPadding.paddingL),
+                padding: const EdgeInsets.all(AppPadding.paddingM),
                 child: SvgPicture.asset(AppAssets.PROFILE_ILUSTRATION),
               ),
               VerticalSpacer(),
               Card(
                 color: Colors.white,
                 elevation: 0,
+                margin: EdgeInsets.zero,
                 child: ListTile(
                   shape: Shape.roundedRectangleM,
                   onTap: () => context.push(RootRoutePaths.profile.fullPath),
