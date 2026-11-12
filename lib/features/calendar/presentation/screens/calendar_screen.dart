@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../../core/widgets/error.dart';
 import '../../../../core/widgets/snackbar_custom.dart';
 import '../../logic/bloc/calendar_bloc/calendar_bloc.dart';
 
@@ -20,9 +21,11 @@ class CalendarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CalendarBloc>(
-      create: (_) => getIt<CalendarBloc>()
-        ..add(CalendarEventLoaded())
-        ..add(SetSelectedDate(selectedDate: DateTime.now())),
+      create:
+          (_) =>
+              getIt<CalendarBloc>()
+                ..add(CalendarEventLoaded())
+                ..add(SetSelectedDate(selectedDate: DateTime.now())),
       child: const _CalendarScaffold(),
     );
   }
@@ -45,17 +48,19 @@ class _CalendarScaffold extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () => context.push(
-              CalendarRoutePaths.addCalendar.fullPath,
-              extra: {'bloc': context.read<CalendarBloc>()},
-            ),
+            onPressed:
+                () => context.push(
+                  CalendarRoutePaths.addCalendar.fullPath,
+                  extra: {'bloc': context.read<CalendarBloc>()},
+                ),
           ),
         ],
       ),
       body: BlocConsumer<CalendarBloc, CalendarState>(
-        listenWhen: (previous, current) =>
-            previous.status != current.status ||
-            previous.statusDeleteEvent != current.statusDeleteEvent,
+        listenWhen:
+            (previous, current) =>
+                previous.status != current.status ||
+                previous.statusDeleteEvent != current.statusDeleteEvent,
         listener: (context, state) {
           if (state.status == FormzSubmissionStatus.failure) {
             snackbarCustom(AppConstant.ERROR_OCCURRED).show(context);
@@ -63,7 +68,17 @@ class _CalendarScaffold extends StatelessWidget {
         },
         builder: (context, state) {
           if (state.status == FormzSubmissionStatus.failure) {
-            return Center(child: Text('Error'));
+            return ErrorContainer(
+              onRefresh: () {
+                context.read<CalendarBloc>()
+                  ..add(CalendarEventLoaded())
+                  ..add(
+                    SetSelectedDate(
+                      selectedDate: state.selectedDate ?? DateTime.now(),
+                    ),
+                  );
+              },
+            );
           }
           if (state.status == FormzSubmissionStatus.inProgress) {
             return Center(child: CircularProgressIndicator());
@@ -179,8 +194,8 @@ class _HeaderDetailCalendarSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CalendarBloc, CalendarState>(
-      buildWhen: (previous, current) =>
-          previous.selectedDate != current.selectedDate,
+      buildWhen:
+          (previous, current) => previous.selectedDate != current.selectedDate,
       builder: (context, state) {
         if (state.selectedDate.isNull()) {
           return const SizedBox();
@@ -207,8 +222,8 @@ class _HeaderDetailCalendarSection extends StatelessWidget {
                   child: IconButton(
                     onPressed: () {
                       context.read<CalendarBloc>().add(
-                            SetSelectedDate(selectedDate: null),
-                          );
+                        SetSelectedDate(selectedDate: null),
+                      );
                     },
                     icon: Icon(Icons.close_rounded),
                   ),
@@ -262,7 +277,8 @@ class _DetailCalendarSection extends StatelessWidget {
               DataColumn(label: Text('Aktivitas')),
               DataColumn(label: Text('')),
             ],
-            rows: state.groupedEvents?[state.selectedDate]?.map((e) {
+            rows:
+                state.groupedEvents?[state.selectedDate]?.map((e) {
                   return _ListRowEvent(event: e).build(context);
                 }).toList() ??
                 [],
@@ -310,10 +326,14 @@ class _ListRowEvent {
                     Icons.more_vert,
                     color: Theme.of(context).primaryColor,
                   ),
-                  itemBuilder: (context) => [
-                    PopupMenuItem(value: 0, child: Text(AppConstant.EDIT)),
-                    PopupMenuItem(value: 1, child: Text(AppConstant.DELETE)),
-                  ],
+                  itemBuilder:
+                      (context) => [
+                        PopupMenuItem(value: 0, child: Text(AppConstant.EDIT)),
+                        PopupMenuItem(
+                          value: 1,
+                          child: Text(AppConstant.DELETE),
+                        ),
+                      ],
                 );
               }
               return SizedBox();

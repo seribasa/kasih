@@ -18,8 +18,8 @@ class AppBarPeltops extends StatelessWidget implements PreferredSizeWidget {
     this.toolbarOpacity = 1.0,
     this.bottomOpacity = 1.0,
     this.automaticallyImplyLeading = true,
-  })  : preferredSize = const Size.fromHeight(kToolbarHeight),
-        super(key: key);
+  }) : preferredSize = const Size.fromHeight(kToolbarHeight),
+       super(key: key);
 
   final String title;
   final List<Widget>? actions;
@@ -48,9 +48,10 @@ class AppBarPeltops extends StatelessWidget implements PreferredSizeWidget {
       bottom: bottom,
       elevation: elevation,
       backgroundColor: Colors.black,
-      systemOverlayStyle: SystemUiOverlayStyle(
+      systemOverlayStyle: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
       ),
       iconTheme: iconTheme,
       toolbarTextStyle: textTheme?.titleLarge,

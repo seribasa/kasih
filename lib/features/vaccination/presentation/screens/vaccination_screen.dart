@@ -31,7 +31,7 @@ class VaccinationScreen extends StatelessWidget {
                     height: 150,
                     child: SvgPicture.asset(
                       'assets/images/undraw_medical_care_movn.svg',
-                      semanticsLabel: 'A red up arrow',
+                      semanticsLabel: 'Ilustrasi layanan vaksinasi',
                     ),
                   ),
                   SizedBox(height: 20),

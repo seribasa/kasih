@@ -17,13 +17,17 @@ class AppointmentsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? userId = (context.read<AuthenticationBloc>().state
-            is Authenticated)
-        ? (context.read<AuthenticationBloc>().state as Authenticated).user.uid
-        : '';
+    final String? userId =
+        (context.read<AuthenticationBloc>().state is Authenticated)
+            ? (context.read<AuthenticationBloc>().state as Authenticated)
+                .user
+                .uid
+            : '';
     return BlocProvider(
-      create: (context) =>
-          getIt<AppointmentBloc>()..add(LoadAppointmentsEvent(userId ?? '')),
+      create:
+          (context) =>
+              getIt<AppointmentBloc>()
+                ..add(LoadAppointmentsEvent(userId ?? '')),
       child: _AppointmentsScaffold(),
     );
   }
@@ -51,17 +55,18 @@ class _AppointmentsScaffold extends StatelessWidget {
         child: Column(
           children: [
             BlocConsumer<AppointmentBloc, AppointmentState>(
-              listenWhen: (previous, current) =>
-                  previous.sortCriteria != current.sortCriteria,
+              listenWhen:
+                  (previous, current) =>
+                      previous.sortCriteria != current.sortCriteria,
               listener: (context, state) {
                 final userId =
                     (context.read<AuthenticationBloc>().state as Authenticated)
-                            .user
-                            .uid ??
-                        '';
+                        .user
+                        .uid ??
+                    '';
                 context.read<AppointmentBloc>().add(
-                      LoadAppointmentsEvent(userId),
-                    );
+                  LoadAppointmentsEvent(userId),
+                );
               },
               builder: (context, state) {
                 return Row(
@@ -72,18 +77,34 @@ class _AppointmentsScaffold extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                     DropdownButton<String>(
+                      dropdownColor: Colors.grey[900],
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                      iconEnabledColor: Colors.white,
                       value: state.sortCriteria,
                       onChanged: (String? newValue) {
                         context.read<AppointmentBloc>().add(
-                              ChangeSortCriteriaEvent(newValue),
-                            );
+                          ChangeSortCriteriaEvent(newValue),
+                        );
                       },
-                      items: [
-                        DropdownMenuItem(value: 'date', child: Text('Tanggal')),
-                        DropdownMenuItem(value: 'name', child: Text('Nama')),
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'date',
+                          child: Text(
+                            'Tanggal',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        DropdownMenuItem(
+                          value: 'name',
+                          child: Text(
+                            'Nama',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
                       ],
                     ),
                   ],

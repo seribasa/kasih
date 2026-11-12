@@ -20,8 +20,9 @@ class PatientMedicalHistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          getIt<CheckupBloc>()..add(OnGetCheckupsEvent(childId: child?.id)),
+      create:
+          (context) =>
+              getIt<CheckupBloc>()..add(OnGetCheckupsEvent(childId: child?.id)),
       child: BlocBuilder<CheckupBloc, CheckupState>(
         builder: (context, state) {
           return Scaffold(
@@ -40,7 +41,7 @@ class PatientMedicalHistoryScreen extends StatelessWidget {
               } else if (state.statusGet == FormzSubmissionStatus.inProgress) {
                 return Center(child: CircularProgressIndicator());
               } else {
-                return Scaffold(body: Center(child: Text('Gagal memuat data')));
+                return const Center(child: Text('Gagal memuat data'));
               }
             }(),
           );
@@ -73,20 +74,24 @@ class PatientMedicalHistoryScaffold extends StatelessWidget {
                     child: SizedBox(
                       height: 80,
                       width: 80,
-                      child: child?.photoURL == null
-                          ? Icon(Icons.supervised_user_circle_sharp)
-                          : CachedNetworkImage(
-                              imageUrl: child?.photoURL ?? '',
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) =>
-                                  Center(child: CircularProgressIndicator()),
-                              errorWidget: (context, url, error) => FittedBox(
-                                child: Icon(
-                                  Icons.supervised_user_circle_sharp,
-                                  color: Colors.red,
-                                ),
+                      child:
+                          child?.photoURL == null
+                              ? Icon(Icons.supervised_user_circle_sharp)
+                              : CachedNetworkImage(
+                                imageUrl: child?.photoURL ?? '',
+                                fit: BoxFit.cover,
+                                placeholder:
+                                    (context, url) => Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                errorWidget:
+                                    (context, url, error) => FittedBox(
+                                      child: Icon(
+                                        Icons.supervised_user_circle_sharp,
+                                        color: Colors.red,
+                                      ),
+                                    ),
                               ),
-                            ),
                     ),
                   ),
                   const SizedBox(width: 10),
