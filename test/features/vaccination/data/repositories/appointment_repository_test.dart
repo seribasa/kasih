@@ -206,27 +206,20 @@ void main() {
         );
       });
 
-      test(
-        'falls back to direct database lookup when functionsClient.invoke fails',
-        () async {
-          final mockHttp = MockSupabaseHttpClient();
-          final client = SupabaseClient(
-            'https://test.com',
-            'test',
-            httpClient: mockHttp,
-          );
-          final fallbackRepo = AppointmentRepository(client);
+      test('throws an exception when functionsClient.invoke fails', () async {
+        when(
+          () => functionsClient.invoke(
+            any(),
+            method: HttpMethod.get,
+            headers: any(named: 'headers'),
+          ),
+        ).thenThrow(Exception('Network error'));
 
-          await client
-              .from(AppointmentModel.tableName)
-              .insert(data1.toSeribase());
-
-          final result = await fallbackRepo.getAppointment(id: data1.id!);
-
-          expect(result, isA<AppointmentOrderEntity>());
-          expect(result.appointment?.id, data1.id);
-        },
-      );
+        expect(
+          () => repository.getAppointment(id: 'test-id'),
+          throwsA(isA<Exception>()),
+        );
+      });
     });
 
     group('setAppointment', () {
@@ -331,24 +324,21 @@ void main() {
         },
       );
 
-      test(
-        'falls back to direct database insert when functionsClient.invoke fails',
-        () async {
-          final mockHttp = MockSupabaseHttpClient();
-          final client = SupabaseClient(
-            'https://test.com',
-            'test',
-            httpClient: mockHttp,
-          );
-          final fallbackRepo = AppointmentRepository(client);
+      test('throws an exception when functionsClient.invoke fails', () async {
+        when(
+          () => functionsClient.invoke(
+            any(),
+            method: HttpMethod.post,
+            body: any(named: 'body'),
+            headers: any(named: 'headers'),
+          ),
+        ).thenThrow(Exception('Edge function down'));
 
-          final result = await fallbackRepo.setAppointment(data1);
-
-          expect(result, isA<AppointmentOrderEntity>());
-          expect(result.appointment?.id, data1.id);
-          expect(result.appointment?.healthWorker?.id, data1.healthWorker?.id);
-        },
-      );
+        expect(
+          () => repository.setAppointment(data1),
+          throwsA(isA<Exception>()),
+        );
+      });
     });
 
     group('updateAppointment', () {

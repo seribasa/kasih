@@ -191,80 +191,74 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        order != null
-                            ? 'Berikut adalah detail pesanan anda'
-                            : 'Janji temu ini tidak memiliki biaya pemesanan / pesanan pembayaran.',
-                        style: TextStyle(
-                          color: order != null ? Colors.red : Colors.grey[700],
-                        ),
+                        'Berikut adalah detail pesanan anda',
+                        style: TextStyle(color: Colors.red),
                       ),
-                      if (order != null) ...[
-                        SizedBox(height: 10),
-                        Table(
-                          children: [
-                            TableRow(
-                              children: [
-                                Text(
-                                  'ID Pesanan :',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                  ),
+                      SizedBox(height: 10),
+                      Table(
+                        children: [
+                          TableRow(
+                            children: [
+                              Text(
+                                'ID Pesanan :',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
                                 ),
-                                Text(order.id ?? '-'),
-                              ],
-                            ),
-                            ...?order.orderItems?.map(
-                              (item) => TableRow(
-                                children: [
-                                  Text(
-                                    item.product?.name ?? '',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  Text('${item.price} x ${item.quantity}'),
-                                ],
                               ),
-                            ),
-                            TableRow(
+                              Text(order?.id ?? '-'),
+                            ],
+                          ),
+                          ...?order?.orderItems?.map(
+                            (item) => TableRow(
                               children: [
                                 Text(
-                                  'Status Pesanan :',
+                                  item.product?.name ?? '',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
                                   ),
                                 ),
-                                Text(order.status ?? '-'),
+                                Text('${item.price} x ${item.quantity}'),
                               ],
                             ),
-                            TableRow(
-                              children: [
-                                Text(
-                                  'Total Pembayaran :',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                  ),
+                          ),
+                          TableRow(
+                            children: [
+                              Text(
+                                'Status Pesanan :',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
                                 ),
-                                Text(
-                                  order.totalAmount != null
-                                      ? 'Rp ${order.totalAmount}'
-                                      : '-',
+                              ),
+                              Text(order?.status ?? '-'),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              Text(
+                                'Total Pembayaran :',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        if (order.status == 'draft') ...[
-                          SizedBox(height: 30),
-                          _PaymentButtonsRow(
-                            appointmentId: appointmentId,
-                            order: order,
+                              ),
+                              Text(
+                                order?.totalAmount != null
+                                    ? 'Rp ${order!.totalAmount}'
+                                    : '-',
+                              ),
+                            ],
                           ),
                         ],
+                      ),
+                      if (order?.status == 'draft') ...[
+                        SizedBox(height: 30),
+                        _PaymentButtonsRow(
+                          appointmentId: appointmentId,
+                          order: order,
+                        ),
                       ],
                       SizedBox(height: 15),
                       ButtonCustom(

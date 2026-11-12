@@ -56,37 +56,20 @@ class AppointmentRepository {
             'Authorization': 'Bearer $token',
         },
       );
-      if (fetch.status == 200 || fetch.status == 201) {
-        final data = fetch.data is Map ? fetch.data['data'] : null;
-        if (data != null) {
-          final result = AppointmentModel.fromSeribase(data);
-          final order =
-              data['order'] != null
-                  ? OrderModel.fromSeribase(data['order'])
-                  : null;
-          return AppointmentOrderEntity(appointment: result, order: order);
-        }
+      if (fetch.status != 200 && fetch.status != 201) {
+        throw Exception('Failed to get appointment');
       }
-    } catch (_) {
-      // Ignored: fallback to direct DB lookup below
-    }
 
-    try {
-      final List<Map<String, dynamic>> data = await supabaseClient
-          .from(AppointmentModel.tableName)
-          .select('''
-              *,
-              profiles:parent_id ( * ),
-              children ( * )
-            ''')
-          .eq('id', id);
-      if (data.isEmpty) {
+      final data = fetch.data is Map ? fetch.data['data'] : null;
+      if (data == null) {
         throw Exception('Data not found');
       }
-      final result = AppointmentModel.fromSeribase(data.first);
-      return AppointmentOrderEntity(appointment: result);
-    } catch (_) {
-      throw Exception('Data not found');
+      final result = AppointmentModel.fromSeribase(data);
+      final order =
+          data['order'] != null ? OrderModel.fromSeribase(data['order']) : null;
+      return AppointmentOrderEntity(appointment: result, order: order);
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -108,43 +91,28 @@ class AppointmentRepository {
             'Authorization': 'Bearer $token',
         },
       );
-      if (result.status == 200 || result.status == 201) {
-        final data = result.data is Map ? result.data['data'] : null;
-        if (data != null) {
-          final appointment = AppointmentModel.fromSeribase(data);
-          final orderById =
-              data['order'] != null
-                  ? OrderModel.fromSeribase(data['order'])
-                  : null;
-          return AppointmentOrderEntity(
-            appointment: appointment,
-            order: orderById,
-          );
-        }
+      if (result.status != 200 && result.status != 201) {
+        final message =
+            (result.data is Map && result.data['message'] != null)
+                ? result.data['message'].toString()
+                : (result.data is Map && result.data['error'] != null)
+                ? (result.data['error'] is Map &&
+                        result.data['error']['message'] != null)
+                    ? result.data['error']['message'].toString()
+                    : result.data['error'].toString()
+                : 'Failed to set appointment';
+        throw Exception(message);
       }
-    } catch (_) {
-      // Edge function failed or is misconfigured. Fallback to direct DB insert.
-    }
-
-    try {
-      final insertData = model.toSeribase();
-      final List<Map<String, dynamic>> inserted = await supabaseClient
-          .from(AppointmentModel.tableName)
-          .insert(insertData)
-          .select('''
-              *,
-              profiles:parent_id ( * ),
-              children ( * )
-            ''');
-      if (inserted.isEmpty) {
-        throw Exception('Gagal membuat janji');
+      final data = result.data is Map ? result.data['data'] : null;
+      if (data == null) {
+        throw Exception('Data not found');
       }
-      final appointment = AppointmentModel.fromSeribase(inserted.first);
-      return AppointmentOrderEntity(
-        appointment: appointment.copyWith(healthWorker: model.healthWorker),
-      );
+      final appointment = AppointmentModel.fromSeribase(data);
+      final orderById =
+          data['order'] != null ? OrderModel.fromSeribase(data['order']) : null;
+      return AppointmentOrderEntity(appointment: appointment, order: orderById);
     } catch (e) {
-      throw Exception(e.toString().replaceFirst('Exception: ', ''));
+      rethrow;
     }
   }
 
