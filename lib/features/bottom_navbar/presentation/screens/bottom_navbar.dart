@@ -50,34 +50,42 @@ class BottomNavbarWrapper extends StatelessWidget {
           ),
           bottomNavigationBar:
               BlocBuilder<BottomNavbarCubit, BottomNavbarState>(
-            builder: (context, state) {
-              return BottomNavigationBar(
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                type: BottomNavigationBarType.fixed,
-                currentIndex: state.itemIndex,
-                onTap: (value) =>
-                    context.read<BottomNavbarCubit>().navigateTo(value),
-                items: [
-                  BottomNavigationBarItem(
-                    icon: FaIcon(
-                      FontAwesomeIcons.houseChimneyMedical,
-                      size: 20,
+                builder: (context, state) {
+                  return BottomNavigationBar(
+                    showSelectedLabels: true,
+                    showUnselectedLabels: true,
+                    selectedItemColor: Colors.black,
+                    unselectedItemColor: Colors.grey[600],
+                    selectedLabelStyle: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
                     ),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: FaIcon(FontAwesomeIcons.userDoctor, size: 20),
-                    label: 'Profile',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: FaIcon(FontAwesomeIcons.solidBell, size: 20),
-                    label: 'Message',
-                  ),
-                ],
-              );
-            },
-          ),
+                    unselectedLabelStyle: const TextStyle(fontSize: 12),
+                    type: BottomNavigationBarType.fixed,
+                    currentIndex: state.itemIndex,
+                    onTap:
+                        (value) =>
+                            context.read<BottomNavbarCubit>().navigateTo(value),
+                    items: const [
+                      BottomNavigationBarItem(
+                        icon: FaIcon(
+                          FontAwesomeIcons.houseChimneyMedical,
+                          size: 20,
+                        ),
+                        label: 'Beranda',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: FaIcon(FontAwesomeIcons.solidUser, size: 20),
+                        label: 'Profil',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: FaIcon(FontAwesomeIcons.solidEnvelope, size: 20),
+                        label: 'Pesan',
+                      ),
+                    ],
+                  );
+                },
+              ),
         ),
       ),
     );

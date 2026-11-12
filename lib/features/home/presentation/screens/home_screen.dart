@@ -31,21 +31,21 @@ class _HomeScreenState extends State<HomeScreen> {
               isLandscape
                   ? SizedBox()
                   : Container(
-                      width: double.infinity,
-                      height: MediaQuery.of(context).size.height / 4,
-                      child: Card(
-                        elevation: 0,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Image.asset(
-                            'assets/images/e_patient_care.png',
-                            fit: BoxFit.contain,
-                            semanticLabel:
-                                'Pasien dan keluarga mengatur kesehatan bersama',
-                          ),
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height / 4,
+                    child: Card(
+                      elevation: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Image.asset(
+                          'assets/images/e_patient_care.png',
+                          fit: BoxFit.contain,
+                          semanticLabel:
+                              'Pasien dan keluarga mengatur kesehatan bersama',
                         ),
                       ),
                     ),
+                  ),
               Expanded(
                 child: Card(
                   elevation: 0,
@@ -63,11 +63,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         label: 'Kalender',
                       ),
                       TombolMenu(
-                        icon: Icons.child_friendly_outlined,
+                        icon: Icons.people_alt_outlined,
                         onTap: () {
                           context.push(ProfileRoutePaths.children.fullPath);
                         },
-                        label: 'Anak',
+                        label: 'Pasien',
                       ),
                       TombolMenu(
                         icon: Icons.medical_services_rounded,

@@ -35,16 +35,18 @@ class ListChildrenScreen extends StatelessWidget {
                   return ErrorContainer(
                     onRefresh: () {
                       context.read<ChildProfileBloc>().add(
-                            OnGetChildrenEvent(),
-                          );
+                        OnGetChildrenEvent(),
+                      );
                     },
                   );
                 } else if (state.statusGetChildren ==
                     FormzSubmissionStatus.inProgress) {
                   return Center(child: CircularProgressIndicator());
                 } else if (state.children == null || state.children!.isEmpty) {
-                  return Center(
-                    child: Text('Data anak kosong, silahkan tambahkan anak'),
+                  return const Center(
+                    child: Text(
+                      'Data pasien belum tersedia, silakan tambahkan data pasien',
+                    ),
                   );
                 }
                 final data = state.children;
