@@ -2,6 +2,7 @@ import '../../../../../core/widgets/button_custom.dart';
 import '../../../../../routers/route_paths/auth_route_paths.dart';
 import '../../../logic/bloc/authentication_bloc/authentication_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:go_router/go_router.dart';
@@ -32,6 +33,7 @@ class _LoginScaffold extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
           foregroundColor: Colors.black,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
         body: Center(
           child: Padding(

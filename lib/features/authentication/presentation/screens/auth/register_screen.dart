@@ -3,6 +3,7 @@ import 'package:kasih/injection.dart';
 import '../../../logic/cubit/signup_cubit/signup_cubit.dart';
 import '../../widgets/signup_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
@@ -17,6 +18,7 @@ class RegisterScreen extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
           foregroundColor: Colors.black,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
         body: Padding(
           padding: const EdgeInsets.all(20),

@@ -50,8 +50,8 @@ class AppBarPeltops extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.black,
       systemOverlayStyle: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
       ),
       iconTheme: iconTheme,
       toolbarTextStyle: textTheme?.titleLarge,
