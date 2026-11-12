@@ -28,7 +28,7 @@ class _PesanPageState extends State<PesanPage> {
             padding: const EdgeInsets.all(20.0),
             child: Card(
               elevation: 0,
-              child: Padding(
+              child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
                   vertical: 20,

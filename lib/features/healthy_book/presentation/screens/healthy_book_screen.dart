@@ -27,7 +27,7 @@ class HealthyBookScreen extends StatelessWidget {
           child: Card(
             margin: EdgeInsets.all(20),
             elevation: 0,
-            child: Padding(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [

@@ -23,7 +23,7 @@ class VaccinationScreen extends StatelessWidget {
           child: Card(
             margin: EdgeInsets.all(20),
             elevation: 0,
-            child: Padding(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: Column(
                 children: [
