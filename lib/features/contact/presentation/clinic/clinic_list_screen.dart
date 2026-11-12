@@ -80,10 +80,10 @@ class _ClinicListScaffoldState extends State<_ClinicListScaffold>
         child: Container(
           color: Colors.black,
           child: Card(
-            margin: EdgeInsets.all(20),
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             elevation: 0,
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: BlocListener<ClinicBloc, ClinicState>(
                 listener: (context, state) {
                   if (state.statusGetClinic == FormzSubmissionStatus.success) {
@@ -147,9 +147,10 @@ class _ClinicListScaffoldState extends State<_ClinicListScaffold>
                                       CrossAxisAlignment.stretch,
                                   children: [
                                     Card(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.secondary,
+                                      color:
+                                          Theme.of(
+                                            context,
+                                          ).colorScheme.secondary,
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: Text(

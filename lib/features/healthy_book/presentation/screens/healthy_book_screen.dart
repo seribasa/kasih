@@ -25,10 +25,10 @@ class HealthyBookScreen extends StatelessWidget {
         child: Container(
           color: Colors.black,
           child: Card(
-            margin: EdgeInsets.all(20),
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             elevation: 0,
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
                   SizedBox(

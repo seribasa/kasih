@@ -50,7 +50,7 @@ class _AppointmentsScaffold extends StatelessWidget {
       ),
       body: Container(
         height: double.infinity,
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         color: Colors.black,
         child: Column(
           children: [

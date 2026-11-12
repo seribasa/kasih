@@ -83,13 +83,13 @@ class _VaccinationConfirmationScaffold extends StatelessWidget {
           return Container(
             color: Colors.black,
             child: Card(
-              margin: EdgeInsets.all(20),
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               elevation: 0,
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 20,
+                    horizontal: 16,
+                    vertical: 16,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

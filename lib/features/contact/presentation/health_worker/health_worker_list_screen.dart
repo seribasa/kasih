@@ -10,7 +10,7 @@ class HealthWorkerListScreen extends StatelessWidget {
   final String name;
 
   const HealthWorkerListScreen({Key? key, required this.name})
-      : super(key: key);
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -82,10 +82,10 @@ class _HealthWorkerListScaffoldState extends State<_HealthWorkerListScaffold>
         child: Container(
           color: Colors.black,
           child: Card(
-            margin: EdgeInsets.all(20),
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             elevation: 0,
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: BlocListener<HealthWorkerBloc, HealthWorkerState>(
                 listener: (context, state) {
                   if (state.statusGetHealthWorkers !=
@@ -108,8 +108,8 @@ class _HealthWorkerListScaffoldState extends State<_HealthWorkerListScaffold>
                         message: "Gagal memuat data",
                         onRefresh: () {
                           context.read<HealthWorkerBloc>().add(
-                                GetHealthWorkers(),
-                              );
+                            GetHealthWorkers(),
+                          );
                         },
                       );
                     }
@@ -118,8 +118,8 @@ class _HealthWorkerListScaffoldState extends State<_HealthWorkerListScaffold>
                         message: "Data tidak ditemukan",
                         onRefresh: () {
                           context.read<HealthWorkerBloc>().add(
-                                GetHealthWorkers(),
-                              );
+                            GetHealthWorkers(),
+                          );
                         },
                       );
                     }
@@ -128,8 +128,8 @@ class _HealthWorkerListScaffoldState extends State<_HealthWorkerListScaffold>
                         SearchBarPeltops(
                           onChanged: (value) {
                             context.read<HealthWorkerBloc>().add(
-                                  ChangeSearch(value),
-                                );
+                              ChangeSearch(value),
+                            );
                           },
                         ),
                         Flexible(
@@ -156,9 +156,10 @@ class _HealthWorkerListScaffoldState extends State<_HealthWorkerListScaffold>
                                       CrossAxisAlignment.stretch,
                                   children: [
                                     Card(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.secondary,
+                                      color:
+                                          Theme.of(
+                                            context,
+                                          ).colorScheme.secondary,
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: Text(

@@ -25,14 +25,11 @@ class _PesanPageState extends State<PesanPage> {
         child: Container(
           color: Colors.black,
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Card(
               elevation: 0,
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 20,
-                ),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
                     SizedBox(
