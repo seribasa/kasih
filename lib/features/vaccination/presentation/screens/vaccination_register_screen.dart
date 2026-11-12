@@ -226,6 +226,11 @@ class _VaccinationRegisterScaffoldState
                               );
                               setState(() {
                                 _selectedDate = date;
+                                if (selectedRadioTile != null &&
+                                    selectedRadioTile?.day?.id !=
+                                        date?.weekday) {
+                                  selectedRadioTile = null;
+                                }
                               });
                             },
                           ),

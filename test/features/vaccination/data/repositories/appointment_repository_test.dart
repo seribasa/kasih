@@ -205,6 +205,28 @@ void main() {
           throwsA(isA<Exception>()),
         );
       });
+
+      test(
+        'falls back to direct database lookup when functionsClient.invoke fails',
+        () async {
+          final mockHttp = MockSupabaseHttpClient();
+          final client = SupabaseClient(
+            'https://test.com',
+            'test',
+            httpClient: mockHttp,
+          );
+          final fallbackRepo = AppointmentRepository(client);
+
+          await client
+              .from(AppointmentModel.tableName)
+              .insert(data1.toSeribase());
+
+          final result = await fallbackRepo.getAppointment(id: data1.id!);
+
+          expect(result, isA<AppointmentOrderEntity>());
+          expect(result.appointment?.id, data1.id);
+        },
+      );
     });
 
     group('setAppointment', () {
@@ -306,6 +328,25 @@ void main() {
 
           expect(capturedBody?['gateway'], 'midtrans');
           expect(capturedBody?['currency'], 'IDR');
+        },
+      );
+
+      test(
+        'falls back to direct database insert when functionsClient.invoke fails',
+        () async {
+          final mockHttp = MockSupabaseHttpClient();
+          final client = SupabaseClient(
+            'https://test.com',
+            'test',
+            httpClient: mockHttp,
+          );
+          final fallbackRepo = AppointmentRepository(client);
+
+          final result = await fallbackRepo.setAppointment(data1);
+
+          expect(result, isA<AppointmentOrderEntity>());
+          expect(result.appointment?.id, data1.id);
+          expect(result.appointment?.healthWorker?.id, data1.healthWorker?.id);
         },
       );
     });

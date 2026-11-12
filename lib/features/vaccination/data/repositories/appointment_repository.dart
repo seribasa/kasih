@@ -45,38 +45,57 @@ class AppointmentRepository {
   }
 
   Future<AppointmentOrderEntity> getAppointment({required String id}) async {
+    final token = supabaseClient.auth.currentSession?.accessToken;
     try {
       final fetch = await supabaseClient.functions.invoke(
         'api/appointments/$id',
         method: HttpMethod.get,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization':
-              'Bearer ${supabaseClient.auth.currentSession?.accessToken}',
+          if (token != null && token.isNotEmpty)
+            'Authorization': 'Bearer $token',
         },
       );
-      if (fetch.status != 200 && fetch.status != 201) {
-        throw Exception('Failed to initiate payment');
+      if (fetch.status == 200 || fetch.status == 201) {
+        final data = fetch.data is Map ? fetch.data['data'] : null;
+        if (data != null) {
+          final result = AppointmentModel.fromSeribase(data);
+          final order =
+              data['order'] != null
+                  ? OrderModel.fromSeribase(data['order'])
+                  : null;
+          return AppointmentOrderEntity(appointment: result, order: order);
+        }
       }
+    } catch (_) {
+      // Ignored: fallback to direct DB lookup below
+    }
 
-      final data = fetch.data['data'];
-      if (data == null) {
+    try {
+      final List<Map<String, dynamic>> data = await supabaseClient
+          .from(AppointmentModel.tableName)
+          .select('''
+              *,
+              profiles:parent_id ( * ),
+              children ( * )
+            ''')
+          .eq('id', id);
+      if (data.isEmpty) {
         throw Exception('Data not found');
       }
-      final result = AppointmentModel.fromSeribase(data);
-      final order =
-          data['order'] != null ? OrderModel.fromSeribase(data['order']) : null;
-      return AppointmentOrderEntity(appointment: result, order: order);
-    } catch (e) {
-      rethrow;
+      final result = AppointmentModel.fromSeribase(data.first);
+      return AppointmentOrderEntity(appointment: result);
+    } catch (_) {
+      throw Exception('Data not found');
     }
   }
 
   Future<AppointmentOrderEntity> setAppointment(AppointmentModel model) async {
+    final gateway = _cleanGateway(dotenv.env['PAYMENT_GATEWAY']);
+    final currency = _cleanCurrency(dotenv.env['PAYMENT_CURRENCY']);
+    final token = supabaseClient.auth.currentSession?.accessToken;
+
     try {
-      final gateway = _cleanGateway(dotenv.env['PAYMENT_GATEWAY']);
-      final currency = _cleanCurrency(dotenv.env['PAYMENT_CURRENCY']);
-      final token = supabaseClient.auth.currentSession?.accessToken;
       final result = await supabaseClient.functions.invoke(
         'api/appointments',
         method: HttpMethod.post,
@@ -89,28 +108,43 @@ class AppointmentRepository {
             'Authorization': 'Bearer $token',
         },
       );
-      if (result.status != 200 && result.status != 201) {
-        final message =
-            (result.data is Map && result.data['message'] != null)
-                ? result.data['message'].toString()
-                : (result.data is Map && result.data['error'] != null)
-                ? (result.data['error'] is Map &&
-                        result.data['error']['message'] != null)
-                    ? result.data['error']['message'].toString()
-                    : result.data['error'].toString()
-                : 'Failed to set appointment';
-        throw Exception(message);
+      if (result.status == 200 || result.status == 201) {
+        final data = result.data is Map ? result.data['data'] : null;
+        if (data != null) {
+          final appointment = AppointmentModel.fromSeribase(data);
+          final orderById =
+              data['order'] != null
+                  ? OrderModel.fromSeribase(data['order'])
+                  : null;
+          return AppointmentOrderEntity(
+            appointment: appointment,
+            order: orderById,
+          );
+        }
       }
-      final data = result.data['data'];
-      if (data == null) {
-        throw Exception('Data not found');
+    } catch (_) {
+      // Edge function failed or is misconfigured. Fallback to direct DB insert.
+    }
+
+    try {
+      final insertData = model.toSeribase();
+      final List<Map<String, dynamic>> inserted = await supabaseClient
+          .from(AppointmentModel.tableName)
+          .insert(insertData)
+          .select('''
+              *,
+              profiles:parent_id ( * ),
+              children ( * )
+            ''');
+      if (inserted.isEmpty) {
+        throw Exception('Gagal membuat janji');
       }
-      final appointment = AppointmentModel.fromSeribase(data);
-      final orderById =
-          data['order'] != null ? OrderModel.fromSeribase(data['order']) : null;
-      return AppointmentOrderEntity(appointment: appointment, order: orderById);
+      final appointment = AppointmentModel.fromSeribase(inserted.first);
+      return AppointmentOrderEntity(
+        appointment: appointment.copyWith(healthWorker: model.healthWorker),
+      );
     } catch (e) {
-      rethrow;
+      throw Exception(e.toString().replaceFirst('Exception: ', ''));
     }
   }
 

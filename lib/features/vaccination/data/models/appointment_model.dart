@@ -105,7 +105,9 @@ class AppointmentModel extends Equatable {
       healthWorker:
           map['health_worker'] != null
               ? HealthWorkerModel.fromSeribase(map['health_worker'])
-              : null,
+              : (map['inspector_id'] != null
+                  ? HealthWorkerModel(id: map['inspector_id'])
+                  : null),
       startTime: map['start_time'],
       endTime: map['end_time'],
     );
