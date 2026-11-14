@@ -95,7 +95,11 @@ jobs:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
-        run: node .github/scripts/app-store-connect.mjs install
+        run: |
+          node .github/scripts/app-store-connect.mjs install
+          echo "APP_STORE_CONNECT_PEM<<EOF" >> "$GITHUB_ENV"
+          cat "$RUNNER_TEMP/appstore_connect_key.p8" >> "$GITHUB_ENV"
+          echo "EOF" >> "$GITHUB_ENV"
 
       - name: Prepare placeholder configuration
         run: node .github/scripts/write-app-env.mjs --ci
@@ -150,9 +154,9 @@ jobs:
       - name: Install Apple signing material
         if: inputs.artifact_type != 'app'
         env:
-          IOS_CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
-          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
-          IOS_PROVISION_PROFILE_BASE64: ${{ (inputs.artifact_type == 'testflight' || inputs.upload_to_testflight) && (secrets.IOS_PROVISION_PROFILE_APP_STORE_BASE64 || secrets.IOS_PROVISION_PROFILE_BASE64) || secrets.IOS_PROVISION_PROFILE_BASE64 }}
+          IOS_CERTIFICATE_BASE64: ${{ (inputs.artifact_type == 'testflight' || inputs.upload_to_testflight || inputs.export_method == 'app-store-connect') && (secrets.IOS_CERTIFICATE_APP_STORE_BASE64 || secrets.IOS_CERTIFICATE_BASE64) || secrets.IOS_CERTIFICATE_BASE64 }}
+          IOS_CERTIFICATE_PASSWORD: ${{ (inputs.artifact_type == 'testflight' || inputs.upload_to_testflight || inputs.export_method == 'app-store-connect') && (secrets.IOS_CERTIFICATE_APP_STORE_PASSWORD || secrets.IOS_CERTIFICATE_PASSWORD) || secrets.IOS_CERTIFICATE_PASSWORD }}
+          IOS_PROVISION_PROFILE_BASE64: ${{ (inputs.artifact_type == 'testflight' || inputs.upload_to_testflight || inputs.export_method == 'app-store-connect') && (secrets.IOS_PROVISION_PROFILE_APP_STORE_BASE64 || secrets.IOS_PROVISION_PROFILE_BASE64) || secrets.IOS_PROVISION_PROFILE_BASE64 }}
           IOS_TEAM_ID: ${{ vars.IOS_TEAM_ID }}
           IOS_BUNDLE_ID: ${{ vars.IOS_BUNDLE_ID }}
           IOS_EXPORT_METHOD: ${{ (inputs.artifact_type == 'testflight' || inputs.upload_to_testflight) && 'app-store-connect' || inputs.export_method }}
@@ -199,7 +203,7 @@ jobs:
           app-path: ${{ steps.locate-ipa.outputs.ipa_path }}
           issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           api-key-id: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
-          api-private-key: ${{ runner.temp }}/appstore_connect_key.p8
+          api-private-key: ${{ env.APP_STORE_CONNECT_PEM || secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
           release-notes: ${{ inputs.release_notes }}
           uses-non-exempt-encryption: false
           wait-for-processing: ${{ inputs.wait_for_processing }}
