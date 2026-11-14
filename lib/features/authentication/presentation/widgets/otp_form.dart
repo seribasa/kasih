@@ -24,10 +24,11 @@ class _OTPFormState extends State<OTPForm> {
   bool newCode = false;
   bool loading = false;
   String error = '';
-  late Timer timer;
+  Timer? _timer;
 
   void startTimer() {
-    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (seconds > 0) {
         setState(() {
           seconds--;
@@ -36,7 +37,7 @@ class _OTPFormState extends State<OTPForm> {
         setState(() {
           newCode = true;
         });
-        timer.cancel();
+        _timer?.cancel();
       }
     });
   }
@@ -49,7 +50,7 @@ class _OTPFormState extends State<OTPForm> {
 
   @override
   void dispose() {
-    timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -59,7 +60,9 @@ class _OTPFormState extends State<OTPForm> {
       context.read<LoginPhoneCubit>().resendOtp();
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text('Kode OTP dikirim ulang ke $phone')));
+        ..showSnackBar(
+          SnackBar(content: Text('Kode OTP dikirim ulang ke $phone')),
+        );
     }
 
     return BlocListener<LoginPhoneCubit, LoginPhoneState>(
@@ -105,34 +108,34 @@ class _OTPFormState extends State<OTPForm> {
           const SizedBox(height: 10),
           !newCode && seconds > 0
               ? Row(
-                  children: [
-                    const SizedBox(
-                      height: 18,
-                      width: 18,
-                      child: CircularProgressIndicator(),
-                    ),
-                    const SizedBox(width: 10),
-                    Text("${AppConstant.WAIT} $seconds ..."),
-                  ],
-                )
+                children: [
+                  const SizedBox(
+                    height: 18,
+                    width: 18,
+                    child: CircularProgressIndicator(),
+                  ),
+                  const SizedBox(width: 10),
+                  Text("${AppConstant.WAIT} $seconds ..."),
+                ],
+              )
               : BlocBuilder<LoginPhoneCubit, LoginPhoneState>(
-                  builder: (context, state) {
-                    return InkWell(
-                      child: const Text(
-                        AppConstant.ASK_NEW_CODE,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () {
-                        reloadCodeSent(state.phone.value);
-                        setState(() {
-                          seconds = maxSeconds;
-                          newCode = false;
-                        });
-                        startTimer();
-                      },
-                    );
-                  },
-                ),
+                builder: (context, state) {
+                  return InkWell(
+                    child: const Text(
+                      AppConstant.ASK_NEW_CODE,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      reloadCodeSent(state.phone.value);
+                      setState(() {
+                        seconds = maxSeconds;
+                        newCode = false;
+                      });
+                      startTimer();
+                    },
+                  );
+                },
+              ),
         ],
       ),
     );
@@ -148,8 +151,9 @@ class _OTPCodeInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('loginPhoneForm_otpCodeInput_textField'),
-          onChanged: (otpCode) =>
-              context.read<LoginPhoneCubit>().otpCodeChanged(otpCode),
+          onChanged:
+              (otpCode) =>
+                  context.read<LoginPhoneCubit>().otpCodeChanged(otpCode),
           keyboardType: TextInputType.number,
           maxLength: 6,
           decoration: const InputDecoration(
@@ -170,17 +174,20 @@ class _LoginButton extends StatelessWidget {
       builder: (context, state) {
         return ButtonCustom(
           loading: state.status.isInProgress,
-          child: Text(
+          child: const Text(
             AppConstant.VERIFY,
             style: TextStyle(fontSize: 15.0, color: Colors.white),
           ),
-          onPressed: () {
-            if (state.otpCode.isValid) {
-              context.read<LoginPhoneCubit>().verifyOtp();
-            } else {
-              snackbarCustom(AppConstant.OTP_NOT_VALID).show(context);
-            }
-          },
+          onPressed:
+              state.status.isInProgress
+                  ? null
+                  : () {
+                    if (state.otpCode.isValid) {
+                      context.read<LoginPhoneCubit>().verifyOtp();
+                    } else {
+                      snackbarCustom(AppConstant.OTP_NOT_VALID).show(context);
+                    }
+                  },
         );
       },
     );

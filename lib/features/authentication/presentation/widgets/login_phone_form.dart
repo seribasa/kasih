@@ -21,13 +21,13 @@ class LoginPhoneForm extends StatelessWidget {
       listenWhen:
           (previous, current) =>
               previous.status != current.status ||
-              previous.verId != current.verId,
+              (previous.verId == null && current.verId != null),
       listener: (context, state) {
         if (state.status.isFailure) {
           snackbarCustom(
             state.errorMessage ?? 'Authentication Failure',
           ).show(context);
-        } else if (state.verId != null) {
+        } else if (state.status.isSuccess && state.verId != null) {
           context.pushReplacement(
             AuthRoutePaths.otp.fullPath,
             extra: OTPScreenArguments(

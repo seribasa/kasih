@@ -55,12 +55,16 @@ import 'features/vaccination/logic/blocs/appointmentBloc/appointment_bloc.dart'
 import 'services/notifications.dart' as _i403;
 
 extension GetItInjectableX on _i174.GetIt {
-  // initializes the registration of main-scope dependencies inside of GetIt
+// initializes the registration of main-scope dependencies inside of GetIt
   Future<_i174.GetIt> init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
   }) async {
-    final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    final gh = _i526.GetItHelper(
+      this,
+      environment,
+      environmentFilter,
+    );
     final appModule = _$AppModule();
     await gh.factoryAsync<_i460.SharedPreferences>(
       () => appModule.sharedPreferences,
@@ -70,88 +74,63 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i454.SupabaseClient>(() => appModule.supabaseClient);
     gh.singleton<_i403.NotificationService>(() => _i403.NotificationService());
     gh.factory<_i30.ClinicRepository>(
-      () => _i30.ClinicRepository(gh<_i454.SupabaseClient>()),
-    );
+        () => _i30.ClinicRepository(gh<_i454.SupabaseClient>()));
     gh.factory<_i295.HealthWorkerRepository>(
-      () => _i295.HealthWorkerRepository(gh<_i454.SupabaseClient>()),
-    );
+        () => _i295.HealthWorkerRepository(gh<_i454.SupabaseClient>()));
     gh.factory<_i545.ChildRepository>(
-      () => _i545.ChildRepository(gh<_i454.SupabaseClient>()),
-    );
+        () => _i545.ChildRepository(gh<_i454.SupabaseClient>()));
     gh.factory<_i368.AppointmentRepository>(
-      () => _i368.AppointmentRepository(gh<_i454.SupabaseClient>()),
-    );
+        () => _i368.AppointmentRepository(gh<_i454.SupabaseClient>()));
     gh.factory<_i665.CheckupRepository>(
-      () => _i665.CheckupRepository(gh<_i454.SupabaseClient>()),
-    );
+        () => _i665.CheckupRepository(gh<_i454.SupabaseClient>()));
     gh.factory<_i977.AppointmentBloc>(
-      () => _i977.AppointmentBloc(gh<_i368.AppointmentRepository>()),
-    );
+        () => _i977.AppointmentBloc(gh<_i368.AppointmentRepository>()));
     gh.factory<_i860.ClinicBloc>(
-      () => _i860.ClinicBloc(gh<_i30.ClinicRepository>()),
-    );
-    gh.factory<_i594.AuthRepository>(
-      () => _i594.AuthRepository(
-        gh<_i460.SharedPreferences>(),
-        gh<_i454.SupabaseClient>(),
-      ),
-    );
+        () => _i860.ClinicBloc(gh<_i30.ClinicRepository>()));
+    gh.factory<_i594.AuthRepository>(() => _i594.AuthRepository(
+          gh<_i460.SharedPreferences>(),
+          gh<_i454.SupabaseClient>(),
+        ));
     gh.factory<_i284.ChildProfileBloc>(
-      () => _i284.ChildProfileBloc(gh<_i545.ChildRepository>()),
-    );
+        () => _i284.ChildProfileBloc(gh<_i545.ChildRepository>()));
     gh.factory<_i927.SplashRepository>(
-      () => _i927.SplashRepository(gh<_i460.SharedPreferences>()),
-    );
+        () => _i927.SplashRepository(gh<_i460.SharedPreferences>()));
     gh.factory<_i855.LocalAuthCubit>(
-      () => _i855.LocalAuthCubit(gh<_i460.SharedPreferences>()),
-    );
-    gh.factory<_i990.CalendarRepository>(
-      () => _i990.CalendarRepository(
-        gh<_i454.SupabaseClient>(),
-        gh<_i979.HiveInterface>(),
-      ),
-    );
+        () => _i855.LocalAuthCubit(gh<_i460.SharedPreferences>()));
+    gh.factory<_i990.CalendarRepository>(() => _i990.CalendarRepository(
+          gh<_i454.SupabaseClient>(),
+          gh<_i979.HiveInterface>(),
+        ));
     gh.factory<_i29.CheckupBloc>(
-      () => _i29.CheckupBloc(gh<_i665.CheckupRepository>()),
-    );
+        () => _i29.CheckupBloc(gh<_i665.CheckupRepository>()));
     gh.factory<_i980.ProfileBloc>(
-      () => _i980.ProfileBloc(gh<_i594.AuthRepository>()),
-    );
+        () => _i980.ProfileBloc(gh<_i594.AuthRepository>()));
     gh.factory<_i1044.LoginCubit>(
-      () => _i1044.LoginCubit(gh<_i594.AuthRepository>()),
-    );
+        () => _i1044.LoginCubit(gh<_i594.AuthRepository>()));
     gh.factory<_i122.ResetPasswordCubit>(
-      () => _i122.ResetPasswordCubit(gh<_i594.AuthRepository>()),
-    );
+        () => _i122.ResetPasswordCubit(gh<_i594.AuthRepository>()));
     gh.factory<_i64.SignUpCubit>(
-      () => _i64.SignUpCubit(gh<_i594.AuthRepository>()),
-    );
+        () => _i64.SignUpCubit(gh<_i594.AuthRepository>()));
     gh.factory<_i53.LoginPhoneCubit>(
-      () => _i53.LoginPhoneCubit(gh<_i594.AuthRepository>()),
-    );
+        () => _i53.LoginPhoneCubit(gh<_i594.AuthRepository>()));
     gh.factory<_i811.HealthWorkerBloc>(
-      () => _i811.HealthWorkerBloc(gh<_i295.HealthWorkerRepository>()),
-    );
-    gh.factoryParam<_i701.PaymentRepository, _i454.SupabaseClient?, dynamic>(
-      (supabaseClient, _) =>
-          _i701.PaymentRepository(supabaseClient: supabaseClient),
-    );
-    gh.factory<_i246.CalendarBloc>(
-      () => _i246.CalendarBloc(
-        gh<_i403.NotificationService>(),
-        gh<_i990.CalendarRepository>(),
-      ),
-    );
-    gh.singleton<_i556.AuthenticationBloc>(
-      () => _i556.AuthenticationBloc(
-        gh<_i594.AuthRepository>(),
-        gh<_i927.SplashRepository>(),
-        gh<_i454.SupabaseClient>(),
-      ),
-    );
+        () => _i811.HealthWorkerBloc(gh<_i295.HealthWorkerRepository>()));
+    gh.factoryParam<_i701.PaymentRepository, _i454.SupabaseClient?, dynamic>((
+      supabaseClient,
+      _,
+    ) =>
+        _i701.PaymentRepository(supabaseClient: supabaseClient));
+    gh.factory<_i246.CalendarBloc>(() => _i246.CalendarBloc(
+          gh<_i403.NotificationService>(),
+          gh<_i990.CalendarRepository>(),
+        ));
+    gh.singleton<_i556.AuthenticationBloc>(() => _i556.AuthenticationBloc(
+          gh<_i594.AuthRepository>(),
+          gh<_i927.SplashRepository>(),
+          gh<_i454.SupabaseClient>(),
+        ));
     gh.factory<_i580.PaymentBloc>(
-      () => _i580.PaymentBloc(gh<_i701.PaymentRepository>()),
-    );
+        () => _i580.PaymentBloc(gh<_i701.PaymentRepository>()));
     return this;
   }
 }

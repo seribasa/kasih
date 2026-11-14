@@ -138,4 +138,20 @@ void main() {
       },
     );
   });
+
+  group('getUser', () {
+    late AuthRepository authRepository;
+    late MockSupabaseClient mockSupabase;
+    setUp(() {
+      mockSupabase = MockSupabaseClient();
+      authRepository = AuthRepository(sharedPreferences, mockSupabase);
+      when(() => mockSupabase.auth).thenReturn(mockGoTrue);
+    });
+
+    test('returns null when currentUser is null', () async {
+      when(() => mockGoTrue.currentUser).thenReturn(null);
+      final result = await authRepository.getUser();
+      expect(result, isNull);
+    });
+  });
 }

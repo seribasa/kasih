@@ -27,8 +27,13 @@ class AuthRouter {
     ),
     GoRoute(
       path: AuthRoutePaths.otp.path,
-      builder:
-          (_, state) => OTPScreen(state: state.extra as OTPScreenArguments),
+      builder: (_, state) {
+        final args = state.extra;
+        if (args is! OTPScreenArguments) {
+          return const LoginPhoneScreen();
+        }
+        return OTPScreen(state: args);
+      },
     ),
     GoRoute(
       path: AuthRoutePaths.resetEmailPassword.path,

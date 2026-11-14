@@ -77,7 +77,7 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
     try {
       final phone = _formattedPhoneNumber;
       await _authRepository.signInWithPhone(phone: phone);
-      emit(state.copyWith(status: FormzSubmissionStatus.initial, verId: phone));
+      emit(state.copyWith(status: FormzSubmissionStatus.success, verId: phone));
     } on AuthException catch (e) {
       emit(
         state.copyWith(
@@ -107,7 +107,7 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
     }
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      final phone = _formattedPhoneNumber;
+      final phone = state.verId ?? _formattedPhoneNumber;
       await _authRepository.verifyPhoneOtp(
         phone: phone,
         token: state.otpCode.value.trim(),
@@ -132,7 +132,7 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
 
   Future<void> resendOtp() async {
     try {
-      final phone = _formattedPhoneNumber;
+      final phone = state.verId ?? _formattedPhoneNumber;
       await _authRepository.resendPhoneOtp(phone: phone);
     } catch (e) {
       emit(

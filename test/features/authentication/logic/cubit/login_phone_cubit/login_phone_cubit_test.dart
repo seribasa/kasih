@@ -7,6 +7,8 @@ import 'package:kasih/features/authentication/logic/cubit/login_phone_cubit/logi
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 @GenerateMocks([AuthRepository])
 import 'login_phone_cubit_test.mocks.dart';
@@ -221,6 +223,142 @@ void main() {
               status: FormzSubmissionStatus.initial,
             ),
           ],
+    );
+  });
+
+  group("sendOtp", () {
+    blocTest<LoginPhoneCubit, LoginPhoneState>(
+      'emits failure when phone is not valid',
+      build: () => LoginPhoneCubit(authRepository),
+      seed: () => LoginPhoneState(phone: Phone.dirty(phoneInvalid)),
+      act: (cubit) => cubit.sendOtp(),
+      expect:
+          () => [
+            LoginPhoneState(
+              phone: Phone.dirty(phoneInvalid),
+              status: FormzSubmissionStatus.failure,
+              errorMessage: 'Nomor telepon tidak valid',
+            ),
+          ],
+    );
+
+    blocTest<LoginPhoneCubit, LoginPhoneState>(
+      'emits inProgress then success with verId when valid',
+      build: () {
+        when(
+          authRepository.signInWithPhone(phone: '+62$phone'),
+        ).thenAnswer((_) async {});
+        return LoginPhoneCubit(authRepository);
+      },
+      seed:
+          () => LoginPhoneState(
+            phone: Phone.dirty(phone),
+            countryCode: CountryCode.dirty(countryCode),
+          ),
+      act: (cubit) => cubit.sendOtp(),
+      expect:
+          () => [
+            LoginPhoneState(
+              phone: Phone.dirty(phone),
+              countryCode: CountryCode.dirty(countryCode),
+              status: FormzSubmissionStatus.inProgress,
+            ),
+            LoginPhoneState(
+              phone: Phone.dirty(phone),
+              countryCode: CountryCode.dirty(countryCode),
+              status: FormzSubmissionStatus.success,
+              verId: '+62$phone',
+            ),
+          ],
+      verify: (_) {
+        verify(
+          authRepository.signInWithPhone(phone: '+62$phone'),
+        ).called(1);
+      },
+    );
+  });
+
+  group("verifyOtp", () {
+    blocTest<LoginPhoneCubit, LoginPhoneState>(
+      'emits failure when otp is not valid',
+      build: () => LoginPhoneCubit(authRepository),
+      seed: () => LoginPhoneState(otpCode: OTP.dirty(otpInvalid)),
+      act: (cubit) => cubit.verifyOtp(),
+      expect:
+          () => [
+            LoginPhoneState(
+              otpCode: OTP.dirty(otpInvalid),
+              status: FormzSubmissionStatus.failure,
+              errorMessage: 'Kode OTP tidak valid',
+            ),
+          ],
+    );
+
+    blocTest<LoginPhoneCubit, LoginPhoneState>(
+      'uses state.verId over recomputing formatted phone',
+      build: () {
+        when(
+          authRepository.verifyPhoneOtp(
+            phone: '+629999999999',
+            token: otp,
+          ),
+        ).thenAnswer((_) async => AuthResponse());
+        return LoginPhoneCubit(authRepository);
+      },
+      seed:
+          () => LoginPhoneState(
+            phone: Phone.dirty(phone),
+            countryCode: CountryCode.dirty(countryCode),
+            otpCode: OTP.dirty(otp),
+            verId: '+629999999999',
+          ),
+      act: (cubit) => cubit.verifyOtp(),
+      expect:
+          () => [
+            LoginPhoneState(
+              phone: Phone.dirty(phone),
+              countryCode: CountryCode.dirty(countryCode),
+              otpCode: OTP.dirty(otp),
+              verId: '+629999999999',
+              status: FormzSubmissionStatus.inProgress,
+            ),
+            LoginPhoneState(
+              phone: Phone.dirty(phone),
+              countryCode: CountryCode.dirty(countryCode),
+              otpCode: OTP.dirty(otp),
+              verId: '+629999999999',
+              status: FormzSubmissionStatus.success,
+            ),
+          ],
+      verify: (_) {
+        verify(
+          authRepository.verifyPhoneOtp(phone: '+629999999999', token: otp),
+        ).called(1);
+      },
+    );
+  });
+
+  group("resendOtp", () {
+    blocTest<LoginPhoneCubit, LoginPhoneState>(
+      'uses state.verId to resend OTP',
+      build: () {
+        when(
+          authRepository.resendPhoneOtp(phone: '+628888888888'),
+        ).thenAnswer((_) async {});
+        return LoginPhoneCubit(authRepository);
+      },
+      seed:
+          () => LoginPhoneState(
+            phone: Phone.dirty(phone),
+            countryCode: CountryCode.dirty(countryCode),
+            verId: '+628888888888',
+          ),
+      act: (cubit) => cubit.resendOtp(),
+      verify: (_) {
+        verify(
+          authRepository.resendPhoneOtp(phone: '+628888888888'),
+        ).called(1);
+      },
     );
   });
 }

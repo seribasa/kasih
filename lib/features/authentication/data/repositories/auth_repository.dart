@@ -87,10 +87,11 @@ class AuthRepository {
 
   Future<UserProfile?> getUser() async {
     final user = await supabaseClient.auth.currentUser;
+    if (user == null) return null;
     final userExpand = await supabaseClient
         .from(_tableName)
         .select()
-        .eq('user_id', user!.id);
+        .eq('user_id', user.id);
     if (userExpand.isNotEmpty) {
       final userResult = UserProfile.fromSeribase(userExpand.first);
       return userResult.copyWith(
