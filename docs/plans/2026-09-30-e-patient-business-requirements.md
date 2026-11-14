@@ -1,6 +1,6 @@
-# e-Patient Business Requirements and Delivery Plan
+# Kasih Business Requirements and Delivery Plan
 
-**Goal:** Mendefinisikan produk e-Patient yang membantu pasien segala usia dan keluarganya mengelola perjalanan kesehatan secara aman, terhubung, dan mudah digunakan, dengan fondasi yang dapat berkembang dari kapabilitas e-Imunisasi.
+**Goal:** Mendefinisikan produk Kasih yang membantu pasien segala usia dan keluarganya mengelola perjalanan kesehatan secara aman, terhubung, dan mudah digunakan, dengan fondasi yang dapat berkembang dari kapabilitas e-Imunisasi.
 
 **Architecture:** Produk dirancang sebagai platform patient-facing dengan profil pasien terpisah dari akun pengguna, pengelolaan keluarga berbasis persetujuan, dan data kesehatan longitudinal yang membedakan data terverifikasi fasyankes dari data yang diinput pengguna. Implementasi diusulkan bertahap: fondasi identitas dan keluarga, layanan inti pasien, rekam kesehatan, lalu interoperabilitas dan layanan lanjutan.
 
@@ -18,7 +18,7 @@
 | Fokus | Business requirements terlebih dahulu; belum mengotorisasi coding |
 | Sumber awal | Ringkasan fitur e-Imunisasi yang diberikan oleh product owner |
 | Konteks repository | Greenfield; belum ada source code atau keputusan arsitektur yang tervalidasi |
-| Pemilik keputusan | Product owner e-Patient / Seribasa |
+| Pemilik keputusan | Product owner Kasih / Seribasa |
 
 ### 1.1 Cara membaca prioritas
 
@@ -29,7 +29,7 @@
 
 ### 1.2 Keputusan yang belum boleh dianggap final
 
-- Apakah e-Patient merupakan aplikasi consumer mandiri, produk white-label untuk fasyankes, atau model B2B2C.
+- Apakah Kasih merupakan aplikasi consumer mandiri, produk white-label untuk fasyankes, atau model B2B2C.
 - Siapa operator/pengendali data, siapa mitra pemroses data, dan siapa pemilik operasional klinis.
 - Apakah platform mencatat rekam medis resmi atau hanya menampilkan salinan/ringkasan dari fasyankes.
 - Jalur legal dan teknis integrasi SATUSEHAT.
@@ -38,7 +38,7 @@
 
 ## 2. Executive summary
 
-e-Patient bukan sekadar e-Imunisasi yang mengganti objek “anak” menjadi “pasien”. Perluasan ke semua umur mengubah kebutuhan inti menjadi:
+Kasih bukan sekadar e-Imunisasi yang mengganti objek “anak” menjadi “pasien”. Perluasan ke semua umur mengubah kebutuhan inti menjadi:
 
 1. Satu orang dapat menjadi pengguna akun, pasien, wali, caregiver, sekaligus pembayar.
 2. Satu rumah tangga dapat berisi anak, pasangan, orang tua, lansia, atau tanggungan lain dengan hak akses berbeda.
@@ -49,7 +49,7 @@ e-Patient bukan sekadar e-Imunisasi yang mengganti objek “anak” menjadi “p
 
 ### 2.1 Product thesis
 
-> e-Patient adalah pendamping kesehatan keluarga yang memberikan satu tempat aman untuk mengelola profil anggota keluarga, janji temu, pengingat, dokumen dan ringkasan kesehatan, serta akses ke layanan kesehatan—dengan kontrol akses tetap berada pada pasien atau wali yang sah.
+> Kasih adalah pendamping kesehatan keluarga yang memberikan satu tempat aman untuk mengelola profil anggota keluarga, janji temu, pengingat, dokumen dan ringkasan kesehatan, serta akses ke layanan kesehatan—dengan kontrol akses tetap berada pada pasien atau wali yang sah.
 
 ### 2.2 Nilai utama
 
@@ -200,11 +200,11 @@ Produk memakai satu fondasi profil pasien, tetapi home, reminder, dan layanan ya
 7. Perubahan status usia, wali, perceraian, kematian, atau sengketa memicu review akses.
 8. Keluar dari household tidak menghapus rekam medis dan tidak selalu menghapus kewajiban transaksi historis.
 
-## 8. Pemetaan e-Imunisasi ke e-Patient
+## 8. Pemetaan e-Imunisasi ke Kasih
 
 Detail kebutuhan, alur, aturan bisnis, batas MVP/P1, kriteria penerimaan, dan urutan adaptasi tiap kapabilitas tersedia dalam [dokumen pemetaan kapabilitas tersendiri](../product/2026-10-11-e-imunisasi-to-e-patient-capability-mapping.md).
 
-| Kapabilitas e-Imunisasi | Keputusan | Generalisasi untuk e-Patient | Prioritas |
+| Kapabilitas e-Imunisasi | Keputusan | Generalisasi untuk Kasih | Prioritas |
 |---|---|---|---|
 | Email/password, phone OTP, OAuth | Pertahankan | Login multi-metode, recovery, device/session management | MVP |
 | PIN lokal 6 digit | Perluas | Biometrik/PIN, step-up auth untuk aksi sensitif(pakai HSM) | MVP |

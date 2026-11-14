@@ -1,4 +1,4 @@
-name: e-Patient Development APK
+name: Kasih Development APK
 
 on:
   workflow_dispatch:
@@ -8,13 +8,19 @@ on:
         required: true
         default: midtrans
         type: choice
-        options: [midtrans, stripe, both]
+        options:
+          - midtrans
+          - stripe
+          - both
       build_type:
         description: Android build type
         required: true
         default: both
         type: choice
-        options: [debug, release, both]
+        options:
+          - debug
+          - release
+          - both
       midtrans_currency:
         description: Midtrans currency supported by your backend
         required: true
@@ -25,18 +31,111 @@ on:
         required: true
         default: IDR
         type: string
+      version_name:
+        description: Version name override (leave blank for CalVer YYYY.MM.DD)
+        required: false
+        type: string
+        default: ''
+      build_number:
+        description: Build number override (leave blank for Unix timestamp)
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: read
 
-# main contains product documentation, not the Flutter application.
-# Dispatch against codex/map-e-imunisasi-to-e-patient to use that branch's
-# complete workflow definition and its debug/release build matrix.
+concurrency:
+  group: development-apk-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
-  select-application-branch:
+  development-apk:
+    name: APK (${{ matrix.gateway }}, ${{ matrix.build_type }})
     runs-on: ubuntu-latest
+    environment: development
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        gateway: ${{ fromJSON(inputs.payment_gateway == 'both' && '["midtrans","stripe"]' || format('["{0}"]', inputs.payment_gateway)) }}
+        build_type: ${{ fromJSON(inputs.build_type == 'both' && '["debug","release"]' || format('["{0}"]', inputs.build_type)) }}
     steps:
-      - name: Explain required source branch
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: .fvmrc
+          cache: true
+      - name: Test environment generator
+        run: node --test .github/scripts/*.test.mjs
+      - name: Prepare placeholder environment
+        run: node .github/scripts/write-app-env.mjs --ci
+      - name: Resolve dependencies and generate code
         run: |
-          echo "::error::Choose codex/map-e-imunisasi-to-e-patient in Run workflow. main only registers this workflow and does not contain the application."
-          exit 1
+          flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
+      - name: Analyze
+        run: flutter analyze
+      - name: Test
+        run: flutter test --coverage --reporter expanded
+      - name: Create development environment
+        run: node .github/scripts/write-app-env.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          PAYMENT_URL: ${{ matrix.gateway == 'midtrans' && secrets.PAYMENT_URL_MIDTRANS || matrix.gateway == 'stripe' && secrets.PAYMENT_URL_STRIPE || secrets.PAYMENT_URL }}
+          STRIPE_PUBLISHABLE_KEY: ${{ matrix.gateway == 'stripe' && secrets.STRIPE_PUBLISHABLE_KEY || '' }}
+          PAYMENT_GATEWAY: ${{ matrix.gateway }}
+          PAYMENT_CURRENCY: ${{ matrix.gateway == 'midtrans' && inputs.midtrans_currency || inputs.stripe_currency }}
+          AUTH_REDIRECT_URL: ${{ vars.AUTH_REDIRECT_URL || 'https://kasih-app.peltops.com/' }}
+      - name: Configure stable signing for selected build type
+        run: node .github/scripts/configure-signing.mjs
+        env:
+          BUILD_TYPE: ${{ matrix.build_type }}
+          DEBUG_KEYSTORE_BASE64: ${{ matrix.build_type == 'debug' && secrets.DEBUG_KEYSTORE_BASE64 || '' }}
+          DEBUG_KEY_ALIAS: ${{ matrix.build_type == 'debug' && secrets.DEBUG_KEY_ALIAS || '' }}
+          DEBUG_KEY_PASSWORD: ${{ matrix.build_type == 'debug' && secrets.DEBUG_KEY_PASSWORD || '' }}
+          DEBUG_KEYSTORE_PASSWORD: ${{ matrix.build_type == 'debug' && secrets.DEBUG_KEYSTORE_PASSWORD || '' }}
+          RELEASE_KEYSTORE_BASE64: ${{ matrix.build_type == 'release' && secrets.RELEASE_KEYSTORE_BASE64 || '' }}
+          RELEASE_KEY_ALIAS: ${{ matrix.build_type == 'release' && secrets.RELEASE_KEY_ALIAS || '' }}
+          RELEASE_KEY_PASSWORD: ${{ matrix.build_type == 'release' && secrets.RELEASE_KEY_PASSWORD || '' }}
+          RELEASE_KEYSTORE_PASSWORD: ${{ matrix.build_type == 'release' && secrets.RELEASE_KEYSTORE_PASSWORD || '' }}
+      - name: Configure build version
+        id: version
+        run: node .github/scripts/version-manager.mjs --bump --ci
+        env:
+          CUSTOM_VERSION_NAME: ${{ inputs.version_name }}
+          CUSTOM_BUILD_NUMBER: ${{ inputs.build_number }}
+      - name: Build development APK
+        run: flutter build apk "--${BUILD_TYPE}" --build-name="${{ steps.version.outputs.version_name }}" --build-number="${{ steps.version.outputs.build_number }}"
+        env:
+          BUILD_TYPE: ${{ matrix.build_type }}
+      - name: Name gateway APK
+        run: cp "build/app/outputs/flutter-apk/app-${BUILD_TYPE}.apk" "build/app/outputs/flutter-apk/app-${PAYMENT_GATEWAY}-${BUILD_TYPE}.apk"
+        env:
+          PAYMENT_GATEWAY: ${{ matrix.gateway }}
+          BUILD_TYPE: ${{ matrix.build_type }}
+      - name: Upload development APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: e-patient-${{ matrix.gateway }}-${{ matrix.build_type }}-${{ github.run_id }}
+          path: build/app/outputs/flutter-apk/app-${{ matrix.gateway }}-${{ matrix.build_type }}.apk
+          if-no-files-found: error
+          retention-days: 7
+      - name: Upload public App Link association
+        uses: actions/upload-artifact@v4
+        with:
+          name: e-patient-app-links-${{ matrix.gateway }}-${{ matrix.build_type }}-${{ github.run_id }}
+          path: build/app-links/assetlinks-${{ matrix.build_type }}.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Remove environment and signing files
+        if: always()
+        run: rm -f .env android/key.properties android/keystore/debug.jks android/keystore/release.jks

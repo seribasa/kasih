@@ -1,0 +1,62 @@
+import 'package:kasih/core/utils/constant.dart';
+import 'package:kasih/routers/route_paths/healthy_book_route_paths.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+
+class HealthyBookScreen extends StatelessWidget {
+  void _navigateToPatientMedicalHistoryScreen(BuildContext context) {
+    context.push(HealthyBookRoutePaths.chooseChildMedicalRecord.fullPath);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.black,
+        elevation: 0.0,
+        title: Text(
+          AppConstant.HEALTH_BOOK_LABEL,
+          style: TextStyle(fontWeight: FontWeight.w700),
+        ),
+      ),
+      body: SizedBox.expand(
+        child: Container(
+          color: Colors.black,
+          child: Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            elevation: 0,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 150,
+                    child: SvgPicture.asset(
+                      'assets/images/undraw_Books_l33t.svg',
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Card(
+                    child: ListTile(
+                      onTap: () {
+                        _navigateToPatientMedicalHistoryScreen(context);
+                      },
+                      leading: Icon(
+                        Icons.history,
+                        color: Theme.of(context).primaryColor,
+                        size: 30,
+                      ),
+                      title: Text('Buku Sehat'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

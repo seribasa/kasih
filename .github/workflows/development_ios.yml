@@ -4,10 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       artifact_type:
-        description: Simulator APP, signed device IPA, or both
+        description: Simulator APP, signed device IPA, both, or TestFlight
         type: choice
         default: app
-        options: [app, ipa, both]
+        options: [app, ipa, both, testflight]
+      upload_to_testflight:
+        description: Upload signed IPA to TestFlight (enforces app-store-connect export)
+        type: boolean
+        default: false
       payment_gateway:
         description: Payment gateway
         type: choice
@@ -21,11 +25,30 @@ on:
         description: Stripe currency supported by backend
         type: string
         default: IDR
+      version_name:
+        description: Version name override (leave blank for CalVer YYYY.MM.DD)
+        required: false
+        type: string
+        default: ''
+      build_number:
+        description: Build number override (leave blank for Unix timestamp)
+        required: false
+        type: string
+        default: ''
       export_method:
-        description: IPA profile type (must match supplied profile)
+        description: IPA profile type (ignored for TestFlight, defaults to app-store-connect)
         type: choice
         default: debugging
         options: [debugging, release-testing, app-store-connect]
+      release_notes:
+        description: Release notes for TestFlight testers
+        required: false
+        type: string
+        default: 'Internal test build'
+      wait_for_processing:
+        description: Wait for App Store to finish processing the build
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -36,8 +59,8 @@ concurrency:
 
 jobs:
   ios:
-    name: iOS (${{ matrix.gateway }}, ${{ inputs.artifact_type }})
-    runs-on: macos-26
+    name: iOS (${{ matrix.gateway }}, ${{ inputs.artifact_type }}${{ inputs.upload_to_testflight && '+testflight' || '' }})
+    runs-on: macos-15
     environment: development
     timeout-minutes: 60
     strategy:
@@ -47,31 +70,47 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v7
+
+      - uses: actions/setup-node@v4
         with:
-          node-version: '26'
+          node-version: '22'
+
       - uses: subosito/flutter-action@v2
         with:
           flutter-version-file: .fvmrc
           cache: true
+
       - name: Check toolchain and test build helpers
         run: |
           xcodebuild -version
           pod --version
           node --test .github/scripts/*.test.mjs
+
+      - name: Validate and configure App Store Connect API credentials
+        if: inputs.artifact_type == 'testflight' || inputs.upload_to_testflight
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+        run: node .github/scripts/app-store-connect.mjs install
+
       - name: Prepare placeholder configuration
         run: node .github/scripts/write-app-env.mjs --ci
+
       - name: Resolve dependencies and generate code
         run: |
           flutter pub get
           dart run build_runner build --delete-conflicting-outputs
+
       - name: Analyze
         run: flutter analyze
+
       - name: Test
         run: flutter test --coverage --reporter expanded
+
       - name: Create development configuration
         run: node .github/scripts/write-app-env.mjs
         env:
@@ -82,55 +121,97 @@ jobs:
           PAYMENT_GATEWAY: ${{ matrix.gateway }}
           PAYMENT_CURRENCY: ${{ matrix.gateway == 'midtrans' && inputs.midtrans_currency || inputs.stripe_currency }}
           AUTH_REDIRECT_URL: ${{ vars.AUTH_REDIRECT_URL || 'https://kasih-app.peltops.com/' }}
+
+      - name: Configure build version
+        id: version
+        run: node .github/scripts/version-manager.mjs --bump --ci
+        env:
+          CUSTOM_VERSION_NAME: ${{ inputs.version_name }}
+          CUSTOM_BUILD_NUMBER: ${{ inputs.build_number }}
+
       - name: Build and package simulator APP
-        if: inputs.artifact_type != 'ipa'
+        if: inputs.artifact_type != 'ipa' && inputs.artifact_type != 'testflight'
         run: |
-          flutter build ios --simulator --debug
+          flutter build ios --simulator --debug --build-name="${{ steps.version.outputs.version_name }}" --build-number="${{ steps.version.outputs.build_number }}"
           mkdir -p build/ios/artifacts
           ditto -c -k --sequesterRsrc --keepParent build/ios/iphonesimulator/Runner.app "build/ios/artifacts/e-patient-${GATEWAY}-simulator.app.zip"
         env:
           GATEWAY: ${{ matrix.gateway }}
+
       - name: Upload simulator APP
-        if: inputs.artifact_type != 'ipa'
-        uses: actions/upload-artifact@v7
+        if: inputs.artifact_type != 'ipa' && inputs.artifact_type != 'testflight'
+        uses: actions/upload-artifact@v4
         with:
           name: e-patient-${{ matrix.gateway }}-simulator-app-${{ github.run_id }}
           path: build/ios/artifacts/*.app.zip
           if-no-files-found: error
           retention-days: 7
+
       - name: Install Apple signing material
         if: inputs.artifact_type != 'app'
         env:
-          IOS_CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
-          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
-          IOS_PROVISION_PROFILE_BASE64: ${{ secrets.IOS_PROVISION_PROFILE_BASE64 }}
+          IOS_CERTIFICATE_BASE64: ${{ (inputs.artifact_type == 'testflight' || inputs.upload_to_testflight || inputs.export_method == 'app-store-connect') && (secrets.IOS_CERTIFICATE_APP_STORE_BASE64 || secrets.IOS_CERTIFICATE_BASE64) || secrets.IOS_CERTIFICATE_BASE64 }}
+          IOS_CERTIFICATE_PASSWORD: ${{ (inputs.artifact_type == 'testflight' || inputs.upload_to_testflight || inputs.export_method == 'app-store-connect') && (secrets.IOS_CERTIFICATE_APP_STORE_PASSWORD || secrets.IOS_CERTIFICATE_PASSWORD) || secrets.IOS_CERTIFICATE_PASSWORD }}
+          IOS_PROVISION_PROFILE_BASE64: ${{ (inputs.artifact_type == 'testflight' || inputs.upload_to_testflight || inputs.export_method == 'app-store-connect') && (secrets.IOS_PROVISION_PROFILE_APP_STORE_BASE64 || secrets.IOS_PROVISION_PROFILE_BASE64) || secrets.IOS_PROVISION_PROFILE_BASE64 }}
           IOS_TEAM_ID: ${{ vars.IOS_TEAM_ID }}
           IOS_BUNDLE_ID: ${{ vars.IOS_BUNDLE_ID }}
-          IOS_EXPORT_METHOD: ${{ inputs.export_method }}
+          IOS_EXPORT_METHOD: ${{ (inputs.artifact_type == 'testflight' || inputs.upload_to_testflight) && 'app-store-connect' || inputs.export_method }}
         run: node .github/scripts/ios-signing.mjs install
+
       - name: Archive and export signed IPA
         if: inputs.artifact_type != 'app'
         run: |
-          flutter build ios --release --config-only
+          flutter build ios --release --config-only --build-name="${{ steps.version.outputs.version_name }}" --build-number="${{ steps.version.outputs.build_number }}"
           ruby .github/scripts/configure-ios-project.rb
           xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner \
             -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
             -archivePath "$RUNNER_TEMP/e-patient.xcarchive" \
             archive
           xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/e-patient.xcarchive" \
-            -exportOptionsPlist "$RUNNER_TEMP/e-patient-ios-signing/ExportOptions.plist" \
+            -exportOptionsPlist "$RUNNER_TEMP/kasih-ios-signing/ExportOptions.plist" \
             -exportPath build/ios/ipa
+
+      - name: Locate exported IPA
+        if: inputs.artifact_type != 'app'
+        id: locate-ipa
+        run: |
+          IPA_PATH=$(find build/ios/ipa -name "*.ipa" | head -n 1)
+          if [ -z "$IPA_PATH" ]; then
+            echo "::error::No exported .ipa file found in build/ios/ipa"
+            exit 1
+          fi
+          echo "Found IPA: $IPA_PATH"
+          echo "ipa_path=$IPA_PATH" >> "$GITHUB_OUTPUT"
+
       - name: Upload signed IPA
         if: inputs.artifact_type != 'app'
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: e-patient-${{ matrix.gateway }}-signed-ipa-${{ github.run_id }}
-          path: build/ios/ipa/*.ipa
+          path: ${{ steps.locate-ipa.outputs.ipa_path }}
           if-no-files-found: error
           retention-days: 7
+
+      - name: Upload to TestFlight
+        if: inputs.artifact_type == 'testflight' || inputs.upload_to_testflight
+        uses: apple-actions/upload-testflight-build@v5
+        with:
+          app-path: ${{ steps.locate-ipa.outputs.ipa_path }}
+          issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          api-key-id: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          api-private-key: ${{ env.APP_STORE_CONNECT_PEM || secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+          release-notes: ${{ inputs.release_notes }}
+          uses-non-exempt-encryption: false
+          wait-for-processing: ${{ inputs.wait_for_processing }}
+
       - name: Remove Apple signing material
         if: always() && inputs.artifact_type != 'app'
         run: node .github/scripts/ios-signing.mjs cleanup
+
+      - name: Remove App Store Connect key
+        if: always() && (inputs.artifact_type == 'testflight' || inputs.upload_to_testflight)
+        run: node .github/scripts/app-store-connect.mjs cleanup
+
       - name: Remove bundled configuration
         if: always()
         run: rm -f .env
