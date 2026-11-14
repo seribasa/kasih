@@ -125,9 +125,12 @@ export function runSigning(action, env = process.env) {
   security(['import', certificate, '-P', env.IOS_CERTIFICATE_PASSWORD, '-k', keychain, '-T', '/usr/bin/codesign', '-T', '/usr/bin/security'], 'certificate import');
   security(['set-key-partition-list', '-S', 'apple-tool:,apple:,codesign:', '-k', password, keychain], 'keychain access configuration');
   security(['list-keychains', '-d', 'user', '-s', keychain], 'keychain selection');
+  const allIdentities = security(['find-identity', '-p', 'codesigning', keychain], 'signing identity check').toString().trim();
   const identities = security(['find-identity', '-v', '-p', 'codesigning', keychain], 'signing identity validation').toString();
   const hashes = [...identities.matchAll(/\b([A-F0-9]{40})\b/g)].map(match => match[1]);
-  if (hashes.length !== 1) throw new Error('Certificate must contain exactly one valid code signing identity');
+  if (hashes.length !== 1) {
+    throw new Error(`Certificate must contain exactly one valid code signing identity (found ${hashes.length} valid). Keychain identities check:\n${allIdentities}`);
+  }
   appendFileSync(env.GITHUB_ENV, `IOS_SIGNING_IDENTITY=${hashes[0]}\nIOS_PROFILE_UUID=${profile.UUID}\nIOS_TEAM_ID=${env.IOS_TEAM_ID}\nIOS_BUNDLE_ID=${env.IOS_BUNDLE_ID}\n`);
   log('iOS signing setup completed successfully.');
 }
