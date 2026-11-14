@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, writeFileSync, rmSync, chmodSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync, rmSync, chmodSync, appendFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -91,6 +91,11 @@ export function runAuthKey(action, env = process.env) {
     const standardPath = join(ascDir, `AuthKey_${validated.keyId}.p8`);
     writeFileSync(standardPath, validated.privateKey, { mode: 0o600 });
     chmodSync(standardPath, 0o600);
+
+    // Export validated PEM text to GITHUB_ENV for actions that consume multiline string input
+    if (env.GITHUB_ENV) {
+      appendFileSync(env.GITHUB_ENV, `APP_STORE_CONNECT_PEM<<ASC_EOF\n${validated.privateKey.trim()}\nASC_EOF\n`);
+    }
 
     console.info(`[app-store-connect] API key AuthKey_${validated.keyId}.p8 configured successfully.`);
     return;

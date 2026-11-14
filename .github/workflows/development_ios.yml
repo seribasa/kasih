@@ -95,11 +95,7 @@ jobs:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
-        run: |
-          node .github/scripts/app-store-connect.mjs install
-          echo "APP_STORE_CONNECT_PEM<<EOF" >> "$GITHUB_ENV"
-          cat "$RUNNER_TEMP/appstore_connect_key.p8" >> "$GITHUB_ENV"
-          echo "EOF" >> "$GITHUB_ENV"
+        run: node .github/scripts/app-store-connect.mjs install
 
       - name: Prepare placeholder configuration
         run: node .github/scripts/write-app-env.mjs --ci
