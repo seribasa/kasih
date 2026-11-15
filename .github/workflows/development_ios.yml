@@ -161,7 +161,7 @@ jobs:
       - name: Archive and export signed IPA
         if: inputs.artifact_type != 'app'
         run: |
-          flutter build ios --release --config-only --build-name="${{ steps.version.outputs.version_name }}" --build-number="${{ steps.version.outputs.build_number }}"
+          flutter build ios --release --no-codesign --config-only --build-name="${{ steps.version.outputs.version_name }}" --build-number="${{ steps.version.outputs.build_number }}"
           ruby .github/scripts/configure-ios-project.rb
           xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner \
             -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
