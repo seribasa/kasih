@@ -49,6 +49,11 @@ on:
         description: Wait for App Store to finish processing the build
         type: boolean
         default: false
+      xcode_path:
+        description: Developer directory path for Xcode
+        required: false
+        type: string
+        default: '/Applications/Xcode_26.3.app/Contents/Developer'
 
 permissions:
   contents: read
@@ -68,7 +73,7 @@ jobs:
       matrix:
         gateway: ${{ fromJSON(inputs.payment_gateway == 'both' && '["midtrans","stripe"]' || format('["{0}"]', inputs.payment_gateway)) }}
     env:
-      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
+      DEVELOPER_DIR: ${{ inputs.xcode_path != '' && inputs.xcode_path || '/Applications/Xcode_26.3.app/Contents/Developer' }}
     steps:
       - uses: actions/checkout@v4
         with:
