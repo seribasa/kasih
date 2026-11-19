@@ -47,5 +47,11 @@
 	<true/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Kasih memerlukan akses kamera untuk mengambil foto profil dan dokumen rekam medis.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Kasih memerlukan akses galeri foto untuk memilih foto profil dan dokumen rekam medis.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Kasih memerlukan akses mikrofon untuk keperluan konsultasi dan perekaman media.</string>
 </dict>
 </plist>
