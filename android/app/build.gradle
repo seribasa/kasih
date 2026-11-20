@@ -1,0 +1,118 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    compileSdkVersion 35
+    namespace 'digital.seribasa.kasih'
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        applicationId "digital.seribasa.kasih"
+        minSdkVersion 23
+        targetSdkVersion 35
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        multiDexEnabled true
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            def releaseStoreFile = keystoreProperties['storeFile']
+            if (releaseStoreFile) {
+                def releaseKeystore = rootProject.file(releaseStoreFile)
+                if (!releaseKeystore.exists()) {
+                    throw new GradleException("Configured release keystore does not exist")
+                }
+                ['keyAlias', 'keyPassword', 'storePassword'].each { name ->
+                    if (!keystoreProperties[name]) {
+                        throw new GradleException("Missing release signing property: ${name}")
+                    }
+                }
+                storeFile releaseKeystore
+            }
+            storePassword keystoreProperties['storePassword']
+        }
+        debug {
+            def debugStoreFile = keystoreProperties['debugStoreFile']
+            if (debugStoreFile) {
+                def debugKeystore = rootProject.file(debugStoreFile)
+                if (!debugKeystore.exists()) {
+                    throw new GradleException("Configured development keystore does not exist")
+                }
+                ['debugKeyAlias', 'debugKeyPassword', 'debugStorePassword'].each { name ->
+                    if (!keystoreProperties[name]) {
+                        throw new GradleException("Missing development signing property: ${name}")
+                    }
+                }
+                keyAlias keystoreProperties['debugKeyAlias']
+                keyPassword keystoreProperties['debugKeyPassword']
+                storeFile debugKeystore
+                storePassword keystoreProperties['debugStorePassword']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            if (signingConfigs.debug.storeFile) {
+                println("Using debug keystore at ${signingConfigs.debug.storeFile}")
+                signingConfig signingConfigs.debug
+            }
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
+    implementation "androidx.multidex:multidex:2.0.1"
+}

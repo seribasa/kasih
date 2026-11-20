@@ -1,0 +1,121 @@
+name: Manual Release to Github
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+        type: string
+      payment:
+        description: 'Payment Environment'
+        required: true
+        type: choice
+        options:
+          - midtrans
+          - stripe
+          - paypal
+jobs:
+  build:
+    name: Build apk for ${{ github.event.inputs.payment }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Read Version Flutter
+        id: read_fvm_config
+        uses: juliangruber/read-file-action@v1.1.6
+        with:
+          path: ./.fvmrc
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{fromJson(steps.read_fvm_config.outputs.content).flutter}}
+
+      - name: Check Flutter
+        run: flutter doctor -v
+
+
+      - name: Install Dependencies and environment
+        run: |
+          flutter pub get
+          flutter pub run build_runner build --delete-conflicting-outputs
+          SECRET_NAME="ENV_$(echo "${{ github.event.inputs.payment }}" | tr '[:lower:]' '[:upper:]')_DEV"
+          SECRET_VALUE="${{ secrets.ENV_MIDTRANS_DEV }}"
+          if [ "$SECRET_NAME" = "ENV_MIDTRANS_DEV" ]; then
+            SECRET_VALUE="${{ secrets.ENV_MIDTRANS_DEV }}"
+          elif [ "$SECRET_NAME" = "ENV_STRIPE_DEV" ]; then
+            SECRET_VALUE="${{ secrets.ENV_STRIPE_DEV }}"
+          elif [ "$SECRET_NAME" = "ENV_PAYPAL_DEV" ]; then
+            SECRET_VALUE="${{ secrets.ENV_PAYPAL_DEV }}"
+          fi
+          echo "$SECRET_VALUE" > .env
+          cat .env # Debug: show .env content
+
+
+      - name: Run tests
+        run: flutter test --coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          flags: unittests
+          verbose: true
+
+      - name: Configure Keystore
+        run: |
+          echo "debugStoreFile=keystore/debug_keystore" >> key.properties
+          echo "debugKeyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "debugStorePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "debugKeyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+        env:
+          KEYSTORE_KEY_ALIAS: ${{ secrets.DEBUG_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.DEBUG_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.DEBUG_KEYSTORE_PASSWORD }}
+        working-directory: android
+
+      - name: Build
+        run: flutter build apk --debug
+
+
+      - name: Rename apk
+        run: |
+          mv build/app/outputs/flutter-apk/app-debug.apk build/app/outputs/flutter-apk/app-${{ github.event.inputs.payment }}-${{ github.event.inputs.version }}-debug.apk
+
+      - name: Upload apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: build/app/outputs/flutter-apk/app-${{ github.event.inputs.payment }}-${{ github.event.inputs.version }}-debug.apk
+
+          retention-days: 30
+
+
+  release:
+    permissions:
+      packages: write
+      contents: write
+    name: Release apk
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download apk
+        uses: actions/download-artifact@v4
+        with:
+          name: apk
+      - name: Create a release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          files: |
+            app-${{ github.event.inputs.payment }}-${{ github.event.inputs.version }}-debug.apk

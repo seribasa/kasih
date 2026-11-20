@@ -1,6 +1,6 @@
-# e-Patient Build Timeline Implementation Plan
+# Kasih Build Timeline Implementation Plan
 
-**Goal:** Membuat timeline pembangunan produk e-Patient dari discovery sampai controlled pilot, dengan milestone, dependency, owner, dan exit criteria yang jelas.
+**Goal:** Membuat timeline pembangunan produk Kasih dari discovery sampai controlled pilot, dengan milestone, dependency, owner, dan exit criteria yang jelas.
 
 **Architecture:** Timeline dibagi menjadi jalur kerja paralel: product/governance, UX/design, engineering foundation, provider operations, security/compliance, QA/UAT, dan pilot readiness. Urutannya sengaja menahan coding besar sampai kebijakan patient-family-consent, provider pilot, payment ownership, dan data boundary cukup jelas.
 
@@ -10,7 +10,7 @@
 
 ## 1. Timeline Summary
 
-Dokumen ini menerjemahkan PRD e-Patient menjadi timeline eksekusi. Estimasi memakai satuan minggu dan dibuat untuk skenario realistis: tim kecil-menengah, greenfield, high-trust healthcare domain, dan butuh validasi legal/clinical/security sebelum pilot.
+Dokumen ini menerjemahkan PRD Kasih menjadi timeline eksekusi. Estimasi memakai satuan minggu dan dibuat untuk skenario realistis: tim kecil-menengah, greenfield, high-trust healthcare domain, dan butuh validasi legal/clinical/security sebelum pilot.
 
 ### 1.1 Recommended Timeline
 

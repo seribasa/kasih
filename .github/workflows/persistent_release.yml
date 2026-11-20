@@ -1,10 +1,10 @@
-name: e-Patient Persistent Release
+name: Kasih Persistent Release
 
 on:
   workflow_dispatch:
     inputs:
       tag:
-        description: New unique release tag (example v2.1.1-dev.1)
+        description: New unique release tag (example v2026.11.08 or v2026.11.08-dev.1)
         required: true
         type: string
       android_run_id:
@@ -31,17 +31,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@v4
         with:
-          node-version: '26'
+          node-version: '22'
       - name: Test release helpers
         run: node --test .github/scripts/release-assets.test.mjs
       - name: Validate source builds and unused tag
         id: source
-        uses: actions/github-script@v9
+        uses: actions/github-script@v7
         env:
           RELEASE_TAG: ${{ inputs.tag }}
           ANDROID_RUN_ID: ${{ inputs.android_run_id }}
@@ -73,7 +73,7 @@ jobs:
             core.setOutput('sha', sha);
       - name: Download Android build artifacts
         if: inputs.android_run_id != ''
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
           run-id: ${{ inputs.android_run_id }}
@@ -81,7 +81,7 @@ jobs:
           path: release-downloads/android
       - name: Download signed IPA artifacts
         if: inputs.ios_run_id != ''
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
           run-id: ${{ inputs.ios_run_id }}
@@ -104,7 +104,7 @@ jobs:
         run: |
           flags=(--draft)
           if [[ "$PRERELEASE" == true ]]; then flags+=(--prerelease); fi
-          gh release create "$RELEASE_TAG" --target "$SOURCE_SHA" --title "e-Patient $RELEASE_TAG" --notes-file release-assets/RELEASE-NOTES.md "${flags[@]}"
+          gh release create "$RELEASE_TAG" --target "$SOURCE_SHA" --title "Kasih $RELEASE_TAG" --notes-file release-assets/RELEASE-NOTES.md "${flags[@]}"
           shopt -s nullglob
           assets=(release-assets/*.apk release-assets/*.ipa release-assets/SHA256SUMS)
           gh release upload "$RELEASE_TAG" "${assets[@]}"
