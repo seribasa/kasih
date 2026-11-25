@@ -87,7 +87,7 @@ jobs:
         gateway: ${{ fromJSON(inputs.payment_gateway == 'both' && '["midtrans","stripe"]' || format('["{0}"]', inputs.payment_gateway)) }}
         build_type: ${{ fromJSON(inputs.build_type == 'both' && '["debug","release"]' || format('["{0}"]', inputs.build_type)) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - uses: actions/setup-java@v4
