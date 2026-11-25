@@ -1,23 +1,23 @@
-# e-Patient Product Requirements Document
+# Kasih Product Requirements Document
 
 **Status:** Draft PRD for product, design, business, legal, clinical, ops, and engineering alignment  
 **Date:** 2 October 2026  
 **Source:** Derived from `docs/plans/2026-09-30-e-patient-business-requirements.md`  
 **Figma:** https://www.figma.com/design/cmjvwgZ153ZAFlQ3cU4QWz  
 **Primary page:** `03 Material 3 UX Improved`  
-**Owner:** Product Owner e-Patient / Seribasa  
+**Owner:** Product Owner Kasih / Seribasa
 
 ---
 
 ## 1. Executive Summary
 
-e-Patient adalah aplikasi patient-facing untuk membantu pasien dan keluarga mengelola perjalanan kesehatan secara aman: membuat profil pasien, mengatur anggota keluarga/caregiver, mencari layanan kesehatan, melakukan booking, membayar, menerima reminder, melihat timeline kesehatan dasar, dan mengelola consent/privacy.
+Kasih adalah aplikasi patient-facing untuk membantu pasien dan keluarga mengelola perjalanan kesehatan secara aman: membuat profil pasien, mengatur anggota keluarga/caregiver, mencari layanan kesehatan, melakukan booking, membayar, menerima reminder, melihat timeline kesehatan dasar, dan mengelola consent/privacy.
 
 PRD ini mengerucutkan BRD menjadi requirement produk yang siap dipakai untuk validasi UX, penyusunan backlog, dan perencanaan engineering. Fokus awal adalah **MVP: Foundation and Care Access**, bukan seluruh visi longitudinal health platform.
 
 ### 1.1 Product Thesis
 
-e-Patient menjadi pendamping kesehatan keluarga yang membuat administrasi kesehatan lebih rapi tanpa mengorbankan privasi pasien.
+Kasih menjadi pendamping kesehatan keluarga yang membuat administrasi kesehatan lebih rapi tanpa mengorbankan privasi pasien.
 
 ### 1.2 MVP Promise
 
