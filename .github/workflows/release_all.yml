@@ -98,7 +98,7 @@ jobs:
           CUSTOM_BUILD_NUMBER: ${{ inputs.build_number }}
       - name: Compute and validate release tag
         id: tag
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           VERSION_NAME: ${{ steps.version.outputs.version_name }}
           BUILD_NUMBER: ${{ steps.version.outputs.build_number }}
