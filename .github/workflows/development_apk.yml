@@ -41,6 +41,32 @@ on:
         required: false
         type: string
         default: ''
+  workflow_call:
+    inputs:
+      payment_gateway:
+        required: false
+        type: string
+        default: midtrans
+      build_type:
+        required: false
+        type: string
+        default: both
+      midtrans_currency:
+        required: false
+        type: string
+        default: IDR
+      stripe_currency:
+        required: false
+        type: string
+        default: IDR
+      version_name:
+        required: false
+        type: string
+        default: ''
+      build_number:
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: read

@@ -54,6 +54,52 @@ on:
         required: false
         type: string
         default: '/Applications/Xcode_26.3.app/Contents/Developer'
+  workflow_call:
+    inputs:
+      artifact_type:
+        required: false
+        type: string
+        default: app
+      upload_to_testflight:
+        required: false
+        type: boolean
+        default: false
+      payment_gateway:
+        required: false
+        type: string
+        default: midtrans
+      midtrans_currency:
+        required: false
+        type: string
+        default: IDR
+      stripe_currency:
+        required: false
+        type: string
+        default: IDR
+      version_name:
+        required: false
+        type: string
+        default: ''
+      build_number:
+        required: false
+        type: string
+        default: ''
+      export_method:
+        required: false
+        type: string
+        default: debugging
+      release_notes:
+        required: false
+        type: string
+        default: 'Internal test build'
+      wait_for_processing:
+        required: false
+        type: boolean
+        default: false
+      xcode_path:
+        required: false
+        type: string
+        default: '/Applications/Xcode_26.3.app/Contents/Developer'
 
 permissions:
   contents: read
