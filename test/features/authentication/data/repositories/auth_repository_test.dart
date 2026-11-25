@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -152,6 +154,27 @@ void main() {
       when(() => mockGoTrue.currentUser).thenReturn(null);
       final result = await authRepository.getUser();
       expect(result, isNull);
+    });
+  });
+
+  group('uploadImage', () {
+    late AuthRepository authRepository;
+    late MockSupabaseClient mockSupabase;
+    setUp(() {
+      mockSupabase = MockSupabaseClient();
+      authRepository = AuthRepository(sharedPreferences, mockSupabase);
+      when(() => mockSupabase.auth).thenReturn(mockGoTrue);
+    });
+
+    test('throws when currentUser is null without touching storage', () async {
+      when(() => mockGoTrue.currentUser).thenReturn(null);
+
+      await expectLater(
+        authRepository.uploadImage(File('dummy.jpg')),
+        throwsA(isA<Exception>()),
+      );
+
+      verifyNever(() => mockSupabase.storage);
     });
   });
 }

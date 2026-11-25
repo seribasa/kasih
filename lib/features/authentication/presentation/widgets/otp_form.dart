@@ -22,8 +22,6 @@ class _OTPFormState extends State<OTPForm> {
   static const maxSeconds = 60;
   int seconds = maxSeconds;
   bool newCode = false;
-  bool loading = false;
-  String error = '';
   Timer? _timer;
 
   void startTimer() {
@@ -142,8 +140,16 @@ class _OTPFormState extends State<OTPForm> {
   }
 }
 
-class _OTPCodeInput extends StatelessWidget {
+class _OTPCodeInput extends StatefulWidget {
   const _OTPCodeInput({Key? key}) : super(key: key);
+
+  @override
+  State<_OTPCodeInput> createState() => _OTPCodeInputState();
+}
+
+class _OTPCodeInputState extends State<_OTPCodeInput> {
+  bool _obscureOtp = true;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginPhoneCubit, LoginPhoneState>(
@@ -155,10 +161,24 @@ class _OTPCodeInput extends StatelessWidget {
               (otpCode) =>
                   context.read<LoginPhoneCubit>().otpCodeChanged(otpCode),
           keyboardType: TextInputType.number,
+          obscureText: _obscureOtp,
+          autocorrect: false,
+          enableSuggestions: false,
           maxLength: 6,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             labelText: 'OTP Code',
             helperText: 'contoh: 000000',
+            suffixIcon: IconButton(
+              key: const Key('loginPhoneForm_otpCodeVisibility_iconButton'),
+              tooltip:
+                  _obscureOtp ? 'Tampilkan kode OTP' : 'Sembunyikan kode OTP',
+              icon: Icon(_obscureOtp ? Icons.visibility : Icons.visibility_off),
+              onPressed: () {
+                setState(() {
+                  _obscureOtp = !_obscureOtp;
+                });
+              },
+            ),
           ),
         );
       },

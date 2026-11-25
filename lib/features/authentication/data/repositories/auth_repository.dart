@@ -106,18 +106,19 @@ class AuthRepository {
 
   Future<String> uploadImage(File file) async {
     try {
-      final id = await supabaseClient.auth.currentUser?.id;
+      final id = supabaseClient.auth.currentUser?.id;
+      if (id == null) {
+        throw Exception('User not authenticated');
+      }
       await supabaseClient.storage
           .from('avatars')
           .upload(
-            '$id',
+            id,
             file,
             fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
             retryAttempts: 3,
           );
-      final fullPath = await supabaseClient.storage
-          .from('avatars')
-          .getPublicUrl('$id');
+      final fullPath = supabaseClient.storage.from('avatars').getPublicUrl(id);
       await CachedNetworkImage.evictFromCache(fullPath);
       return fullPath;
     } catch (e) {
