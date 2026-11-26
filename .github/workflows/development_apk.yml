@@ -149,14 +149,14 @@ jobs:
           PAYMENT_GATEWAY: ${{ matrix.gateway }}
           BUILD_TYPE: ${{ matrix.build_type }}
       - name: Upload development APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: e-patient-${{ matrix.gateway }}-${{ matrix.build_type }}-${{ github.run_id }}
           path: build/app/outputs/flutter-apk/app-${{ matrix.gateway }}-${{ matrix.build_type }}.apk
           if-no-files-found: error
           retention-days: 7
       - name: Upload public App Link association
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: e-patient-app-links-${{ matrix.gateway }}-${{ matrix.build_type }}-${{ github.run_id }}
           path: build/app-links/assetlinks-${{ matrix.build_type }}.json
