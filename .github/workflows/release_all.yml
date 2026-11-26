@@ -163,12 +163,12 @@ jobs:
       - name: Test release helpers
         run: node --test .github/scripts/release-assets.test.mjs
       - name: Download Android build artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: e-patient-*-*-${{ github.run_id }}
           path: release-downloads/android
       - name: Download signed IPA artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: e-patient-*-signed-ipa-${{ github.run_id }}
           path: release-downloads/ios
